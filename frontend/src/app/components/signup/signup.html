@@ -1,0 +1,27 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <fieldset>
+    <legend>Sign Up</legend>
+    <label>
+      Name:
+      <input type="text" formControlName="name" />
+    </label>
+    <label>
+      Email:
+      <input type="email" formControlName="email" />
+    </label>
+    <label>
+      University Email:
+      <input type="email" formControlName="universityEmail" />
+    </label>
+    <label>
+      Student ID:
+      <input type="text" formControlName="studentId" />
+    </label>
+    <label>
+      Password:
+      <input type="password" formControlName="password" />
+    </label>
+    <button type="submit">Sign Up</button>
+    <a routerLink="/signin">Already have an account? Sign in</a>
+  </fieldset>
+</form>

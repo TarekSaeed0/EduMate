@@ -1,0 +1,6 @@
+@if (this.authenticationService.isSignedIn()) {
+  <h1>{{ greeting }}</h1>
+  <button (click)="signout()">Sign Out</button>
+} @else {
+  <a routerLink="/signin"><h1>You must sign in first</h1></a>
+}
