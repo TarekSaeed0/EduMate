@@ -14,13 +14,22 @@ import lombok.NoArgsConstructor;
 public class SignupRequest {
 	@NotNull
 	private Long id;
+
 	@NotBlank
 	private String name;
+
+	@NotNull
+	private Gender gender;
+
+	@NotNull
 	@Email
 	@Gmail
 	private String email;
+
+	@NotNull
 	@Email
 	private String universityEmail;
+
 	@NotBlank
 	private String password;
 }

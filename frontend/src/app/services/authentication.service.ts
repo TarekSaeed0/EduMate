@@ -2,9 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
+export enum Gender {
+  Male = 'MALE',
+  Female = 'FEMALE',
+}
+
 export interface SignupRequest {
   id: number;
   name: string;
+  gender: Gender;
   email: string;
   universityEmail: string;
   password: string;

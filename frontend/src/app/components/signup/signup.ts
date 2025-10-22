@@ -7,7 +7,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthenticationService, Gender } from '../../services/authentication.service';
 import { Router, RouterLink } from '@angular/router';
 
 export const passwordMatchingValidatior: ValidatorFn = (
@@ -33,6 +33,7 @@ export class Signup {
     {
       id: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       name: ['', Validators.required],
+      gender: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       universityEmail: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -47,11 +48,19 @@ export class Signup {
 
   onSubmit() {
     const value = this.form.value;
-    if (value.id && value.name && value.email && value.universityEmail && value.password) {
+    if (
+      value.id &&
+      value.name &&
+      value.gender &&
+      value.email &&
+      value.universityEmail &&
+      value.password
+    ) {
       this.authenticationService
         .signup({
           id: parseInt(value.id, 10),
           name: value.name,
+          gender: value.gender as Gender,
           email: value.email,
           universityEmail: value.universityEmail,
           password: value.password,

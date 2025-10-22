@@ -5,6 +5,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.entity.User;
+import com.github.hciteam.edumate.model.Role;
 import com.github.hciteam.edumate.model.SigninRequest;
 import com.github.hciteam.edumate.model.SignupRequest;
 import com.github.hciteam.edumate.repository.UserRepository;
@@ -27,9 +28,11 @@ public class AuthenticationService {
 		User user = new User();
 		user.setId(request.getId());
 		user.setName(request.getName());
+		user.setGender(request.getGender());
 		user.setEmail(request.getEmail());
 		user.setUniversityEmail(request.getUniversityEmail());
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
+		user.setRole(Role.STUDENT);
 		return userRepository.save(user);
 	}
 

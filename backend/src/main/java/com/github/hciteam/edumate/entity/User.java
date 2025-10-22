@@ -1,8 +1,11 @@
 package com.github.hciteam.edumate.entity;
 
+import com.github.hciteam.edumate.model.Gender;
+import com.github.hciteam.edumate.model.Role;
 import java.util.Collection;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,6 +27,9 @@ public class User implements UserDetails {
 	@Column(nullable = false)
 	private String name;
 
+	@Column(nullable = false)
+	private Gender gender;
+
 	@Column(nullable = false, unique = true)
 	private String email;
 
@@ -33,9 +39,12 @@ public class User implements UserDetails {
 	@Column(nullable = false)
 	private String password;
 
+	@Column(nullable = false)
+	private Role role;
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of();
+		return List.of(new SimpleGrantedAuthority(role.name()));
 	}
 
 	@Override

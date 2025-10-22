@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <fieldset>
     <legend>Sign Up</legend>
-    <div class="form-grid">
+    <div class="form-group">
       <label for="id">Student ID:</label>
       <input id="id" type="text" inputmode="numeric" formControlName="id" />
       @if (form.get('id')?.invalid && (form.get('id')?.dirty || form.get('id')?.touched)) {
@@ -12,6 +12,13 @@
       @if (form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)) {
         <span class="error">Name is invalid.</span>
       }
+      <label>Gender:</label>
+      <div>
+        <input id="male" type="radio" value="MALE" formControlName="gender" />
+        <label for="male">Male</label>
+        <input id="female" type="radio" value="FEMALE" formControlName="gender" />
+        <label for="female">Female</label>
+      </div>
       <label for="email">Email:</label>
       <input id="email" type="email" formControlName="email" />
       @if (form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)) {

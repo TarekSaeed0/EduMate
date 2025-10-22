@@ -1,7 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <fieldset>
     <legend>Sign In</legend>
-    <div class="form-grid">
+    <div class="form-group">
       <label for="email">Email:</label>
       <input id="email" type="email" formControlName="email" />
       @if (form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)) {
