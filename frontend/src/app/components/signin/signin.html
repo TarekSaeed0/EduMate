@@ -1,14 +1,21 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <fieldset>
     <legend>Sign In</legend>
-    <label
-      >Email:
-      <input type="email" formControlName="email" />
-    </label>
-    <label>
-      Password:
-      <input type="password" formControlName="password" />
-    </label>
+    <div class="form-grid">
+      <label for="email">Email:</label>
+      <input id="email" type="email" formControlName="email" />
+      @if (form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)) {
+        <span class="error">Email is invalid.</span>
+      }
+      <label for="password">Password:</label>
+      <input id="password" type="password" formControlName="password" />
+      @if (
+        form.get('password')?.invalid &&
+        (form.get('password')?.dirty || form.get('password')?.touched)
+      ) {
+        <span class="error">Password is invalid.</span>
+      }
+    </div>
     <button type="submit">Sign In</button>
     <a routerLink="/signup">Don't have an account? Sign up</a>
   </fieldset>

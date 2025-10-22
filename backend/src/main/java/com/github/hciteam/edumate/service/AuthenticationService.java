@@ -25,10 +25,10 @@ public class AuthenticationService {
 
 	public User signup(SignupRequest request) {
 		User user = new User();
+		user.setId(request.getId());
 		user.setName(request.getName());
 		user.setEmail(request.getEmail());
 		user.setUniversityEmail(request.getUniversityEmail());
-		user.setStudentId(request.getStudentId());
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
 		return userRepository.save(user);
 	}

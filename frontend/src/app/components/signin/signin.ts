@@ -14,7 +14,7 @@ export class Signin {
 
   private formBuilder = inject(FormBuilder);
   form = this.formBuilder.group({
-    email: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
     password: ['', Validators.required],
   });
 
@@ -23,15 +23,20 @@ export class Signin {
   onSubmit() {
     const value = this.form.value;
     if (value.email && value.password) {
-      this.authenticationService.signin(value.email, value.password).subscribe({
-        next: () => {
-          console.log('Sign in successful');
-          this.router.navigateByUrl('/home');
-        },
-        error: (error) => {
-          console.error('Sign in failed', error);
-        },
-      });
+      this.authenticationService
+        .signin({
+          email: value.email,
+          password: value.password,
+        })
+        .subscribe({
+          next: () => {
+            console.log('Sign in successful');
+            this.router.navigateByUrl('/home');
+          },
+          error: (error) => {
+            console.error('Sign in failed', error);
+          },
+        });
     }
   }
 }

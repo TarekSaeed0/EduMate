@@ -1,7 +1,23 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router, RouterLink } from '@angular/router';
+
+export const passwordMatchingValidatior: ValidatorFn = (
+  control: AbstractControl,
+): ValidationErrors | null => {
+  const password = control.get('password');
+  const confirmPassword = control.get('confirmPassword');
+
+  return password?.value === confirmPassword?.value ? null : { passwordMismatch: true };
+};
 
 @Component({
   selector: 'app-signup',
@@ -13,21 +29,33 @@ export class Signup {
   private authenticationService = inject(AuthenticationService);
 
   private formBuilder = inject(FormBuilder);
-  form = this.formBuilder.group({
-    name: ['', Validators.required],
-    email: ['', Validators.required],
-    universityEmail: ['', Validators.required],
-    studentId: ['', Validators.required],
-    password: ['', Validators.required],
-  });
+  form = this.formBuilder.group(
+    {
+      id: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      universityEmail: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+    },
+    {
+      validators: passwordMatchingValidatior,
+    },
+  );
 
   private router = inject(Router);
 
   onSubmit() {
     const value = this.form.value;
-    if (value.name && value.email && value.universityEmail && value.studentId && value.password) {
+    if (value.id && value.name && value.email && value.universityEmail && value.password) {
       this.authenticationService
-        .signup(value.name, value.email, value.universityEmail, value.studentId, value.password)
+        .signup({
+          id: parseInt(value.id, 10),
+          name: value.name,
+          email: value.email,
+          universityEmail: value.universityEmail,
+          password: value.password,
+        })
         .subscribe({
           next: () => {
             console.log('Sign up successful');
