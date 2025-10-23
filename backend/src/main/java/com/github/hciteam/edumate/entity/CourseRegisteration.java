@@ -1,6 +1,5 @@
 package com.github.hciteam.edumate.entity;
 
-import java.time.LocalDateTime;
 import com.github.hciteam.edumate.model.CourseRegisterationStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,7 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "enrollments")
+@Table(name = "course_registerations")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -31,15 +30,10 @@ public class CourseRegisteration {
 	Student student;
 
 	@ManyToOne
-	@JoinColumn(name = "course_id", nullable = false)
-	Course course;
+	@JoinColumn(name = "offering_id", nullable = false)
+	CourseOffering offering;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	CourseRegisterationStatus status;
-
-	@Column(nullable = false)
-	LocalDateTime registeredAt;
-
-	LocalDateTime completedAt;
 }

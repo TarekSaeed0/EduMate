@@ -5,6 +5,8 @@ import com.github.hciteam.edumate.model.Gender;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
@@ -29,6 +31,7 @@ public class Student {
 	private String name;
 
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Gender gender;
 
 	@Column(nullable = false, unique = true)
@@ -40,6 +43,9 @@ public class Student {
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	Set<CourseRegisteration> registerations;
+	private Set<CourseRegisteration> registerations;
 
+	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	private Set<StudentTask> tasks;
 }
