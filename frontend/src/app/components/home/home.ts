@@ -26,6 +26,8 @@ export class Home {
         console.error('Error fetching greeting:', error);
       },
     });
+
+    console.log(this.authenticationService.getRoles());
   }
 
   signout() {

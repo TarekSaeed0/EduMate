@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { jwtDecode } from 'jwt-decode';
 import { Observable, tap } from 'rxjs';
 
 export enum Gender {
@@ -21,8 +22,9 @@ export interface SigninRequest {
   password: string;
 }
 
-export interface SigninResponse {
-  token: string;
+export interface AuthenticationResponse {
+  accessToken: string;
+  refreshToken: string;
 }
 
 @Injectable({
@@ -36,23 +38,51 @@ export class AuthenticationService {
     return this.http.post(`${this.baseUrl}/signup`, request);
   }
 
-  signin(request: SigninRequest): Observable<SigninResponse> {
-    return this.http.post<SigninResponse>(`${this.baseUrl}/signin`, request).pipe(
+  signin(request: SigninRequest): Observable<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>(`${this.baseUrl}/signin`, request).pipe(
       tap((response) => {
-        localStorage.setItem('token', response.token);
+        localStorage.setItem('accessToken', response.accessToken);
+        localStorage.setItem('refreshToken', response.refreshToken);
       }),
     );
   }
 
-  signout() {
-    localStorage.removeItem('token');
+  refresh(): Observable<AuthenticationResponse> {
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    return this.http
+      .post<AuthenticationResponse>(`${this.baseUrl}/refresh`, {
+        refreshToken,
+      })
+      .pipe(
+        tap((response) => {
+          localStorage.setItem('accessToken', response.accessToken);
+          localStorage.setItem('refreshToken', response.refreshToken);
+        }),
+      );
   }
 
-  getToken() {
-    return localStorage.getItem('token');
+  signout() {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+  }
+
+  getAccessToken() {
+    return localStorage.getItem('accessToken');
+  }
+
+  getRoles(): string[] {
+    const accessToken = this.getAccessToken();
+    if (!accessToken) {
+      return [];
+    }
+
+    const decoded = jwtDecode<{ roles: string[] }>(accessToken);
+
+    return decoded.roles;
   }
 
   isSignedIn() {
-    return !!this.getToken();
+    return !!this.getAccessToken();
   }
 }

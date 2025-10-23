@@ -13,7 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SignupRequest {
 	@NotNull
-	private Long id;
+	@Email
+	@Gmail
+	private String email;
+
+	@NotBlank
+	private String password;
+
+	@NotNull
+	private Long studentId;
 
 	@NotBlank
 	private String name;
@@ -23,13 +31,5 @@ public class SignupRequest {
 
 	@NotNull
 	@Email
-	@Gmail
-	private String email;
-
-	@NotNull
-	@Email
 	private String universityEmail;
-
-	@NotBlank
-	private String password;
 }

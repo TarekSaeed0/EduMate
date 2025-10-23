@@ -1,0 +1,35 @@
+package com.github.hciteam.edumate.entity;
+
+import java.util.Set;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "courses")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Course {
+	@Id
+	private Long id;
+
+	@Column(nullable = false, unique = true)
+	private String code;
+
+	@Column(nullable = false)
+	private String name;
+
+	@Column(nullable = false)
+	private Integer credits;
+
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	Set<CourseRegisteration> registerations;
+}
