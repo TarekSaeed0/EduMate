@@ -1,5 +1,6 @@
 package com.github.hciteam.edumate.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.github.hciteam.edumate.model.Role;
 import java.util.Collection;
 import java.util.List;
@@ -43,6 +44,7 @@ public class User implements UserDetails {
 	private Role role;
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonManagedReference
 	private Student student;
 
 	@Override

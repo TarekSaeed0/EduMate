@@ -19,7 +19,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "enrollments",
+@Table(name = "semesters",
 		uniqueConstraints = {@UniqueConstraint(columnNames = {"term", "year"})})
 @Data
 @AllArgsConstructor
@@ -33,7 +33,7 @@ public class Semester {
 	@Enumerated(EnumType.STRING)
 	private Term term;
 
-	@Column(nullable = false)
+	@Column(name = "`year`", nullable = false)
 	private Long year;
 
 	@Column(nullable = false)

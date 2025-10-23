@@ -21,7 +21,8 @@ public class GreetingController {
 	@GetMapping("/greeting")
 	public ResponseEntity<String> greet(Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
-		Student student = studentRepository.findByUser(user).orElseThrow();
+		Student student =
+				studentRepository.findByUserId(user.getId()).orElseThrow();
 		return ResponseEntity
 				.ok("Hello, " + student.getName().trim().split("\\s+")[0] + "!");
 	}

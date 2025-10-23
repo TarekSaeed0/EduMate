@@ -11,33 +11,43 @@ import com.github.hciteam.edumate.model.Role;
 import com.github.hciteam.edumate.model.SigninRequest;
 import com.github.hciteam.edumate.model.AuthenticationResponse;
 import com.github.hciteam.edumate.model.SignupRequest;
+import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.UserRepository;
+import com.github.hciteam.edumate.exception.UserAlreadyExistsException;
+import com.github.hciteam.edumate.exception.RefreshTokenExpiredException;
+import com.github.hciteam.edumate.exception.StudentAlreadyExistsException;
 
 @Service
 public class AuthenticationService {
 	private final JwtService jwtService;
-	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
+	private final UserRepository userRepository;
+	private final StudentRepository studentRepository;
 
 	public AuthenticationService(JwtService jwtService,
-			UserRepository userRepository,
 			AuthenticationManager authenticationManager,
-			PasswordEncoder passwordEncoder) {
+			PasswordEncoder passwordEncoder, UserRepository userRepository,
+			StudentRepository studentRepository) {
 		this.jwtService = jwtService;
 		this.authenticationManager = authenticationManager;
-		this.userRepository = userRepository;
 		this.passwordEncoder = passwordEncoder;
+		this.userRepository = userRepository;
+		this.studentRepository = studentRepository;
 	}
 
 	public User signup(SignupRequest request) {
 		if (userRepository.existsByEmail(request.getEmail())) {
-			throw new IllegalArgumentException("Email is already in use");
+			throw new UserAlreadyExistsException();
 		}
 
-		User user =
-				User.builder().password(passwordEncoder.encode(request.getPassword()))
-						.role(Role.STUDENT).build();
+		User user = User.builder().email(request.getEmail())
+				.password(passwordEncoder.encode(request.getPassword()))
+				.role(Role.STUDENT).build();
+
+		if (studentRepository.existsById(request.getStudentId())) {
+			throw new StudentAlreadyExistsException();
+		}
 
 		Student student = Student.builder().id(request.getStudentId())
 				.name(request.getName()).gender(request.getGender())
@@ -65,7 +75,7 @@ public class AuthenticationService {
 		String refreshToken = request.getRefreshToken();
 
 		if (jwtService.isTokenExpired(refreshToken)) {
-			throw new IllegalArgumentException("Refresh token is expired");
+			throw new RefreshTokenExpiredException();
 		}
 
 		String username = jwtService.extractUsername(refreshToken);
