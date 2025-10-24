@@ -17,13 +17,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "course_registerations",
+@Table(name = "course_registrations",
 		uniqueConstraints = {
 				@UniqueConstraint(columnNames = {"student_id", "offering_id"})})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseRegisteration {
+public class CourseRegistration {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

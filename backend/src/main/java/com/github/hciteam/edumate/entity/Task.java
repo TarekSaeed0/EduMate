@@ -32,10 +32,9 @@ public class Task {
 
 	private String requirements;
 
-	private String note;
+	private String submissionUrl;
 
-	private LocalDateTime deadline;
+	private LocalDateTime dueDate;
 
-	@Column(name = "submission_link")
-	private String submissionLink;
+	private String notes;
 }

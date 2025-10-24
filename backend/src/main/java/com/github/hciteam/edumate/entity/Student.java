@@ -45,7 +45,7 @@ public class Student {
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	private Set<CourseRegisteration> registerations;
+	private Set<CourseRegistration> registrations;
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL,
 			orphanRemoval = true)

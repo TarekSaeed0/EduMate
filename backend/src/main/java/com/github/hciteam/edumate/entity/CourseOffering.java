@@ -37,7 +37,7 @@ public class CourseOffering {
 
 	@OneToMany(mappedBy = "offering", cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	private Set<CourseRegisteration> registerations;
+	private Set<CourseRegistration> registrations;
 
 	@OneToMany(mappedBy = "offering", cascade = CascadeType.ALL,
 			orphanRemoval = true)

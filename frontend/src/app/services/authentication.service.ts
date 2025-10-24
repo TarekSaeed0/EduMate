@@ -9,7 +9,7 @@ export enum Gender {
 }
 
 export interface SignupRequest {
-  id: number;
+  studentId: number;
   name: string;
   gender: Gender;
   email: string;

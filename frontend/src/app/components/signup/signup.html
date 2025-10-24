@@ -2,9 +2,12 @@
   <fieldset>
     <legend>Sign Up</legend>
     <div class="form-group">
-      <label for="id">Student ID:</label>
-      <input id="id" type="text" inputmode="numeric" formControlName="id" />
-      @if (form.get('id')?.invalid && (form.get('id')?.dirty || form.get('id')?.touched)) {
+      <label for="studentId">Student ID:</label>
+      <input id="studentId" type="text" inputmode="numeric" formControlName="studentId" />
+      @if (
+        form.get('studentId')?.invalid &&
+        (form.get('studentId')?.dirty || form.get('studentId')?.touched)
+      ) {
         <span class="error">Student ID is invalid.</span>
       }
       <label for="name">Name:</label>

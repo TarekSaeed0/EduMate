@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "semesters",
-		uniqueConstraints = {@UniqueConstraint(columnNames = {"term", "year"})})
+		uniqueConstraints = {@UniqueConstraint(columnNames = {"term", "`year`"})})
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

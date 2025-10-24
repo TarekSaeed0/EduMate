@@ -31,7 +31,7 @@ export class Signup {
   private formBuilder = inject(FormBuilder);
   form = this.formBuilder.group(
     {
-      id: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
+      studentId: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       name: ['', Validators.required],
       gender: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -49,7 +49,7 @@ export class Signup {
   onSubmit() {
     const value = this.form.value;
     if (
-      value.id &&
+      value.studentId &&
       value.name &&
       value.gender &&
       value.email &&
@@ -58,7 +58,7 @@ export class Signup {
     ) {
       this.authenticationService
         .signup({
-          id: parseInt(value.id, 10),
+          studentId: parseInt(value.studentId, 10),
           name: value.name,
           gender: value.gender as Gender,
           email: value.email,

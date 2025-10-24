@@ -35,6 +35,5 @@ public class StudentTask {
 	@JoinColumn(name = "task_id", nullable = false)
 	private Task task;
 
-	@Column(name = "submitted_at")
 	private LocalDateTime submittedAt;
 }
