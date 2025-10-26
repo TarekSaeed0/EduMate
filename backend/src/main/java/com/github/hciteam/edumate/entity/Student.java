@@ -1,5 +1,6 @@
 package com.github.hciteam.edumate.entity;
 
+import java.io.Serializable;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.github.hciteam.edumate.model.Gender;
@@ -15,16 +16,18 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "students")
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Student {
+public class Student implements Serializable {
 	@Id
 	private Long id;
 

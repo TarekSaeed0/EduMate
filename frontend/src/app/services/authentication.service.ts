@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { jwtDecode } from 'jwt-decode';
+import { inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
 export enum Gender {
@@ -22,9 +21,10 @@ export interface SigninRequest {
   password: string;
 }
 
-export interface AuthenticationResponse {
-  accessToken: string;
-  refreshToken: string;
+export interface User {
+  id: number;
+  email: string;
+  role: 'STUDENT' | 'COORDINATOR';
 }
 
 @Injectable({
@@ -34,55 +34,40 @@ export class AuthenticationService {
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/api/auth';
 
-  signup(request: SignupRequest): Observable<any> {
+  user = signal<User | null>(null);
+
+  constructor() {
+    this.fetchUser();
+  }
+
+  fetchUser() {
+    this.http.get<User>(`${this.baseUrl}/me`, { withCredentials: true }).subscribe({
+      next: (user) => this.user.set(user),
+      error: () => this.user.set(null),
+    });
+  }
+
+  signup(request: SignupRequest): Observable<Object> {
     return this.http.post(`${this.baseUrl}/signup`, request);
   }
 
-  signin(request: SigninRequest): Observable<AuthenticationResponse> {
-    return this.http.post<AuthenticationResponse>(`${this.baseUrl}/signin`, request).pipe(
-      tap((response) => {
-        localStorage.setItem('accessToken', response.accessToken);
-        localStorage.setItem('refreshToken', response.refreshToken);
+  signin(request: SigninRequest): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/signin`, request, { withCredentials: true }).pipe(
+      tap(() => {
+        this.fetchUser();
       }),
     );
   }
 
-  refresh(): Observable<AuthenticationResponse> {
-    const refreshToken = localStorage.getItem('refreshToken');
-
-    return this.http
-      .post<AuthenticationResponse>(`${this.baseUrl}/refresh`, {
-        refreshToken,
-      })
-      .pipe(
-        tap((response) => {
-          localStorage.setItem('accessToken', response.accessToken);
-          localStorage.setItem('refreshToken', response.refreshToken);
-        }),
-      );
+  signout(): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/signout`, {}, { withCredentials: true }).pipe(
+      tap(() => {
+        this.user.set(null);
+      }),
+    );
   }
 
-  signout() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-  }
-
-  getAccessToken() {
-    return localStorage.getItem('accessToken');
-  }
-
-  getRoles(): string[] {
-    const accessToken = this.getAccessToken();
-    if (!accessToken) {
-      return [];
-    }
-
-    const decoded = jwtDecode<{ roles: string[] }>(accessToken);
-
-    return decoded.roles;
-  }
-
-  isSignedIn() {
-    return !!this.getAccessToken();
+  isSignedIn(): boolean {
+    return this.user() !== null;
   }
 }

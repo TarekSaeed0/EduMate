@@ -18,19 +18,19 @@ export class Home {
   greeting = '';
 
   constructor() {
-    this.httpClient.get(`${this.baseUrl}/greeting`, { responseType: 'text' }).subscribe({
-      next: (response) => {
-        this.greeting = response;
-      },
-      error: (error) => {
-        console.error('Error fetching greeting:', error);
-      },
-    });
-
-    console.log(this.authenticationService.getRoles());
+    this.httpClient
+      .get(`${this.baseUrl}/greeting`, { withCredentials: true, responseType: 'text' })
+      .subscribe({
+        next: (response) => {
+          this.greeting = response;
+        },
+        error: (error) => {
+          console.error('Error fetching greeting:', error);
+        },
+      });
   }
 
   signout() {
-    this.authenticationService.signout();
+    this.authenticationService.signout().subscribe();
   }
 }
