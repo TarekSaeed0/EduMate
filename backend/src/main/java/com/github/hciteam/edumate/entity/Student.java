@@ -2,7 +2,6 @@ package com.github.hciteam.edumate.entity;
 
 import java.io.Serializable;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.github.hciteam.edumate.model.Gender;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -43,7 +42,6 @@ public class Student implements Serializable {
 
 	@OneToOne
 	@JoinColumn(name = "user_id", unique = true)
-	@JsonBackReference
 	private User user;
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL,

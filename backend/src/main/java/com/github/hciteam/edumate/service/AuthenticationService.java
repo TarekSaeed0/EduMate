@@ -1,5 +1,7 @@
 package com.github.hciteam.edumate.service;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -10,12 +12,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
+import com.github.hciteam.edumate.entity.Role;
 import com.github.hciteam.edumate.entity.Student;
 import com.github.hciteam.edumate.entity.User;
-import com.github.hciteam.edumate.model.Role;
 import com.github.hciteam.edumate.model.SigninRequest;
 import com.github.hciteam.edumate.model.SignupRequest;
 import com.github.hciteam.edumate.model.UserDTO;
+import com.github.hciteam.edumate.repository.RoleRepository;
 import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,6 +32,7 @@ public class AuthenticationService {
 	private final AuthenticationManager authenticationManager;
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
+	private final RoleRepository roleRepository;
 	private final StudentRepository studentRepository;
 	private final UserMapper userMapper;
 	private SecurityContextRepository securityContextRepository =
@@ -38,10 +42,12 @@ public class AuthenticationService {
 
 	public AuthenticationService(AuthenticationManager authenticationManager,
 			PasswordEncoder passwordEncoder, UserRepository userRepository,
-			StudentRepository studentRepository, UserMapper userMapper) {
+			RoleRepository roleRepository, StudentRepository studentRepository,
+			UserMapper userMapper) {
 		this.authenticationManager = authenticationManager;
 		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
 		this.studentRepository = studentRepository;
 		this.userMapper = userMapper;
 	}
@@ -51,9 +57,15 @@ public class AuthenticationService {
 			throw new UserAlreadyExistsException();
 		}
 
+		Role studentRole = roleRepository.findByName("STUDENT")
+				.orElseThrow(() -> new RuntimeException("STUDENT Role not found"));
+
+		Set<Role> roles = new HashSet<>();
+		roles.add(studentRole);
+
 		User user = User.builder().email(signupRequest.getEmail())
 				.password(passwordEncoder.encode(signupRequest.getPassword()))
-				.role(Role.STUDENT).build();
+				.roles(roles).build();
 
 		if (studentRepository.existsById(signupRequest.getStudentId())) {
 			throw new StudentAlreadyExistsException();

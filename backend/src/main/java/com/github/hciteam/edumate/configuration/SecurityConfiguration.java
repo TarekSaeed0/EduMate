@@ -1,4 +1,4 @@
-package com.github.hciteam.edumate.security;
+package com.github.hciteam.edumate.configuration;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -72,8 +72,7 @@ public class SecurityConfiguration {
 		configuration.setAllowedHeaders(List.of("*"));
 		configuration.setAllowCredentials(true);
 
-		UrlBasedCorsConfigurationSource source =
-				new UrlBasedCorsConfigurationSource();
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
 		source.registerCorsConfiguration("/**", configuration);
 
