@@ -36,10 +36,6 @@ export class AuthenticationService {
 
   user = signal<User | null>(null);
 
-  constructor() {
-    this.fetchUser();
-  }
-
   fetchUser() {
     this.http.get<User>(`${this.baseUrl}/me`, { withCredentials: true }).subscribe({
       next: (user) => this.user.set(user),

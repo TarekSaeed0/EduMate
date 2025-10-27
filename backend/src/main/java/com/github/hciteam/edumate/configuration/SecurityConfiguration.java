@@ -38,10 +38,7 @@ public class SecurityConfiguration {
 
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http
-				// .csrf(csrf -> csrf
-				// .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
-				.csrf(csrf -> csrf.disable())
+		return http.csrf(csrf -> csrf.disable())
 				.cors(cors -> cors.configurationSource(
 						corsConfigurationSource()))
 				.authorizeHttpRequests(
@@ -72,7 +69,8 @@ public class SecurityConfiguration {
 		configuration.setAllowedHeaders(List.of("*"));
 		configuration.setAllowCredentials(true);
 
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		UrlBasedCorsConfigurationSource source =
+				new UrlBasedCorsConfigurationSource();
 
 		source.registerCorsConfiguration("/**", configuration);
 
