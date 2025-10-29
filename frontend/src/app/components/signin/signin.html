@@ -1,22 +1,33 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <fieldset>
-    <legend>Sign In</legend>
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input id="email" type="email" formControlName="email" />
-      @if (form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)) {
-        <span class="error">Email is invalid.</span>
-      }
-      <label for="password">Password:</label>
-      <input id="password" type="password" formControlName="password" />
-      @if (
-        form.get('password')?.invalid &&
-        (form.get('password')?.dirty || form.get('password')?.touched)
-      ) {
-        <span class="error">Password is invalid.</span>
-      }
-    </div>
-    <button type="submit">Sign In</button>
-    <a routerLink="/signup">Don't have an account? Sign up</a>
-  </fieldset>
-</form>
+<span class="layer"></span>
+<div class="container">
+  <div class="intro">
+    <!-- <span class="cover"></span> -->
+    <h1><span class="Edu">Edu<span class="Mate">Mate</span></span></h1>
+    <p>Learn Smarter, <br>Grow Together</p>
+    <!-- <p>Your gateway to a world of knowledge and learning.</p> -->
+  </div>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h2>Sign In</h2>
+      <div class="form-group">
+
+        <label for="email">Email:</label>
+        <input id="email" type="email" formControlName="email" />
+        @if (form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)) {
+          <span class="error appear">Email is invalid.</span>
+        }
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input id="password" type="password" formControlName="password" />
+        @if (
+          form.get('password')?.invalid &&
+          (form.get('password')?.dirty || form.get('password')?.touched)
+        ) {
+          <span class="error appear">Password is invalid.</span>
+        }
+      </div>
+      <button type="submit">Sign In</button>
+      <p class="signup">Don't have an account? <a routerLink="/signup">Sign up</a></p>
+
+  </form>
+</div>
