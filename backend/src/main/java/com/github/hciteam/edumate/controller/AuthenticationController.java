@@ -2,14 +2,16 @@ package com.github.hciteam.edumate.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.github.hciteam.edumate.entity.User;
 import com.github.hciteam.edumate.model.SigninRequest;
-import com.github.hciteam.edumate.model.AuthenticationResponse;
-import com.github.hciteam.edumate.model.RefreshRequest;
 import com.github.hciteam.edumate.model.SignupRequest;
+import com.github.hciteam.edumate.model.UserDTO;
 import com.github.hciteam.edumate.service.AuthenticationService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -24,24 +26,21 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/signup")
-	public ResponseEntity<User> signup(
+	public ResponseEntity<UserDTO> signup(
 			@Valid @RequestBody SignupRequest request) {
-		User user = authenticationService.signup(request);
-		return ResponseEntity.ok(user);
+		return ResponseEntity.ok(authenticationService.signup(request));
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity<AuthenticationResponse> signin(
-			@Valid @RequestBody SigninRequest request) {
-		AuthenticationResponse response = authenticationService.signin(request);
-		return ResponseEntity.ok(response);
+	public ResponseEntity<Void> signin(
+			@Valid @RequestBody SigninRequest signinRequest,
+			HttpServletRequest request, HttpServletResponse response) {
+		authenticationService.signin(signinRequest, request, response);
+		return ResponseEntity.ok().build();
 	}
 
-	@PostMapping("/refresh")
-	public ResponseEntity<AuthenticationResponse> refreshToken(
-			@Valid @RequestBody RefreshRequest request) {
-		AuthenticationResponse response =
-				authenticationService.refreshToken(request);
-		return ResponseEntity.ok(response);
+	@GetMapping("/me")
+	public ResponseEntity<UserDTO> me(Authentication authentication) {
+		return ResponseEntity.ok(authenticationService.me(authentication));
 	}
 }

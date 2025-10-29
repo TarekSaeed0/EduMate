@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { RouterLink } from '@angular/router';
+import { Student, StudentService } from '../../services/student.service';
 
 @Component({
   selector: 'app-home',
@@ -10,27 +10,26 @@ import { RouterLink } from '@angular/router';
   styleUrl: './home.css',
 })
 export class Home {
-  private httpClient = inject(HttpClient);
-  baseUrl = 'http://localhost:8080/api';
-
   authenticationService = inject(AuthenticationService);
+  private studentService = inject(StudentService);
 
-  greeting = '';
+  student = signal<Student | null>(null);
+  greeting = computed(() =>
+    this.student() ? `Hello, ${this.student()!.name.split(' ')[0]}!` : 'Hello!',
+  );
 
   constructor() {
-    this.httpClient.get(`${this.baseUrl}/greeting`, { responseType: 'text' }).subscribe({
-      next: (response) => {
-        this.greeting = response;
-      },
-      error: (error) => {
-        console.error('Error fetching greeting:', error);
-      },
-    });
+    this.fetchStudent();
+  }
 
-    console.log(this.authenticationService.getRoles());
+  fetchStudent() {
+    this.studentService.getCurrentStudent().subscribe({
+      next: (student) => this.student.set(student),
+      error: () => this.student.set(null),
+    });
   }
 
   signout() {
-    this.authenticationService.signout();
+    this.authenticationService.signout().subscribe();
   }
 }
