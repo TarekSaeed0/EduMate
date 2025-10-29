@@ -1,89 +1,102 @@
 package com.github.hciteam.edumate.service;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
+import com.github.hciteam.edumate.entity.Role;
 import com.github.hciteam.edumate.entity.Student;
 import com.github.hciteam.edumate.entity.User;
-import com.github.hciteam.edumate.model.RefreshRequest;
-import com.github.hciteam.edumate.model.Role;
 import com.github.hciteam.edumate.model.SigninRequest;
-import com.github.hciteam.edumate.model.AuthenticationResponse;
 import com.github.hciteam.edumate.model.SignupRequest;
+import com.github.hciteam.edumate.model.UserDTO;
+import com.github.hciteam.edumate.repository.RoleRepository;
 import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import com.github.hciteam.edumate.exception.UserAlreadyExistsException;
-import com.github.hciteam.edumate.exception.RefreshTokenExpiredException;
+import com.github.hciteam.edumate.mapper.UserMapper;
 import com.github.hciteam.edumate.exception.StudentAlreadyExistsException;
 
 @Service
 public class AuthenticationService {
-	private final JwtService jwtService;
-	private final PasswordEncoder passwordEncoder;
 	private final AuthenticationManager authenticationManager;
+	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
+	private final RoleRepository roleRepository;
 	private final StudentRepository studentRepository;
+	private final UserMapper userMapper;
+	private SecurityContextRepository securityContextRepository =
+			new HttpSessionSecurityContextRepository();
+	private final SecurityContextHolderStrategy securityContextHolderStrategy =
+			SecurityContextHolder.getContextHolderStrategy();
 
-	public AuthenticationService(JwtService jwtService,
-			AuthenticationManager authenticationManager,
+	public AuthenticationService(AuthenticationManager authenticationManager,
 			PasswordEncoder passwordEncoder, UserRepository userRepository,
-			StudentRepository studentRepository) {
-		this.jwtService = jwtService;
+			RoleRepository roleRepository, StudentRepository studentRepository,
+			UserMapper userMapper) {
 		this.authenticationManager = authenticationManager;
 		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
 		this.studentRepository = studentRepository;
+		this.userMapper = userMapper;
 	}
 
-	public User signup(SignupRequest request) {
-		if (userRepository.existsByEmail(request.getEmail())) {
+	public UserDTO signup(SignupRequest signupRequest) {
+		if (userRepository.existsByEmail(signupRequest.getEmail())) {
 			throw new UserAlreadyExistsException();
 		}
 
-		User user = User.builder().email(request.getEmail())
-				.password(passwordEncoder.encode(request.getPassword()))
-				.role(Role.STUDENT).build();
+		Role studentRole = roleRepository.findByName("STUDENT")
+				.orElseThrow(() -> new RuntimeException("STUDENT Role not found"));
 
-		if (studentRepository.existsById(request.getStudentId())) {
+		Set<Role> roles = new HashSet<>();
+		roles.add(studentRole);
+
+		User user = User.builder().email(signupRequest.getEmail())
+				.password(passwordEncoder.encode(signupRequest.getPassword()))
+				.roles(roles).build();
+
+		if (studentRepository.existsById(signupRequest.getStudentId())) {
 			throw new StudentAlreadyExistsException();
 		}
 
-		Student student = Student.builder().id(request.getStudentId())
-				.name(request.getName()).gender(request.getGender())
-				.email(request.getUniversityEmail()).build();
+		Student student = Student.builder().id(signupRequest.getStudentId())
+				.name(signupRequest.getName()).gender(signupRequest.getGender())
+				.email(signupRequest.getUniversityEmail()).build();
 
 		user.setStudent(student);
 		student.setUser(user);
 
-		return userRepository.save(user);
+		return userMapper.toDTO(userRepository.save(user));
 	}
 
-	public AuthenticationResponse signin(SigninRequest request) {
-		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-				request.getEmail(), request.getPassword()));
+	public void signin(SigninRequest signinRequest, HttpServletRequest request,
+			HttpServletResponse response) {
+		UsernamePasswordAuthenticationToken token =
+				new UsernamePasswordAuthenticationToken(signinRequest.getEmail(),
+						signinRequest.getPassword());
+		Authentication authentication = authenticationManager.authenticate(token);
 
-		User user = userRepository.findByEmail(request.getEmail()).orElseThrow();
-
-		String accessToken = jwtService.generateAccessToken(user);
-		String refreshToken = jwtService.generateRefreshToken(user);
-
-		return new AuthenticationResponse(accessToken, refreshToken);
+		SecurityContext context =
+				securityContextHolderStrategy.createEmptyContext();
+		context.setAuthentication(authentication);
+		securityContextHolderStrategy.setContext(context);
+		securityContextRepository.saveContext(context, request, response);
 	}
 
-	public AuthenticationResponse refreshToken(RefreshRequest request) {
-		String refreshToken = request.getRefreshToken();
-
-		if (jwtService.isTokenExpired(refreshToken)) {
-			throw new RefreshTokenExpiredException();
-		}
-
-		String username = jwtService.extractUsername(refreshToken);
-		User user = userRepository.findByEmail(username).orElseThrow();
-
-		String accessToken = jwtService.generateAccessToken(user);
-		String newRefreshToken = jwtService.generateRefreshToken(user);
-
-		return new AuthenticationResponse(accessToken, newRefreshToken);
+	public UserDTO me(Authentication authentication) {
+		User user = (User) authentication.getPrincipal();
+		return userMapper.toDTO(user);
 	}
 }

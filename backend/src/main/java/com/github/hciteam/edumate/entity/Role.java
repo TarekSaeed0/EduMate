@@ -1,40 +1,30 @@
 package com.github.hciteam.edumate.entity;
 
-import java.util.Set;
-import jakarta.persistence.CascadeType;
+import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "courses")
+@Table(name = "roles")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Course {
+public class Role implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false, unique = true)
-	private String code;
-
-	@Column(nullable = false)
 	private String name;
-
-	@Column(nullable = false)
-	private Integer credits;
-
-	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private Set<CourseOffering> offerings;
 }

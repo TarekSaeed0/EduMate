@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.github.hciteam.edumate.model.ApiErrorResponse;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
@@ -50,16 +49,6 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiErrorResponse> handleAuthenticationException(
 			AuthenticationException ex, HttpServletRequest request) {
 		ApiErrorResponse response = new ApiErrorResponse("AUTHENTICATION_FAILED",
-				ex.getMessage(), HttpStatus.UNAUTHORIZED.value(),
-				request.getRequestURI(), Instant.now());
-
-		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
-	}
-
-	@ExceptionHandler(JwtException.class)
-	public ResponseEntity<ApiErrorResponse> handleJwtException(JwtException ex,
-			HttpServletRequest request) {
-		ApiErrorResponse response = new ApiErrorResponse("JWT_ERROR",
 				ex.getMessage(), HttpStatus.UNAUTHORIZED.value(),
 				request.getRequestURI(), Instant.now());
 

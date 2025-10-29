@@ -1,4 +1,4 @@
-package com.github.hciteam.edumate.security;
+package com.github.hciteam.edumate.configuration;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,11 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.github.hciteam.edumate.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Configuration
@@ -38,20 +37,27 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http,
-			JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
-		http.csrf(csrf -> csrf.disable())
-				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**")
-						.permitAll().anyRequest().authenticated())
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http.csrf(csrf -> csrf.disable())
+				.cors(cors -> cors.configurationSource(
+						corsConfigurationSource()))
+				.authorizeHttpRequests(
+						auth -> auth.requestMatchers("/api/auth/signup", "/api/auth/signin",
+								"/h2-console/**").permitAll().anyRequest().authenticated())
+				.headers(headers -> headers
+						.frameOptions(frameOptions -> frameOptions.sameOrigin()))
 				.sessionManagement(session -> session
-						.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.addFilterBefore(jwtAuthenticationFilter,
-						UsernamePasswordAuthenticationFilter.class)
+						.sessionConcurrency(sessionConcurrency -> sessionConcurrency
+								.maximumSessions(1).maxSessionsPreventsLogin(true)))
+				.logout(logout -> logout.logoutUrl("/api/auth/signout")
+						.deleteCookies("JSESSIONID")
+						.logoutSuccessHandler((request, response, authentication) -> {
+							response.setStatus(HttpServletResponse.SC_OK);
+						}))
 				.exceptionHandling(exception -> exception
 						.authenticationEntryPoint(authenticationEntryPoint)
-						.accessDeniedHandler(accessDeniedHandler));
-		return http.build();
+						.accessDeniedHandler(accessDeniedHandler))
+				.build();
 	}
 
 	@Bean
