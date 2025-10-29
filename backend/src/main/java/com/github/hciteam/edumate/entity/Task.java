@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import lombok.Setter;
 @Table(name = "tasks")
 @Getter
 @Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class Task {
@@ -26,8 +28,8 @@ public class Task {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "offering_id", nullable = false)
-	private CourseOffering offering;
+	@JoinColumn(name = "semester_course_id", nullable = false)
+	private SemesterCourse semesterCourse;
 
 	@Column(nullable = false)
 	private String title;

@@ -1,6 +1,6 @@
 package com.github.hciteam.edumate.entity;
 
-import com.github.hciteam.edumate.model.CourseRegisterationStatus;
+import com.github.hciteam.edumate.model.StudentCourseStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,19 +13,21 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "course_registrations",
+@Table(name = "student_courses",
 		uniqueConstraints = {
-				@UniqueConstraint(columnNames = {"student_id", "offering_id"})})
+				@UniqueConstraint(columnNames = {"student_id", "semester_course_id"})})
 @Getter
 @Setter
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseRegistration {
+public class StudentCourse {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -35,10 +37,10 @@ public class CourseRegistration {
 	Student student;
 
 	@ManyToOne
-	@JoinColumn(name = "offering_id", nullable = false)
-	CourseOffering offering;
+	@JoinColumn(name = "semester_course_id", nullable = false)
+	SemesterCourse semesterCourse;
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	CourseRegisterationStatus status;
+	StudentCourseStatus status;
 }

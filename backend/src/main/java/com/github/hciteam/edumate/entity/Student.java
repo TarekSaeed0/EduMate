@@ -15,6 +15,7 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student implements Serializable {
@@ -46,9 +48,9 @@ public class Student implements Serializable {
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	private Set<CourseRegistration> registrations;
+	private Set<StudentCourse> studentCourses;
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	private Set<StudentTask> tasks;
+	private Set<StudentTask> studentTasks;
 }

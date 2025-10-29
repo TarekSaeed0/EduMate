@@ -4,7 +4,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.github.hciteam.edumate.entity.Student;
 import com.github.hciteam.edumate.entity.User;
-import com.github.hciteam.edumate.exception.StudentNotFound;
 import com.github.hciteam.edumate.model.StudentDTO;
 import com.github.hciteam.edumate.model.StudentTaskDTO;
 import com.github.hciteam.edumate.repository.StudentRepository;

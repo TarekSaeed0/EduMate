@@ -7,9 +7,9 @@ import com.github.hciteam.edumate.model.TaskDTO;
 
 @Mapper(componentModel = "spring")
 public interface TaskMapper {
-	@Mapping(source = "offering.id", target = "offeringId")
+	@Mapping(source = "semesterCourse.id", target = "semesterCourseId")
 	TaskDTO toDTO(Task task);
 
-	@Mapping(source = "offeringId", target = "offering.id")
+	@Mapping(source = "semesterCourseId", target = "semesterCourse.id")
 	Task toEntity(TaskDTO taskDTO);
 }
