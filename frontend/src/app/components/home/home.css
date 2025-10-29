@@ -24,6 +24,7 @@ header {
   height: 60px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 50px 20px;
   box-sizing: border-box;
   z-index: 2;
@@ -36,12 +37,29 @@ header {
   font-size: 1.5em;
   color: rgb(249, 249, 249);
   margin-bottom: 10px;
+  user-select: none;
 }
 .logo .Mate {
   font-family: 'Open Sans', sans-serif;
   font-size: 1.5em;
   margin-bottom: 20px;
   color: #3b82f6;
+}
+
+.sign-out {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  font-size: 1.9rem;
+}
+.sign-out:hover {
+  color: #ff4d4d;
+}
+.sign-out:active {
+  color: #cc0000;
 }
 
 /* nav H.bar styles (MAC theme) */
@@ -90,7 +108,7 @@ div.features a.feature::after {
 }
 /* Unique labels for each feature */
 div.features a.feature:nth-child(1):hover::after {
-  content: "Team Creator";
+  content: "Custom Timetable";
 }
 div.features a.feature:nth-child(2):hover::after {
   content: "Task Tracker";
@@ -99,7 +117,7 @@ div.features a.feature:nth-child(3):hover::after {
   content: "Material Sources";
 }
 div.features a.feature:nth-child(4):hover::after {
-  content: "Custom Timetable";
+  content: "Team Creator";
 }
 div.features a.feature:nth-child(5):hover::after {
   content: "FAQ";
