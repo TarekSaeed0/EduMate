@@ -1,0 +1,241 @@
+:host {
+  --background-image: linear-gradient(to bottom right , blue , violet);
+}
+
+.container {
+  width: 100%;
+  height: 100vh;
+  /* background-image: var(--background-image); */
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+/* header styles */
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50px 20px;
+  box-sizing: border-box;
+  z-index: 2;
+}
+.logo h1 {
+  margin: auto;
+}
+.logo .Edu {
+  font-family: 'Merriweather', serif;
+  font-size: 1.5em;
+  color: rgb(249, 249, 249);
+  margin-bottom: 10px;
+  user-select: none;
+}
+.logo .Mate {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: #3b82f6;
+}
+
+.sign-out {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  font-size: 1.9rem;
+}
+.sign-out:hover {
+  color: #ff4d4d;
+}
+.sign-out:active {
+  color: #cc0000;
+}
+
+/* nav H.bar styles (MAC theme) */
+div.features {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  /* width: 60%; */
+  /* height: 30px; */
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  box-sizing: border-box;
+  gap: 15px;
+  border-radius: 30px;
+}
+
+div.features a.feature {
+  flex: 1;
+  padding: 0px ;
+  color: white;
+  width: 100px;
+  height: 100px;
+  /* font-size: 14px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  font-size: 45px;
+  transform-origin: bottom center;
+  position: relative;
+}
+
+
+/* ! for feature labels */
+div.features a.feature::after {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+/* Unique labels for each feature */
+div.features a.feature:nth-child(1):hover::after {
+  content: "Custom Timetable";
+}
+div.features a.feature:nth-child(2):hover::after {
+  content: "Task Tracker";
+}
+div.features a.feature:nth-child(3):hover::after {
+  content: "Material Sources";
+}
+div.features a.feature:nth-child(4):hover::after {
+  content: "Team Creator";
+}
+div.features a.feature:nth-child(5):hover::after {
+  content: "FAQ";
+}
+div.features a.feature:nth-child(6):hover::after {
+  content: "College Map";
+}
+div.features a.feature:nth-child(7):hover::after {
+  content: "Announcements";
+}
+div.features a.feature:hover::after {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  opacity: 1;
+}
+div.features .feature:hover {
+  transform: scale(1.15);
+  margin: 0 10px;
+}
+div.features a:hover + a,
+div.features a:has(+ a:hover) {
+  transform: scale(1.05);
+}
+
+
+div.features a.feature.faq {
+  background-color: rgba(255, 255, 255, 0.4);
+  color: gray;
+}
+div.features a.feature.announcement {
+  background-color: rgba(255, 77, 77, 0.4);
+  color: rgb(201, 0, 0);
+}
+div.features a.feature.teamCreator {
+  background-color: rgba(108, 174, 254, 0.4);
+  color: blue;
+}
+div.features a.feature.sources {
+  background-color: rgba(113, 247, 131, 0.4);
+  color: green;
+}
+div.features a.feature.map {
+  background-color: rgba(253, 210, 71, 0.4);
+  color: rgb(194, 126, 0);
+}
+div.features a.feature.taskTracker {
+  background-color: rgba(253, 71, 229, 0.4);
+  color: purple
+}
+div.features a.feature.timeTable {
+  background-color: rgba(71, 220, 253, 0.4);
+  color: rgb(18, 147, 159);
+}
+
+
+
+
+/* background animation */
+/*! background 1 */
+.background {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+.bg {
+  animation:slide 3s ease-in-out infinite alternate;
+  background-image: linear-gradient(-60deg, #1E293B 50%, #0F172A 50%);
+  bottom:0;
+  left:-50%;
+  opacity:.5;
+  position:fixed;
+  right:-50%;
+  top:0;
+  z-index:-1;
+}
+.bg2 {
+  animation-direction:alternate-reverse;
+  animation-duration:4s;
+}
+.bg3 {
+  animation-duration:5s;
+}
+.content {
+  background-color:rgba(255,255,255,.8);
+  border-radius:.25em;
+  box-shadow:0 0 .25em rgba(0,0,0,.25);
+  box-sizing:border-box;
+  left:50%;
+  padding:10vmin;
+  position:fixed;
+  text-align:center;
+  top:50%;
+  transform:translate(-50%, -50%);
+}
+
+h1 {
+  font-family:monospace;
+}
+
+@keyframes slide {
+  0% {
+    transform:translateX(-25%);
+  }
+  100% {
+    transform:translateX(25%);
+  }
+}
+
