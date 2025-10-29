@@ -1,7 +1,7 @@
 :host {
-  --clr-primary: #1e3a8a;
+  --clr-primary: #bdbcbc;
   --clr-secondary: #3b82f6;
-  --clr-accent: #fbbf24;
+  --clr-accent: #ffffff;
   --clr-bg: #f9fafb;
   --clr-text: #111827;
 
@@ -18,9 +18,13 @@
   height: 100%;
   z-index: -1;
   /* background-color: var(--clr-text); */
-  background: linear-gradient(-45deg, #043e39, #027e94, #0b2677, #14718a);
+  background: linear-gradient(45deg,
+                             #ffffff 10%,
+                             #7b87ed 30%, 
+                             #3b82f6 70%, 
+                             #4032be 100%);
   background-size: 400% 400%;
-  animation: gradient 10s ease infinite;
+  /*animation: gradient 20s ease infinite;*/
   height: 100vh;
 }
 @keyframes gradient {
@@ -42,7 +46,7 @@
   transform: translateY(-50%);
   display: flex;
   max-width: 800px;
-  height: 80vh;
+  height: 70vh;
   margin: 0 auto;
   /* border: 5px solid var(--clr-primary); */
   border-radius: 20px;
@@ -107,23 +111,22 @@ form {
   background-image: linear-gradient(to bottom right, var(--clr-primary), var(--clr-accent));
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  /* border-radius: 30px 0 0 0 ; */
   box-shadow: -12px 1px 30px rgb(0 0 0 / 50%);
   z-index: 1;
 }
 form h2 {
   text-align: center;
-  font-family: var(--font-heading);
+  font-family: Verdana, sans-serif;
+  color: #032152;
+  margin-bottom: 20px;
 }
 
 .form-group {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px 20px;
-  justify-content: space-between;
-  padding: 0 40px;
-  margin-bottom: 20px;
+  gap: 1px 1px;
+  justify-content: space-around;
+  padding: 0 15px;
+  margin: 20px 5px;
   position: relative;
 }
 .form-group > * {
@@ -135,67 +138,59 @@ form h2 {
 
 .error {
   grid-column: span 2;
-  color: rgb(172, 0, 0);
-  font-size: 0.9em;
-  text-align: center;
+  color: red;
+  font-size: 17px;
   position: absolute;
-  left: 25%;
-  bottom: -40px;
-  font-weight: 700;
-  font-family: var(--font-mono);
+  /*text-align: left;*/
+  left: 240px;
+  bottom: -30px;
+  font-weight: 300;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 @keyframes smoothAppear {
-  /* from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  } */
   0% {
     opacity: 0;
-    transform: translateX(15px);
+    transform: translateX(7px);
   }
   10% {
     opacity: 0.1;
-    transform: translateX(-15px);
+    transform: translateX(-7px);
   }
   20% {
     opacity: 0.2;
-    transform: translateX(15px);
+    transform: translateX(7px);
   }
   30% {
     opacity: 0.3;
-    transform: translateX(-15px);
+    transform: translateX(-7px);
   }
   40% {
     opacity: 0.4;
-    transform: translateX(15px);
+    transform: translateX(7px);
   }
   50% {
     opacity: 0.5;
-    transform: translateX(-15px);
+    transform: translateX(-7px);
   }
   60% {
     opacity: 0.6;
-    transform: translateX(15px);
+    transform: translateX(7px);
   }
   70% {
     opacity: 0.7;
-    transform: translateX(-10px);
+    transform: translateX(-3.5px);
   }
   80% {
     opacity: 0.8;
-    transform: translateX(10px);
+    transform: translateX(3.5px);
   }
   90% {
     opacity: 0.9;
-    transform: translateX(-5px);
+    transform: translateX(-1.5px);
   }
   100% {
     opacity: 1;
-    transform: translateX(5px);
+    transform: translateX(1.5px);
   }
 }
 
@@ -205,60 +200,70 @@ form h2 {
 
 label {
   font-family: var(--font-body);
-  color: var(-);
+  color: #032152;
   font-weight: 700;
   align-self: center;
 }
 
 input {
-  max-width: 180px;
+  max-width: 200px;
+  margin: 0.1px;
   padding: 0.5rem;
   font-size: 1rem;
-  border: 1.5px solid #000;
+  font-family: Arial, sans-serif;
+  font-weight: 100;
+  border-style: solid;
+  border-width: 1.5px;
+  border-color: #797979;
   border-radius: 0.5rem;
-  box-shadow: 2.5px 3px 0 #000;
+  box-shadow: #797979;
   outline: none;
   transition: ease 0.25s;
-  color: var(--clr-secondary);
-  font-weight: 800;
+  color: rgb(53, 53, 53);
 }
 
 input:focus {
-  box-shadow: 5.5px 7px 0 black;
+  border-color: black;
+  border-width: 1.55px;
 }
 
 button {
   width: 30%;
-  margin: 20px auto 0 auto;
-  padding: 17px 40px;
+  margin: 40px auto 30px auto;
+  padding: 20px 30px;
+  border-width: 1px;
+  border-style: solid;
   border-radius: 10px;
-  border: 0;
-  background-color: rgb(255, 56, 86);
+  border-color: rgb(51, 46, 201);
+  background-color: #3b82f6;
   letter-spacing: 1.5px;
-  font-size: 15px;
+  font-family: Arial, sans-serif;
+  font-size: 20px;
+  font-weight: 525;
   transition: all 0.3s ease;
-  box-shadow: rgb(201, 46, 70) 0px 10px 0px 0px;
+  box-shadow: rgb(51, 46, 201) 0px 4px 0px 0px;
   color: hsl(0, 0%, 100%);
   cursor: pointer;
+
 }
 
 button:hover {
-  transform: translateY(-2px);
-  box-shadow: rgb(201, 46, 70) 0px 7px 0px 0px;
+  background-color: #1f72f8;
+  box-shadow: rgb(59, 54, 215) 0px 1px 0px 0px;
+  transform: translateY(4px);
 }
 
 button:active {
-  background-color: rgb(255, 56, 86);
-  /*50, 168, 80*/
-  box-shadow: rgb(201, 46, 70) 0px 0px 0px 0px;
-  transform: translateY(5px);
+  background-color: #0062ff;
+  transform: translateY(10px);
   transition: 200ms;
 }
 
 p.signup {
   text-align: center;
-  margin-top: 15px;
+  margin-top: 20px;
+  margin-bottom:20px;
+  font-family:Arial, Helvetica, sans-serif;
   font-size: 1.5rem;
-  color: var(--clr-bg);
-  margin-top: 40px;
+  color: var(--clr-text);
 }
