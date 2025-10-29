@@ -16,7 +16,7 @@ public class DataInitializer implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		String[] roleNames = {"STUDENT", "COORDINATOR"};
+		String[] roleNames = {"STUDENT", "COORDINATOR", "ADMINISTRATOR"};
 		Arrays.stream(roleNames).forEach(roleName -> {
 			if (!roleRepository.existsByName(roleName)) {
 				Role role = new Role(null, roleName);

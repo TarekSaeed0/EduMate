@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
 export enum Gender {
@@ -24,7 +24,7 @@ export interface SigninRequest {
 export interface User {
   id: number;
   email: string;
-  role: 'STUDENT' | 'COORDINATOR';
+  role: 'STUDENT' | 'COORDINATOR' | 'ADMINSTRATOR';
 }
 
 @Injectable({
@@ -35,6 +35,7 @@ export class AuthenticationService {
   private baseUrl = 'http://localhost:8080/api/auth';
 
   user = signal<User | null>(null);
+  isSignedIn = computed(() => this.user() !== null);
 
   fetchUser() {
     this.http.get<User>(`${this.baseUrl}/me`, { withCredentials: true }).subscribe({
@@ -61,9 +62,5 @@ export class AuthenticationService {
         this.user.set(null);
       }),
     );
-  }
-
-  isSignedIn(): boolean {
-    return this.user() !== null;
   }
 }
