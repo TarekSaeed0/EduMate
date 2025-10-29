@@ -26,8 +26,8 @@ public class Task {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "offering_id", nullable = false)
-	private CourseOffering offering;
+	@JoinColumn(name = "semester_course_id", nullable = false)
+	private SemesterCourse semesterCourse;
 
 	@Column(nullable = false)
 	private String title;

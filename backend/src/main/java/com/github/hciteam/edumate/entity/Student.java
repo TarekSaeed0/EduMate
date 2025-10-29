@@ -46,9 +46,9 @@ public class Student implements Serializable {
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	private Set<CourseRegistration> registrations;
+	private Set<StudentCourse> studentCourses;
 
 	@OneToMany(mappedBy = "student", cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	private Set<StudentTask> tasks;
+	private Set<StudentTask> studentTasks;
 }

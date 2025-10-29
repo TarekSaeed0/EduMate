@@ -17,31 +17,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "course_offerings",
+@Table(name = "semester_courses",
 		uniqueConstraints = {
-				@UniqueConstraint(columnNames = {"course_id", "semester_id"})})
+				@UniqueConstraint(columnNames = {"semester_id", "course_id"})})
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseOffering {
+public class SemesterCourse {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "course_id", nullable = false)
-	private Course course;
-
-	@ManyToOne
 	@JoinColumn(name = "semester_id", nullable = false)
 	private Semester semester;
 
-	@OneToMany(mappedBy = "offering", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private Set<CourseRegistration> registrations;
+	@ManyToOne
+	@JoinColumn(name = "course_id", nullable = false)
+	private Course course;
 
-	@OneToMany(mappedBy = "offering", cascade = CascadeType.ALL,
+	@OneToMany(mappedBy = "semesterCourse", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	private Set<StudentCourse> studentCourses;
+
+	@OneToMany(mappedBy = "semesterCourse", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private Set<Task> tasks;
 }

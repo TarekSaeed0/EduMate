@@ -46,5 +46,5 @@ public class Semester {
 
 	@OneToMany(mappedBy = "semester", cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	Set<CourseOffering> offerings;
+	Set<SemesterCourse> courses;
 }

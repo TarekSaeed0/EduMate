@@ -1,5 +1,5 @@
 package com.github.hciteam.edumate.model;
 
-public enum CourseRegisterationStatus {
+public enum StudentCourseStatus {
 	REGISTERED, PASSED, FAILED, DROPPED
 }

@@ -11,7 +11,7 @@ public interface StudentMapper {
 	StudentDTO toDTO(Student student);
 
 	@Mapping(source = "userId", target = "user.id")
-	@Mapping(target = "registrations", ignore = true)
-	@Mapping(target = "tasks", ignore = true)
+	@Mapping(target = "studentCourses", ignore = true)
+	@Mapping(target = "studentTasks", ignore = true)
 	Student toEntity(StudentDTO studentDTO);
 }
