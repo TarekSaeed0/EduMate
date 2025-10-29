@@ -9,7 +9,7 @@ public interface StudentCourseRepository
 		extends JpaRepository<StudentCourse, Long> {
 	List<StudentCourse> findByStudentId(Long studentId);
 
-	List<StudentCourse> findByOfferingId(Long offeringId);
+	List<StudentCourse> findBySemesterCourseId(Long semesterCourseId);
 
 	Optional<StudentCourse> findByStudentIdAndSemesterCourseId(Long studentId,
 			Long semesterCourseId);
