@@ -1,6 +1,39 @@
 @if (this.authenticationService.isSignedIn()) {
-  <h1>{{ greeting }}</h1>
-  <button (click)="signout()">Sign Out</button>
+
+
+<div class="container">
+  <header>
+    <h1 class="logo">
+      <span class="Edu">Edu<span class="Mate">Mate</span></span>
+    </h1>
+    <button (click)="signout()">Sign Out</button>  <!-- sign out button -->
+  </header>
+
+  <div class="features">
+    <a class="timeTable feature" href=""><i class="fa-solid fa-table"></i></a>  <!-- timetable feature -->
+    <a class="taskTracker feature" href=""><i class="fa-solid fa-list-check"></i></a>  <!-- task tracker feature -->
+    <a class="sources feature" href=""><i class="fa-solid fa-layer-group"></i></a>  <!-- material sources feature -->
+    <a class="teamCreator feature" href=""><i class="fa-solid fa-people-group"></i></a>  <!-- team creator feature -->
+    <a class="faq feature" href=""><i class="fa-solid fa-clipboard-question"></i></a>  <!-- FAQ feature -->
+    <a class="map feature" href=""><i class="fa-solid fa-map-location-dot"></i></a>  <!-- college map feature -->
+    <a class="announcement feature" href=""><i class="fa-solid fa-scroll"></i></a>  <!-- announcements feature -->
+  </div>
+
+</div>
+
+<!--? background 1 -->
+<div class="background">
+  <div class="bg"></div>
+  <div class="bg bg2"></div>
+  <div class="bg bg3"></div>
+  <div class="content">
+    <h1>{{ greeting }}</h1>
+    <h1>Welcome to EduMate</h1>
+  </div>
+</div>
+
+
+<!-- ! when user is not signed in -->
 } @else {
-  <a routerLink="/signin"><h1>You must sign in first</h1></a>
+<a routerLink="/signin"><h1>You must sign in first</h1></a>
 }
