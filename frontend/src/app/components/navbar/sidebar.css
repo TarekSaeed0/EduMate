@@ -92,9 +92,11 @@
   z-index: 900;
   display: block;
   transition: background-color 0.7s ease;
+  pointer-events: none;
 }
 
 .overlay.active {
   background-color: rgba(0, 0, 0, 0.404);
+  pointer-events: auto;
 }
 
