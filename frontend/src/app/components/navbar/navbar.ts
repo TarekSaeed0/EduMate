@@ -1,38 +1,33 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, HostListener, viewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
   imports: [],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css', './sidebar.css', './profile.css']
+  styleUrls: ['./navbar.css', './sidebar.css', './profile.css'],
 })
 export class Navbar {
+  sidebar = viewChild.required<ElementRef<HTMLDivElement>>('sidebar');
+  overlay = viewChild.required<ElementRef<HTMLSpanElement>>('overlay');
 
   constructor(private cdr: ChangeDetectorRef) {}
 
-  ngAfterViewInit() {
-    const menuBtn = document.querySelector('.main-menu');
-    const sidebar = document.querySelector('.sidebar');
-    const overlay = document.querySelector('.overlay');
+ toggleSidebar(event: Event) {
+    event?.stopPropagation();
+    this.sidebar()?.nativeElement.classList.toggle('active');
+    this.overlay()?.nativeElement.classList.toggle('active');
+    this.cdr.detectChanges();
+  }
 
-    if (!menuBtn || !sidebar) return;
+  @HostListener('document:click', ['$event'])
+  hideSidebar(event: Event) {
+    const target = event.target as HTMLElement;
 
-    menuBtn?.addEventListener('click', (event) => {
-      event?.stopPropagation();
-      sidebar?.classList.toggle('active');
-      overlay?.classList.toggle('active');
+    if (!this.sidebar()?.nativeElement.contains(target) && !target.closest('.main-menu')) {
+      this.sidebar()?.nativeElement.classList.remove('active');
+      this.overlay()?.nativeElement.classList.remove('active');
       this.cdr.detectChanges();
-    });
-    
-    document.addEventListener('click', (event) => {
-      const target = event.target as HTMLElement;
-
-      if (!(sidebar?.contains(target)) && !(target.closest('.main-menu'))) {
-        sidebar?.classList.remove('active');
-        overlay?.classList.remove('active');
-        this.cdr.detectChanges();
-      }
-    });
+    }
   }
 }

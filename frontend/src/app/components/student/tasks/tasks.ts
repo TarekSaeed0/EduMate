@@ -26,17 +26,23 @@ export class StudentTasks {
      submittedAt: null},
     {id: 228, 
      studentId: 23010228,
-     task: {id: 123, offeringId:567, title: "COLab6", requirements: "turnOn a led", submissionUrl: "blah blah", dueDate: null, notes: null},
+     task: {id: 123, offeringId:567, title: "num3", requirements: "do gauss elimination", submissionUrl: "blah blah", dueDate: null, notes: null},
      submittedAt: null},
     {id: 228, 
      studentId: 23010228,
-     task: {id: 123, offeringId:567, title: "COLab6", requirements: "turnOn a led", submissionUrl: "blah blah", dueDate: null, notes: null},
+     task: {id: 123, offeringId:567, title: "discrete", requirements: "turn in the sheet", submissionUrl: "who cares", dueDate: null, notes: null},
      submittedAt: null},
     {id: 228, 
      studentId: 23010228,
-     task: {id: 123, offeringId:567, title: "COLab6", requirements: "turnOn a led", submissionUrl: "blah blah", dueDate: null, notes: null},
+     task: {id: 123, offeringId:567, title: "prog2", requirements: "do project", submissionUrl: "ahhhhhh!!!", dueDate: null, notes: null},
      submittedAt: null},
   ];
+
+  selectedTask = signal<StudentTask | null>(null);
+
+  viewTask(stdtsk: StudentTask) {
+    this.selectedTask.set(stdtsk);
+  }
 
   fetchStudentTasks() {
 

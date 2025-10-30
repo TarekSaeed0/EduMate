@@ -3,7 +3,7 @@
 <div class="task-tracker">
     <div class="tasks-container">
       @for (studentTask of studentTasks(); track studentTask.id) {
-        <table class="task-item">
+        <table class="task-item" (click)="viewTask(studentTask)">
           <tr>
             <td>Title:</td>
             <td>{{ studentTask.task.title }}</td>
@@ -39,6 +39,26 @@
     </div>
 
     <div class="task-view">
-      Task Tracker
+      @if (selectedTask()) {
+        <h1>Subject Name</h1>
+
+        <h2>{{ selectedTask()?.task?.title }}</h2>
+
+        <h3>Requirements: </h3>
+        <p> {{ selectedTask()?.task?.requirements }} </p>
+
+        <h3>Submission URL: </h3>
+        <p> {{ selectedTask()?.task?.submissionUrl }} </p> 
+        
+        <h3>Due Date: </h3>
+        <p> {{ selectedTask()?.task?.dueDate }} </p>
+
+        <h3>Notes: </h3>
+        <p> {{ selectedTask()?.task?.notes }} </p>
+
+      }
+      @else {
+        <h1>No Task is shown</h1>
+      }
     </div>
 </div>

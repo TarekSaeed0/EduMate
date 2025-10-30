@@ -1,8 +1,8 @@
-<span class="overlay"></span>
+<span #overlay class="overlay"></span>
 
 <nav class="navbar">
   <div class="nav-left">
-    <button id="main-menu" class="main-menu">
+    <button id="main-menu" class="main-menu" (click)="toggleSidebar($event)">
       <span></span>
       <span></span>
       <span></span>
@@ -28,32 +28,56 @@
   </div>
 </nav>
 
-<div class="sidebar">
+<div #sidebar class="sidebar">
   <ul>
-    <li><a href="home"><i class="fa-solid fa-house"></i>
-          <span>Home Page</span>
-        </a></li>
-    <li><a href=""><i class="fa-solid fa-list-check"></i>
-          <span>Task Tracker</span>
-        </a></li>
-    <li><a href=""><i class="fa-solid fa-people-group"></i> 
-          <span>Team Creator</span>
-        </a></li>
-    <li><a href=""><i class="fa-solid fa-table"></i>
-          <span>Time Table</span>
-        </a></li>
-    <li><a href="signin"><i class="fa-solid fa-map-location-dot"></i>
-          <span>Map</span>
-        </a></li>
-    <li><a href="signup"><i class="fa-solid fa-scroll"></i>
-          <span>Announcement</span>
-        </a></li>
-    <li><a href=""><i class="fa-solid fa-layer-group"></i>
-          <span>Material Sources</span>
-        </a></li>
-    <li><a href=""><i class="fa-solid fa-clipboard-question"></i>
+    <li>
+      <a href="home"
+        ><i class="fa-solid fa-house"></i>
+        <span>Home Page</span>
+      </a>
+    </li>
+    <li>
+      <a href=""
+        ><i class="fa-solid fa-list-check"></i>
+        <span>Task Tracker</span>
+      </a>
+    </li>
+    <li>
+      <a href=""
+        ><i class="fa-solid fa-people-group"></i>
+        <span>Team Creator</span>
+      </a>
+    </li>
+    <li>
+      <a href=""
+        ><i class="fa-solid fa-table"></i>
+        <span>Time Table</span>
+      </a>
+    </li>
+    <li>
+      <a href="signin"
+        ><i class="fa-solid fa-map-location-dot"></i>
+        <span>Map</span>
+      </a>
+    </li>
+    <li>
+      <a href="signup"
+        ><i class="fa-solid fa-scroll"></i>
+        <span>Announcement</span>
+      </a>
+    </li>
+    <li>
+      <a href=""
+        ><i class="fa-solid fa-layer-group"></i>
+        <span>Material Sources</span>
+      </a>
+    </li>
+    <li>
+      <a href=""
+        ><i class="fa-solid fa-clipboard-question"></i>
         <span>FAQ</span>
-        </a></li>
+      </a>
+    </li>
     <span class="separator"></span>
     <li><a href="">Edit Task Tracker</a></li>
     <li><a href="">Edit Team Creator</a></li>
