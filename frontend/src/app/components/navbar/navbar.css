@@ -1,0 +1,109 @@
+.navbar {
+    width: 100vw;
+    height: 80px;
+    background-color: rgb(231, 234, 235);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    top: 0;
+    z-index: 1200;
+    box-shadow: 0px 2.5px 15px rgb(93, 92, 92);
+    margin-bottom: 20px;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+.nav-left {
+    margin-left: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.nav-right {
+    margin-right: 10px;
+}
+
+.main-menu {
+    width: 50px;
+    height: 50px;
+
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+
+    border: none;
+    border-radius: 1000px;
+    padding: 0px;
+    
+    transition: background-color 0.25s cubic-bezier(0.36, 0, 0.64, 1);
+    transition: width 0.25s cubic-bezier(0.36, 0, 0.64, 1);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 7px ;
+
+
+}
+
+.main-menu span {
+    display: block;
+    background: #fafafa;
+    background: linear-gradient(45deg,
+                     rgb(107, 107, 107) 37%,
+                     rgb(173, 172, 172) 100%);
+    width: 30px;
+    height: 3px;
+    border-radius: 6px;
+    margin: 0.2px;
+    transition: width 0.25s cubic-bezier(0.36, 0, 0.64, 1);
+}
+
+.main-menu:active span {
+    width: 25px;
+}
+
+.main-menu:hover {
+    background-color: hsl(0, 2%, 83%);
+}
+
+.web-title {
+    top: 100px;
+}
+
+.web-title a{
+    text-decoration: none;  /*remove the underline*/
+}
+
+.web-title #Edu {
+  font-family: 'Merriweather', serif;
+  font-size: 1.7em;
+  background: #fafafa;
+  background: linear-gradient(-45deg,
+                     rgb(107, 107, 107) 17%,
+                     rgb(173, 172, 172) 100%);
+
+  -webkit-background-clip: text;  /* makes background apply to text only */
+  -webkit-text-fill-color: transparent; /* hides normal text color */
+  margin-bottom: 10px;
+}
+.web-title #Mate {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.7em;
+  background: linear-gradient(-45deg,
+                     #3b82f6 17%,
+                     rgb(82, 102, 255) 100%,
+                     rgb(233, 233, 233) 47%);
+
+  -webkit-background-clip: text;  /* makes background apply to text only */
+  -webkit-text-fill-color: transparent;
+
+  color: #3b82f6;
+  margin-bottom: 20px;
+}
+
