@@ -1,10 +1,12 @@
 package com.github.hciteam.edumate.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.github.hciteam.edumate.model.StudentCourseDTO;
 import com.github.hciteam.edumate.model.StudentDTO;
 import com.github.hciteam.edumate.model.StudentTaskDTO;
+import com.github.hciteam.edumate.model.StudentTaskStatus;
 import com.github.hciteam.edumate.service.StudentService;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -23,24 +25,27 @@ public class StudentController {
 		this.studentService = studentService;
 	}
 
-	@GetMapping("/{id}")
-	@PreAuthorize("@authorizationService.isStudentSelf(#id) or hasRole('ADMIN')")
-	public ResponseEntity<StudentDTO> getStudent(@PathVariable Long id) {
-		return ResponseEntity.ok(studentService.getStudent(id));
+	@GetMapping("/{studentId}")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	public ResponseEntity<StudentDTO> getStudent(@PathVariable Long studentId) {
+		return ResponseEntity.ok(studentService.getStudent(studentId));
 	}
 
-	@GetMapping("/{id}/tasks")
-	@PreAuthorize("@authorizationService.isStudentSelf(#id) or hasRole('ADMIN')")
+	@GetMapping("/{studentId}/tasks")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
 	public ResponseEntity<List<StudentTaskDTO>> getStudentTasks(
-			@PathVariable Long id) {
-		return ResponseEntity.ok(studentService.getStudentTasks(id));
+			@PathVariable Long studentId,
+			@RequestParam(required = false) Long courseId,
+			@RequestParam(required = false) StudentTaskStatus status) {
+		return ResponseEntity
+				.ok(studentService.getStudentTasks(studentId, courseId, status));
 	}
 
-	@GetMapping("/{id}/courses")
-	@PreAuthorize("@authorizationService.isStudentSelf(#id) or hasRole('ADMIN')")
+	@GetMapping("/{studentId}/courses")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
 	public ResponseEntity<List<StudentCourseDTO>> getStudentCourses(
-			@PathVariable Long id) {
-		return ResponseEntity.ok(studentService.getStudentCourses(id));
+			@PathVariable Long studentId) {
+		return ResponseEntity.ok(studentService.getStudentCourses(studentId));
 	}
 
 	@GetMapping("/me")
@@ -53,9 +58,11 @@ public class StudentController {
 	@GetMapping("/me/tasks")
 	@PreAuthorize("hasRole('STUDENT')")
 	public ResponseEntity<List<StudentTaskDTO>> getCurrentStudentTasks(
-			Authentication authentication) {
-		return ResponseEntity
-				.ok(studentService.getCurrentStudentTasks(authentication));
+			Authentication authentication,
+			@RequestParam(required = false) Long courseId,
+			@RequestParam(required = false) StudentTaskStatus status) {
+		return ResponseEntity.ok(studentService
+				.getCurrentStudentTasks(authentication, courseId, status));
 	}
 
 	@GetMapping("/me/courses")

@@ -16,11 +16,11 @@ public class AuthorizationService {
 		this.studentRepository = studentRepository;
 	}
 
-	public boolean isStudentSelf(Long id) {
+	public boolean isStudentSelf(Long studentId) {
 		Authentication authentication =
 				SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
 		Optional<Student> student = studentRepository.findByUserId(user.getId());
-		return student.isPresent() && student.get().getId().equals(id);
+		return student.isPresent() && student.get().getId().equals(studentId);
 	}
 }

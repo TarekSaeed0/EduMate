@@ -5,11 +5,9 @@ import org.mapstruct.Mapping;
 import com.github.hciteam.edumate.entity.Task;
 import com.github.hciteam.edumate.model.TaskDTO;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {SemesterCourseMapper.class})
 public interface TaskMapper {
-	@Mapping(source = "semesterCourse.id", target = "semesterCourseId")
 	TaskDTO toDTO(Task task);
 
-	@Mapping(source = "semesterCourseId", target = "semesterCourse.id")
 	Task toEntity(TaskDTO taskDTO);
 }
