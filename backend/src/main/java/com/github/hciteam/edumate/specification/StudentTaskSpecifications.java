@@ -9,10 +9,16 @@ public class StudentTaskSpecifications {
 				.equal(root.get("student").get("id"), studentId);
 	}
 
-	public static Specification<StudentTask> ofCourse(Long semesterCourseId) {
+	public static Specification<StudentTask> ofSemester(Long semesterId) {
+		return (root, query, criteriaBuilder) -> criteriaBuilder.equal(
+				root.get("task").get("semesterCourse").get("semester").get("id"),
+				semesterId);
+	}
+
+	public static Specification<StudentTask> ofCourse(Long courseId) {
 		return (root, query, criteriaBuilder) -> criteriaBuilder.equal(
 				root.get("task").get("semesterCourse").get("course").get("id"),
-				semesterCourseId);
+				courseId);
 	}
 
 	public static Specification<StudentTask> isUpcoming() {

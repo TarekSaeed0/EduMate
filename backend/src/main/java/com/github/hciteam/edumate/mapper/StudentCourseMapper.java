@@ -10,6 +10,7 @@ public interface StudentCourseMapper {
 	@Mapping(source = "student.id", target = "studentId")
 	StudentCourseDTO toDTO(StudentCourse studentCourse);
 
+	@Mapping(source = "studentId", target = "id.studentId")
 	@Mapping(source = "studentId", target = "student.id")
 	StudentCourse toEntity(StudentCourseDTO studentCourseDTO);
 }

@@ -3,17 +3,22 @@ package com.github.hciteam.edumate.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.hciteam.edumate.model.StudentCourseDTO;
 import com.github.hciteam.edumate.model.StudentDTO;
 import com.github.hciteam.edumate.model.StudentTaskDTO;
 import com.github.hciteam.edumate.model.StudentTaskStatus;
 import com.github.hciteam.edumate.service.StudentService;
+import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -48,6 +53,29 @@ public class StudentController {
 		return ResponseEntity.ok(studentService.getStudentCourses(studentId));
 	}
 
+	@PostMapping("/{studentId}/courses")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	public ResponseEntity<StudentCourseDTO> createStudentCourse(
+			@PathVariable Long studentId,
+			@RequestBody StudentCourseDTO studentCourseDTO) {
+		studentService.createStudentCourse(studentId, studentCourseDTO);
+
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{studentCourseId}")
+				.buildAndExpand(studentCourseDTO.getSemesterCourse().getId()).toUri();
+
+		return ResponseEntity.created(location).build();
+	}
+
+	@DeleteMapping("/{studentId}/courses/{semesterCourseId}")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	public ResponseEntity<Void> deleteStudentCourse(@PathVariable Long studentId,
+			@PathVariable Long semesterCourseId) {
+		studentService.deleteStudentCourse(studentId, semesterCourseId);
+
+		return ResponseEntity.noContent().build();
+	}
+
 	@GetMapping("/me")
 	@PreAuthorize("hasRole('STUDENT')")
 	public ResponseEntity<StudentDTO> getCurrentStudent(
@@ -71,5 +99,29 @@ public class StudentController {
 			Authentication authentication) {
 		return ResponseEntity
 				.ok(studentService.getCurrentStudentCourses(authentication));
+	}
+
+	@PostMapping("/me/courses")
+	@PreAuthorize("hasRole('STUDENT')")
+	public ResponseEntity<StudentCourseDTO> createCurrentStudentCourse(
+			Authentication authentication,
+			@RequestBody StudentCourseDTO studentCourseDTO) {
+		StudentCourseDTO createdStudentCourseDTO = studentService
+				.createCurrentStudentCourse(authentication, studentCourseDTO);
+
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{studentCourseId}")
+				.buildAndExpand(studentCourseDTO.getSemesterCourse().getId()).toUri();
+
+		return ResponseEntity.created(location).body(createdStudentCourseDTO);
+	}
+
+	@DeleteMapping("/me/courses/{semesterCourseId}")
+	@PreAuthorize("hasRole('STUDENT')")
+	public ResponseEntity<Void> deleteCurrentStudentCourse(
+			Authentication authentication, @PathVariable Long semesterCourseId) {
+		studentService.deleteCurrentStudentCourse(authentication, semesterCourseId);
+
+		return ResponseEntity.noContent().build();
 	}
 }
