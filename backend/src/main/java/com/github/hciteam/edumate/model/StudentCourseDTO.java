@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentCourseDTO {
-	private Long id;
 	private Long studentId;
 	private SemesterCourseDTO semesterCourse;
 	private StudentCourseStatus status;

@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentTaskDTO {
-	private Long id;
 	private Long studentId;
 	private TaskDTO task;
 	private LocalDateTime submittedAt;
