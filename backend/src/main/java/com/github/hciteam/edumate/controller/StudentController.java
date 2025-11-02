@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -58,13 +59,25 @@ public class StudentController {
 	public ResponseEntity<StudentCourseDTO> createStudentCourse(
 			@PathVariable Long studentId,
 			@RequestBody StudentCourseDTO studentCourseDTO) {
-		studentService.createStudentCourse(studentId, studentCourseDTO);
+		StudentCourseDTO createdStudentCourseDTO =
+				studentService.createStudentCourse(studentId, studentCourseDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{studentCourseId}")
 				.buildAndExpand(studentCourseDTO.getSemesterCourse().getId()).toUri();
 
-		return ResponseEntity.created(location).build();
+		return ResponseEntity.created(location).body(createdStudentCourseDTO);
+	}
+
+	@PutMapping("/{studentId}/courses/{semesterCourseId}")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	public ResponseEntity<StudentCourseDTO> updateStudentCourse(
+			@PathVariable Long studentId, @PathVariable Long semesterCourseId,
+			@RequestBody StudentCourseDTO studentCourseDTO) {
+		StudentCourseDTO updatedStudentCourseDTO = studentService
+				.updateStudentCourse(studentId, semesterCourseId, studentCourseDTO);
+
+		return ResponseEntity.ok(updatedStudentCourseDTO);
 	}
 
 	@DeleteMapping("/{studentId}/courses/{semesterCourseId}")
@@ -114,6 +127,18 @@ public class StudentController {
 				.buildAndExpand(studentCourseDTO.getSemesterCourse().getId()).toUri();
 
 		return ResponseEntity.created(location).body(createdStudentCourseDTO);
+	}
+
+	@PutMapping("/me/courses/{semesterCourseId}")
+	@PreAuthorize("hasRole('STUDENT')")
+	public ResponseEntity<StudentCourseDTO> createCurrentStudentCourse(
+			Authentication authentication, @PathVariable Long semesterCourseId,
+			@RequestBody StudentCourseDTO studentCourseDTO) {
+		StudentCourseDTO updatedStudentCourseDTO =
+				studentService.updateCurrentStudentCourse(authentication,
+						semesterCourseId, studentCourseDTO);
+
+		return ResponseEntity.ok(updatedStudentCourseDTO);
 	}
 
 	@DeleteMapping("/me/courses/{semesterCourseId}")
