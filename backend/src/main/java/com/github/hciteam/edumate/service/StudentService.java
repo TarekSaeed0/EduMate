@@ -14,6 +14,7 @@ import com.github.hciteam.edumate.exception.StudentCourseAlreadyExists;
 import com.github.hciteam.edumate.exception.StudentCourseNotFoundException;
 import com.github.hciteam.edumate.exception.StudentNotFoundException;
 import com.github.hciteam.edumate.key.StudentCourseKey;
+import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.mapper.StudentCourseMapper;
 import com.github.hciteam.edumate.mapper.StudentMapper;
 import com.github.hciteam.edumate.mapper.StudentTaskMapper;
@@ -85,6 +86,19 @@ public class StudentService {
 				.map(task -> studentTaskMapper.toDTO(task)).toList();
 	}
 
+	public StudentTaskDTO getStudentTask(Long studentId, Long taskId) {
+		if (!studentRepository.existsById(studentId)) {
+			throw new StudentNotFoundException();
+		}
+
+		StudentTaskKey studentTaskId = new StudentTaskKey(studentId, taskId);
+
+		StudentTask studentTask = studentTaskRepository.findById(studentTaskId)
+				.orElseThrow(() -> new StudentCourseNotFoundException());
+
+		return studentTaskMapper.toDTO(studentTask);
+	}
+
 	public List<StudentCourseDTO> getStudentCourses(Long studentId) {
 		if (!studentRepository.existsById(studentId)) {
 			throw new StudentNotFoundException();
@@ -117,6 +131,34 @@ public class StudentService {
 				.toDTO(studentCourseRepository.save(studentCourse));
 	}
 
+	public StudentCourseDTO getStudentCourse(Long studentId,
+			Long semesterCourseId) {
+		StudentCourseKey studentCourseId =
+				new StudentCourseKey(studentId, semesterCourseId);
+
+		StudentCourse studentCourse =
+				studentCourseRepository.findById(studentCourseId)
+						.orElseThrow(() -> new StudentCourseNotFoundException());
+
+		return studentCourseMapper.toDTO(studentCourse);
+	}
+
+	public StudentCourseDTO updateStudentCourse(Long studentId,
+			Long semesterCourseId, StudentCourseDTO studentCourseDTO) {
+
+		StudentCourseKey studentCourseId =
+				new StudentCourseKey(studentId, semesterCourseId);
+
+		StudentCourse studentCourse = studentCourseRepository
+				.findById(studentCourseId).map(existingSudentCourse -> {
+					existingSudentCourse.setStatus(studentCourseDTO.getStatus());
+					return studentCourseRepository.save(existingSudentCourse);
+				}).orElseThrow(() -> new StudentCourseNotFoundException());
+
+		return studentCourseMapper.toDTO(studentCourse);
+
+	}
+
 	public void deleteStudentCourse(Long studentId, Long semesterCourseId) {
 		StudentCourseKey studentCourseId =
 				new StudentCourseKey(studentId, semesterCourseId);
@@ -145,6 +187,15 @@ public class StudentService {
 		return getStudentTasks(student.getId(), courseId, status);
 	}
 
+	public StudentTaskDTO getCurrentStudentTask(Authentication authentication,
+			Long taskId) {
+		User user = (User) authentication.getPrincipal();
+		Student student = studentRepository.findByUserId(user.getId())
+				.orElseThrow(() -> new StudentNotFoundException());
+
+		return getStudentTask(student.getId(), taskId);
+	}
+
 	public List<StudentCourseDTO> getCurrentStudentCourses(
 			Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
@@ -161,6 +212,26 @@ public class StudentService {
 				.orElseThrow(() -> new StudentNotFoundException());
 
 		return createStudentCourse(student.getId(), studentCourseDTO);
+	}
+
+	public StudentCourseDTO getCurrentStudentCourse(Authentication authentication,
+			Long semesterCourseId) {
+		User user = (User) authentication.getPrincipal();
+		Student student = studentRepository.findByUserId(user.getId())
+				.orElseThrow(() -> new StudentNotFoundException());
+
+		return getStudentCourse(student.getId(), semesterCourseId);
+	}
+
+	public StudentCourseDTO updateCurrentStudentCourse(
+			Authentication authentication, Long semesterCourseId,
+			StudentCourseDTO studentCourseDTO) {
+		User user = (User) authentication.getPrincipal();
+		Student student = studentRepository.findByUserId(user.getId())
+				.orElseThrow(() -> new StudentNotFoundException());
+
+		return updateStudentCourse(student.getId(), semesterCourseId,
+				studentCourseDTO);
 	}
 
 	public void deleteCurrentStudentCourse(Authentication authentication,

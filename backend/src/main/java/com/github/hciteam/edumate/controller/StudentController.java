@@ -47,6 +47,13 @@ public class StudentController {
 				.ok(studentService.getStudentTasks(studentId, courseId, status));
 	}
 
+	@GetMapping("/{studentId}/tasks/{taskId}")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	public ResponseEntity<StudentTaskDTO> getStudentTask(
+			@PathVariable Long studentId, @PathVariable Long taskId) {
+		return ResponseEntity.ok(studentService.getStudentTask(studentId, taskId));
+	}
+
 	@GetMapping("/{studentId}/courses")
 	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
 	public ResponseEntity<List<StudentCourseDTO>> getStudentCourses(
@@ -67,6 +74,14 @@ public class StudentController {
 				.buildAndExpand(studentCourseDTO.getSemesterCourse().getId()).toUri();
 
 		return ResponseEntity.created(location).body(createdStudentCourseDTO);
+	}
+
+	@GetMapping("/{studentId}/courses/{semesterCourseId}")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	public ResponseEntity<StudentCourseDTO> getStudentCourse(
+			@PathVariable Long studentId, @PathVariable Long semesterCourseId) {
+		return ResponseEntity
+				.ok(studentService.getStudentCourse(studentId, semesterCourseId));
 	}
 
 	@PutMapping("/{studentId}/courses/{semesterCourseId}")
@@ -106,6 +121,14 @@ public class StudentController {
 				.getCurrentStudentTasks(authentication, courseId, status));
 	}
 
+	@GetMapping("/me/tasks/{taskId}")
+	@PreAuthorize("hasRole('STUDENT')")
+	public ResponseEntity<StudentTaskDTO> getCurrentStudentTask(
+			Authentication authentication, @PathVariable Long taskId) {
+		return ResponseEntity
+				.ok(studentService.getCurrentStudentTask(authentication, taskId));
+	}
+
 	@GetMapping("/me/courses")
 	@PreAuthorize("hasRole('STUDENT')")
 	public ResponseEntity<List<StudentCourseDTO>> getCurrentStudentCourses(
@@ -129,9 +152,17 @@ public class StudentController {
 		return ResponseEntity.created(location).body(createdStudentCourseDTO);
 	}
 
+	@GetMapping("/me/courses/{semesterCourseId}")
+	@PreAuthorize("hasRole('STUDENT')")
+	public ResponseEntity<StudentCourseDTO> getCurrentStudentCourse(
+			Authentication authentication, @PathVariable Long semesterCourseId) {
+		return ResponseEntity.ok(studentService
+				.getCurrentStudentCourse(authentication, semesterCourseId));
+	}
+
 	@PutMapping("/me/courses/{semesterCourseId}")
 	@PreAuthorize("hasRole('STUDENT')")
-	public ResponseEntity<StudentCourseDTO> createCurrentStudentCourse(
+	public ResponseEntity<StudentCourseDTO> updateCurrentStudentCourse(
 			Authentication authentication, @PathVariable Long semesterCourseId,
 			@RequestBody StudentCourseDTO studentCourseDTO) {
 		StudentCourseDTO updatedStudentCourseDTO =
