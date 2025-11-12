@@ -1,0 +1,52 @@
+package com.github.hciteam.edumate.service;
+
+import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.data.jpa.domain.Specification;
+import com.github.hciteam.edumate.specification.FAQSpecifications;
+import com.github.hciteam.edumate.repository.FAQRepository;
+import com.github.hciteam.edumate.entity.FAQ;
+import com.github.hciteam.edumate.exception.FAQNotFoundException;
+import com.github.hciteam.edumate.model.FAQDTO;
+import com.github.hciteam.edumate.mapper.FAQMapper;
+
+@Service
+public class FAQService {
+	FAQRepository faqRepository;
+	FAQMapper faqMapper;
+
+	public FAQService(FAQRepository faqRepository, FAQMapper faqMapper) {
+		this.faqRepository = faqRepository;
+		this.faqMapper = faqMapper;
+	}
+
+	public List<FAQDTO> getFAQs(String question, String answer,
+			List<String> categories) {
+		Specification<FAQ> specification = Specification.unrestricted();
+
+		if (question != null) {
+			specification =
+					specification.and(FAQSpecifications.questionContains(question));
+		}
+
+		if (answer != null) {
+			specification =
+					specification.and(FAQSpecifications.answerContains(question));
+		}
+
+		if (categories != null) {
+			specification = specification
+					.and(FAQSpecifications.hasAllCategoriesNames(categories));
+		}
+
+		return faqRepository.findAll(specification).stream()
+				.map(faq -> faqMapper.toDTO(faq)).toList();
+	}
+
+	public FAQDTO getFAQ(Long id) {
+		FAQ faq = faqRepository.findById(id)
+				.orElseThrow(() -> new FAQNotFoundException());
+
+		return faqMapper.toDTO(faq);
+	}
+}

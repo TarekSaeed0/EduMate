@@ -10,7 +10,7 @@ import com.github.hciteam.edumate.entity.StudentCourse;
 import com.github.hciteam.edumate.entity.StudentTask;
 import com.github.hciteam.edumate.entity.User;
 import com.github.hciteam.edumate.exception.SemesterCourseNotFoundException;
-import com.github.hciteam.edumate.exception.StudentCourseAlreadyExists;
+import com.github.hciteam.edumate.exception.StudentCourseAlreadyExistsException;
 import com.github.hciteam.edumate.exception.StudentCourseNotFoundException;
 import com.github.hciteam.edumate.exception.StudentNotFoundException;
 import com.github.hciteam.edumate.key.StudentCourseKey;
@@ -121,7 +121,7 @@ public class StudentService {
 				studentCourseDTO.getSemesterCourse().getId());
 
 		if (studentCourseRepository.existsById(studentCourseId)) {
-			throw new StudentCourseAlreadyExists();
+			throw new StudentCourseAlreadyExistsException();
 		}
 
 		StudentCourse studentCourse = new StudentCourse(studentCourseId, student,
