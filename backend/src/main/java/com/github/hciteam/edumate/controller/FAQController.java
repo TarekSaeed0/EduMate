@@ -31,4 +31,9 @@ public class FAQController {
 	public ResponseEntity<FAQDTO> getFAQ(@PathVariable Long id) {
 		return ResponseEntity.ok(faqService.getFAQ(id));
 	}
+
+	@GetMapping("/categories")
+	public ResponseEntity<List<String>> getCategories() {
+		return ResponseEntity.ok(faqService.getCategories());
+	}
 }

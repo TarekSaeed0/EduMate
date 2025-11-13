@@ -2,6 +2,7 @@ package com.github.hciteam.edumate.entity;
 
 import java.util.HashSet;
 import java.util.Set;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,9 +35,10 @@ public class FAQ {
 	@Column(nullable = false)
 	private String answer;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "faq_categories",
+	@ManyToMany(fetch = FetchType.EAGER,
+			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "faqs_categories",
 			joinColumns = @JoinColumn(name = "faq_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
-	private Set<Category> categories = new HashSet<>();
+	private Set<FAQCategory> categories = new HashSet<>();
 }

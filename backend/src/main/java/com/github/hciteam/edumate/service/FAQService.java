@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.data.jpa.domain.Specification;
 import com.github.hciteam.edumate.specification.FAQSpecifications;
+import com.github.hciteam.edumate.repository.FAQCategoryRepository;
 import com.github.hciteam.edumate.repository.FAQRepository;
 import com.github.hciteam.edumate.entity.FAQ;
 import com.github.hciteam.edumate.exception.FAQNotFoundException;
@@ -13,10 +14,13 @@ import com.github.hciteam.edumate.mapper.FAQMapper;
 @Service
 public class FAQService {
 	FAQRepository faqRepository;
+	FAQCategoryRepository faqCategoryRepository;
 	FAQMapper faqMapper;
 
-	public FAQService(FAQRepository faqRepository, FAQMapper faqMapper) {
+	public FAQService(FAQRepository faqRepository,
+			FAQCategoryRepository faqCategoryRepository, FAQMapper faqMapper) {
 		this.faqRepository = faqRepository;
+		this.faqCategoryRepository = faqCategoryRepository;
 		this.faqMapper = faqMapper;
 	}
 
@@ -48,5 +52,10 @@ public class FAQService {
 				.orElseThrow(() -> new FAQNotFoundException());
 
 		return faqMapper.toDTO(faq);
+	}
+
+	public List<String> getCategories() {
+		return faqCategoryRepository.findAll().stream()
+				.map(category -> category.getName()).toList();
 	}
 }
