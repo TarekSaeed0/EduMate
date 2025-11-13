@@ -35,8 +35,8 @@ public class FAQ {
 	private String answer;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "faq_categories",
+	@JoinTable(name = "faqs_categories",
 			joinColumns = @JoinColumn(name = "faq_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
-	private Set<Category> categories = new HashSet<>();
+	private Set<FAQCategory> categories = new HashSet<>();
 }
