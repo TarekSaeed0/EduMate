@@ -13,9 +13,9 @@ import com.github.hciteam.edumate.mapper.FAQMapper;
 
 @Service
 public class FAQService {
-	FAQRepository faqRepository;
-	FAQCategoryRepository faqCategoryRepository;
-	FAQMapper faqMapper;
+	private final FAQRepository faqRepository;
+	private final FAQCategoryRepository faqCategoryRepository;
+	private final FAQMapper faqMapper;
 
 	public FAQService(FAQRepository faqRepository,
 			FAQCategoryRepository faqCategoryRepository, FAQMapper faqMapper) {

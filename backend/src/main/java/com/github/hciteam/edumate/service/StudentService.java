@@ -116,7 +116,6 @@ public class StudentService {
 				.findById(studentCourseDTO.getSemesterCourse().getId())
 				.orElseThrow(() -> new SemesterCourseNotFoundException());
 
-
 		StudentCourseKey studentCourseId = new StudentCourseKey(studentId,
 				studentCourseDTO.getSemesterCourse().getId());
 
@@ -145,7 +144,6 @@ public class StudentService {
 
 	public StudentCourseDTO updateStudentCourse(Long studentId,
 			Long semesterCourseId, StudentCourseDTO studentCourseDTO) {
-
 		StudentCourseKey studentCourseId =
 				new StudentCourseKey(studentId, semesterCourseId);
 
