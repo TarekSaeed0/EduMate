@@ -39,11 +39,11 @@ public class SecurityConfiguration {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
-				.cors(cors -> cors.configurationSource(
-						corsConfigurationSource()))
-				.authorizeHttpRequests(
-						auth -> auth.requestMatchers("/api/auth/signup", "/api/auth/signin",
-								"/h2-console/**").permitAll().anyRequest().authenticated())
+				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/api/auth/signup", "/api/auth/signin",
+								"/api/faqs/**", "/h2-console/**")
+						.permitAll().anyRequest().authenticated())
 				.headers(headers -> headers
 						.frameOptions(frameOptions -> frameOptions.sameOrigin()))
 				.sessionManagement(session -> session

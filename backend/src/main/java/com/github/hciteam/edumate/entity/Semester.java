@@ -1,6 +1,6 @@
 package com.github.hciteam.edumate.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Set;
 import com.github.hciteam.edumate.model.Term;
 import jakarta.persistence.CascadeType;
@@ -36,13 +36,13 @@ public class Semester {
 	private Term term;
 
 	@Column(name = "`year`", nullable = false)
-	private Long year;
+	private Integer year;
 
 	@Column(nullable = false)
-	private LocalDateTime startDate;
+	private LocalDate startDate;
 
 	@Column(nullable = false)
-	private LocalDateTime endDate;
+	private LocalDate endDate;
 
 	@OneToMany(mappedBy = "semester", cascade = CascadeType.ALL,
 			orphanRemoval = true)
