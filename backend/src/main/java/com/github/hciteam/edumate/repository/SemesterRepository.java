@@ -6,5 +6,7 @@ import com.github.hciteam.edumate.entity.Semester;
 import com.github.hciteam.edumate.model.Term;
 
 public interface SemesterRepository extends JpaRepository<Semester, Long> {
-	Optional<Semester> findByTermAndYear(Term term, Long year);
+	Optional<Semester> findByTermAndYear(Term term, Integer year);
+
+	boolean existsByTermAndYear(Term term, Integer year);
 }

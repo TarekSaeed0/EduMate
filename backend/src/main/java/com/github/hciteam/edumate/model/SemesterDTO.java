@@ -1,5 +1,6 @@
 package com.github.hciteam.edumate.model;
 
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class SemesterDTO {
 	private Long id;
 	private Term term;
-	private Long year;
-	private String startDate;
-	private String endDate;
+	private Integer year;
+	private LocalDate startDate;
+	private LocalDate endDate;
 }
