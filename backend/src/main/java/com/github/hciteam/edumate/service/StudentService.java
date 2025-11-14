@@ -150,10 +150,11 @@ public class StudentService {
 		StudentCourse studentCourse = studentCourseRepository
 				.findById(studentCourseId).map(existingSudentCourse -> {
 					existingSudentCourse.setStatus(studentCourseDTO.getStatus());
-					return studentCourseRepository.save(existingSudentCourse);
+					return existingSudentCourse;
 				}).orElseThrow(() -> new StudentCourseNotFoundException());
 
-		return studentCourseMapper.toDTO(studentCourse);
+		return studentCourseMapper
+				.toDTO(studentCourseRepository.save(studentCourse));
 
 	}
 

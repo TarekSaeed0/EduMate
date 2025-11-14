@@ -1,8 +1,11 @@
 package com.github.hciteam.edumate.service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.entity.SemesterCourse;
+import com.github.hciteam.edumate.entity.StudentTask;
 import com.github.hciteam.edumate.entity.Task;
 import com.github.hciteam.edumate.exception.SemesterCourseNotFoundException;
 import com.github.hciteam.edumate.exception.TaskNotFoundException;
@@ -37,7 +40,14 @@ public class TaskService {
 
 		Task task = new Task(null, semesterCourse, taskDTO.getTitle(),
 				taskDTO.getRequirements(), taskDTO.getSubmissionUrl(),
-				taskDTO.getDueDate(), taskDTO.getNotes());
+				taskDTO.getDueDate(), taskDTO.getNotes(), null);
+
+		Set<StudentTask> studentTasks = semesterCourse
+				.getStudentCourses().stream().map(studentCourse -> new StudentTask(null,
+						studentCourse.getStudent(), task, null))
+				.collect(Collectors.toSet());
+
+		task.setStudentTasks(studentTasks);
 
 		return taskMapper.toDTO(taskRepository.save(task));
 	}
