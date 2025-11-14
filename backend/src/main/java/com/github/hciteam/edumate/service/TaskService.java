@@ -10,6 +10,7 @@ import com.github.hciteam.edumate.entity.Task;
 import com.github.hciteam.edumate.exception.SemesterCourseNotFoundException;
 import com.github.hciteam.edumate.exception.TaskNotFoundException;
 import com.github.hciteam.edumate.mapper.TaskMapper;
+import com.github.hciteam.edumate.model.StudentCourseStatus;
 import com.github.hciteam.edumate.model.TaskDTO;
 import com.github.hciteam.edumate.repository.SemesterCourseRepository;
 import com.github.hciteam.edumate.repository.TaskRepository;
@@ -42,9 +43,11 @@ public class TaskService {
 				taskDTO.getRequirements(), taskDTO.getSubmissionUrl(),
 				taskDTO.getDueDate(), taskDTO.getNotes(), null);
 
-		Set<StudentTask> studentTasks = semesterCourse
-				.getStudentCourses().stream().map(studentCourse -> new StudentTask(null,
-						studentCourse.getStudent(), task, null))
+		Set<StudentTask> studentTasks = semesterCourse.getStudentCourses().stream()
+				.filter(studentCourse -> studentCourse
+						.getStatus() == StudentCourseStatus.REGISTERED)
+				.map(studentCourse -> new StudentTask(null, studentCourse.getStudent(),
+						task, null))
 				.collect(Collectors.toSet());
 
 		task.setStudentTasks(studentTasks);
