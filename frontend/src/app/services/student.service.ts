@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Gender } from './authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
+import { Course } from './course.service';
+import { Task, TaskService } from './task.service';
 
 export interface Student {
   id: number;
@@ -11,16 +13,6 @@ export interface Student {
   userId: number;
 }
 
-export interface Task {
-  id: number;
-  offeringId: number;
-  title: string;
-  requirements: string | null;
-  submissiocnUrl: string | null;
-  dueDate: Date | null;
-  notes: string | null;
-}
-
 export interface StudentTask {
   studentId: number;
   task: Task;
@@ -28,13 +20,6 @@ export interface StudentTask {
 }
 
 export type StudentTaskStatus = 'UPCOMING' | 'OVERDUE' | 'COMPLETED';
-
-export interface Course {
-  id: number;
-  code: string;
-  name: string;
-  credits: number;
-}
 
 export interface SemesterCourse {
   id: number;
@@ -57,12 +42,9 @@ export class StudentService {
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/api/students';
 
-  private studentTaskMapper = (studentTask: StudentTask) => ({
+  static studentTaskMapper = (studentTask: StudentTask): StudentTask => ({
     ...studentTask,
-    task: {
-      ...studentTask.task,
-      dueDate: studentTask.task.dueDate ? new Date(studentTask.task.dueDate) : null,
-    },
+    task: TaskService.taskMapper(studentTask.task),
     submittedAt: studentTask.submittedAt ? new Date(studentTask.submittedAt) : null,
   });
 
@@ -83,7 +65,7 @@ export class StudentService {
           ...(status && { status }),
         },
       })
-      .pipe(map((studentTasks) => studentTasks.map(this.studentTaskMapper)));
+      .pipe(map((studentTasks) => studentTasks.map(StudentService.studentTaskMapper)));
   }
 
   getStudentTask(studentId: number, taskId: number): Observable<StudentTask> {
@@ -91,7 +73,7 @@ export class StudentService {
       .get<StudentTask>(`${this.baseUrl}/${studentId}/tasks/${taskId}`, {
         withCredentials: true,
       })
-      .pipe(map(this.studentTaskMapper));
+      .pipe(map(StudentService.studentTaskMapper));
   }
 
   getStudentCourses(studentId: number): Observable<StudentCourse[]> {
@@ -100,7 +82,10 @@ export class StudentService {
     });
   }
 
-  createStudentCourse(studentId: number, studentCourse: StudentCourse): Observable<StudentCourse> {
+  createStudentCourse(
+    studentId: number,
+    studentCourse: Omit<StudentCourse, 'id'>,
+  ): Observable<StudentCourse> {
     return this.http.post<StudentCourse>(`${this.baseUrl}/${studentId}/courses`, studentCourse, {
       withCredentials: true,
     });
@@ -116,7 +101,7 @@ export class StudentService {
   updateStudentCourse(
     studentId: number,
     semesterCourseId: number,
-    studentCourse: StudentCourse,
+    studentCourse: Omit<StudentCourse, 'id'>,
   ): Observable<StudentCourse> {
     return this.http.put<StudentCourse>(
       `${this.baseUrl}/${studentId}/courses/${semesterCourseId}`,
@@ -144,7 +129,7 @@ export class StudentService {
           ...(status && { status }),
         },
       })
-      .pipe(map((studentTasks) => studentTasks.map(this.studentTaskMapper)));
+      .pipe(map((studentTasks) => studentTasks.map(StudentService.studentTaskMapper)));
   }
 
   getCurrentStudentTask(taskId: number): Observable<StudentTask> {
@@ -152,7 +137,7 @@ export class StudentService {
       .get<StudentTask>(`${this.baseUrl}/me/tasks/${taskId}`, {
         withCredentials: true,
       })
-      .pipe(map(this.studentTaskMapper));
+      .pipe(map(StudentService.studentTaskMapper));
   }
 
   getCurrentStudentCourses(): Observable<StudentCourse[]> {
@@ -161,7 +146,7 @@ export class StudentService {
     });
   }
 
-  createCurrentStudentCourse(studentCourse: StudentCourse): Observable<StudentCourse> {
+  createCurrentStudentCourse(studentCourse: Omit<StudentCourse, 'id'>): Observable<StudentCourse> {
     return this.http.post<StudentCourse>(`${this.baseUrl}/me/courses`, studentCourse, {
       withCredentials: true,
     });
@@ -175,7 +160,7 @@ export class StudentService {
 
   updateCurrentStudentCourse(
     semesterCourseId: number,
-    studentCourse: StudentCourse,
+    studentCourse: Omit<StudentCourse, 'id'>,
   ): Observable<StudentCourse> {
     return this.http.put<StudentCourse>(
       `${this.baseUrl}/me/courses/${semesterCourseId}`,
