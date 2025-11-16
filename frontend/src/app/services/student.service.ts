@@ -28,6 +28,12 @@ export interface StudentTask {
   submittedAt: Date | null;
 }
 
+export interface StudentFaq {
+  id: number;
+  question: string;
+  answer: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
