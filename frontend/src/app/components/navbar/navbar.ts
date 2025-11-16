@@ -30,4 +30,19 @@ export class Navbar {
       this.cdr.detectChanges();
     }
   }
+
+  onProfileSelect(event: any) {
+    const value = event.target.value;
+
+    if (value === "main") {
+      window.location.href = "main";
+    }
+    else if (value === "switch") {
+      // your code here
+    }
+    else if (value === "logout") {
+      // logout logic
+    }
+  }
+
 }

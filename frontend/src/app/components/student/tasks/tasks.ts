@@ -78,6 +78,62 @@ export class StudentTasks {
       },
       submittedAt: null,
     },
+    {
+      id: 231,
+      studentId: 23010228,
+      task: {
+        id: 123,
+        offeringId: 567,
+        title: 'prog2',
+        requirements: 'do project',
+        submissionUrl: 'ahhhhhh!!!',
+        dueDate: null,
+        notes: null,
+      },
+      submittedAt: null,
+    },
+    {
+      id: 231,
+      studentId: 23010228,
+      task: {
+        id: 123,
+        offeringId: 567,
+        title: 'prog2',
+        requirements: 'do project',
+        submissionUrl: 'ahhhhhh!!!',
+        dueDate: null,
+        notes: null,
+      },
+      submittedAt: null,
+    },
+    {
+      id: 231,
+      studentId: 23010228,
+      task: {
+        id: 123,
+        offeringId: 567,
+        title: 'prog2',
+        requirements: 'do project',
+        submissionUrl: 'ahhhhhh!!!',
+        dueDate: null,
+        notes: null,
+      },
+      submittedAt: null,
+    },
+    {
+      id: 231,
+      studentId: 23010228,
+      task: {
+        id: 123,
+        offeringId: 567,
+        title: 'prog2',
+        requirements: 'do project',
+        submissionUrl: 'ahhhhhh!!!',
+        dueDate: null,
+        notes: null,
+      },
+      submittedAt: null,
+    },
   ];
 
   viewTask(task: StudentTask) {

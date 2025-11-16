@@ -1,6 +1,10 @@
 <app-navbar />
 
 <div class="task-tracker">
+  <div class="tasks-section">
+    <div class="search-bar">
+      <input type="text" name="FAQ-Search" id="search" placeholder="Search Assignments...">
+    </div>
     <div class="tasks-container">
       @for (studentTask of studentTasks(); track studentTask.id) {
         <table class="task-item" (click)="viewTask(studentTask)">
@@ -22,6 +26,7 @@
         <p>No tasks assigned.</p>
       }
     </div>
+  </div>
 
     <div class="task-view">
       @if (selectedTask()) {
@@ -43,7 +48,10 @@
 
       }
       @else {
-        <h1>No Task is shown</h1>
+        <div class="default">
+          <h1 id="default-text">No task is shown</h1>
+        <div id="default-image"></div>
+      </div>
       }
     </div>
 </div>
