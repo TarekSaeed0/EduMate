@@ -24,13 +24,13 @@ public class StudentTask {
 	@EmbeddedId
 	private StudentTaskKey id;
 
-	@ManyToOne
 	@MapsId("studentId")
+	@ManyToOne
 	@JoinColumn(name = "student_id", nullable = false)
 	private Student student;
 
-	@ManyToOne
 	@MapsId("taskId")
+	@ManyToOne
 	@JoinColumn(name = "task_id", nullable = false)
 	private Task task;
 

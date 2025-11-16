@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
-	StudentService studentService;
+	private final StudentService studentService;
 
 	public StudentController(StudentService studentService) {
 		this.studentService = studentService;
@@ -89,10 +89,8 @@ public class StudentController {
 	public ResponseEntity<StudentCourseDTO> updateStudentCourse(
 			@PathVariable Long studentId, @PathVariable Long semesterCourseId,
 			@RequestBody StudentCourseDTO studentCourseDTO) {
-		StudentCourseDTO updatedStudentCourseDTO = studentService
-				.updateStudentCourse(studentId, semesterCourseId, studentCourseDTO);
-
-		return ResponseEntity.ok(updatedStudentCourseDTO);
+		return ResponseEntity.ok(studentService.updateStudentCourse(studentId,
+				semesterCourseId, studentCourseDTO));
 	}
 
 	@DeleteMapping("/{studentId}/courses/{semesterCourseId}")
@@ -146,7 +144,7 @@ public class StudentController {
 				.createCurrentStudentCourse(authentication, studentCourseDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{studentCourseId}")
+				.path("/{semesterCourseId}")
 				.buildAndExpand(studentCourseDTO.getSemesterCourse().getId()).toUri();
 
 		return ResponseEntity.created(location).body(createdStudentCourseDTO);

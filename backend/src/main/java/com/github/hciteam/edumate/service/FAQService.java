@@ -13,9 +13,9 @@ import com.github.hciteam.edumate.mapper.FAQMapper;
 
 @Service
 public class FAQService {
-	FAQRepository faqRepository;
-	FAQCategoryRepository faqCategoryRepository;
-	FAQMapper faqMapper;
+	private final FAQRepository faqRepository;
+	private final FAQCategoryRepository faqCategoryRepository;
+	private final FAQMapper faqMapper;
 
 	public FAQService(FAQRepository faqRepository,
 			FAQCategoryRepository faqCategoryRepository, FAQMapper faqMapper) {
@@ -48,10 +48,8 @@ public class FAQService {
 	}
 
 	public FAQDTO getFAQ(Long id) {
-		FAQ faq = faqRepository.findById(id)
+		return faqRepository.findById(id).map(faq -> faqMapper.toDTO(faq))
 				.orElseThrow(() -> new FAQNotFoundException());
-
-		return faqMapper.toDTO(faq);
 	}
 
 	public List<String> getCategories() {
