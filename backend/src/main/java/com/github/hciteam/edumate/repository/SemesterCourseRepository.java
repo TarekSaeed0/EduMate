@@ -15,4 +15,6 @@ public interface SemesterCourseRepository
 			Long courseId);
 
 	boolean existsBySemesterIdAndCourseId(Long semesterId, Long courseId);
+
+	void deleteBySemesterIdAndCourseId(Long semesterId, Long courseId);
 }

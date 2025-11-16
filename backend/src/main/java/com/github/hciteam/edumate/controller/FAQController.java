@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 @RequestMapping("/api/faqs")
 public class FAQController {
-	FAQService faqService;
+	private final FAQService faqService;
 
 	public FAQController(FAQService faqService) {
 		this.faqService = faqService;

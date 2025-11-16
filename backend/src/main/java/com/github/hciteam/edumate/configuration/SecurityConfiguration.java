@@ -3,6 +3,7 @@ package com.github.hciteam.edumate.configuration;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,9 +42,18 @@ public class SecurityConfiguration {
 		return http.csrf(csrf -> csrf.disable())
 				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/api/auth/signup", "/api/auth/signin",
-								"/api/faqs/**", "/h2-console/**")
-						.permitAll().anyRequest().authenticated())
+						.requestMatchers("/api/auth/signup", "/api/auth/signin").permitAll()
+						.requestMatchers("/h2-console/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/semesters/**").permitAll()
+						.requestMatchers("/api/semesters/**").hasRole("ADMINISTRATOR")
+						.requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
+						.requestMatchers("/api/courses/**").hasRole("ADMINISTRATOR")
+						.requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
+						.requestMatchers("/api/tasks/**")
+						.hasAnyRole("COORDINATOR", "ADMINISTRATOR")
+						.requestMatchers(HttpMethod.GET, "/api/faqs/**").permitAll()
+						.requestMatchers("/api/faqs/**").hasRole("ADMINISTRATOR")
+						.anyRequest().authenticated())
 				.headers(headers -> headers
 						.frameOptions(frameOptions -> frameOptions.sameOrigin()))
 				.sessionManagement(session -> session
