@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { Course } from './course.service';
 
 export type Term = 'SPRING' | 'SUMMER' | 'FALL' | 'WINTER';
 
@@ -10,6 +11,12 @@ export interface Semester {
   year: number;
   startDate: Date;
   endDate: Date;
+}
+
+export interface SemesterCourse {
+  id: number;
+  semesterId: number;
+  course: Course;
 }
 
 @Injectable({
@@ -51,5 +58,44 @@ export class SemesterService {
 
   deleteSemester(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
+  }
+
+  getSemesterCourses(semesterId: number): Observable<SemesterCourse[]> {
+    return this.http.get<SemesterCourse[]>(`${this.baseUrl}/${semesterId}/courses`, {
+      withCredentials: true,
+    });
+  }
+
+  createSemesterCourse(
+    semesterId: number,
+    semesterCourse: Omit<SemesterCourse, 'id'>,
+  ): Observable<SemesterCourse> {
+    return this.http.post<SemesterCourse>(`${this.baseUrl}/${semesterId}/courses`, semesterCourse, {
+      withCredentials: true,
+    });
+  }
+
+  getSemesterCourse(semesterId: number, courseId: number): Observable<SemesterCourse> {
+    return this.http.get<SemesterCourse>(`${this.baseUrl}/${semesterId}/courses/${courseId}`, {
+      withCredentials: true,
+    });
+  }
+
+  updateSemesterCourse(
+    semesterId: number,
+    courseId: number,
+    semesterCourse: Omit<SemesterCourse, 'id'>,
+  ): Observable<SemesterCourse> {
+    return this.http.put<SemesterCourse>(
+      `${this.baseUrl}/${semesterId}/courses/${courseId}`,
+      semesterCourse,
+      { withCredentials: true },
+    );
+  }
+
+  deleteSemesterCourse(semesterId: number, courseId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${semesterId}/courses/${courseId}`, {
+      withCredentials: true,
+    });
   }
 }

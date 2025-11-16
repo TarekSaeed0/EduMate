@@ -55,9 +55,9 @@ public class StudentService {
 	}
 
 	public StudentDTO getStudent(Long studentId) {
-		Student student = studentRepository.findById(studentId)
+		return studentRepository.findById(studentId)
+				.map(student -> studentMapper.toDTO(student))
 				.orElseThrow(() -> new StudentNotFoundException());
-		return studentMapper.toDTO(student);
 	}
 
 	public List<StudentTaskDTO> getStudentTasks(Long studentId, Long courseId,
@@ -93,10 +93,9 @@ public class StudentService {
 
 		StudentTaskKey studentTaskId = new StudentTaskKey(studentId, taskId);
 
-		StudentTask studentTask = studentTaskRepository.findById(studentTaskId)
+		return studentTaskRepository.findById(studentTaskId)
+				.map(studentTask -> studentTaskMapper.toDTO(studentTask))
 				.orElseThrow(() -> new StudentCourseNotFoundException());
-
-		return studentTaskMapper.toDTO(studentTask);
 	}
 
 	public List<StudentCourseDTO> getStudentCourses(Long studentId) {
@@ -132,18 +131,24 @@ public class StudentService {
 
 	public StudentCourseDTO getStudentCourse(Long studentId,
 			Long semesterCourseId) {
+		if (!studentRepository.existsById(studentId)) {
+			throw new StudentNotFoundException();
+		}
+
 		StudentCourseKey studentCourseId =
 				new StudentCourseKey(studentId, semesterCourseId);
 
-		StudentCourse studentCourse =
-				studentCourseRepository.findById(studentCourseId)
-						.orElseThrow(() -> new StudentCourseNotFoundException());
-
-		return studentCourseMapper.toDTO(studentCourse);
+		return studentCourseRepository.findById(studentCourseId)
+				.map(studentCourse -> studentCourseMapper.toDTO(studentCourse))
+				.orElseThrow(() -> new StudentCourseNotFoundException());
 	}
 
 	public StudentCourseDTO updateStudentCourse(Long studentId,
 			Long semesterCourseId, StudentCourseDTO studentCourseDTO) {
+		if (!studentRepository.existsById(studentId)) {
+			throw new StudentNotFoundException();
+		}
+
 		StudentCourseKey studentCourseId =
 				new StudentCourseKey(studentId, semesterCourseId);
 
@@ -159,6 +164,10 @@ public class StudentService {
 	}
 
 	public void deleteStudentCourse(Long studentId, Long semesterCourseId) {
+		if (!studentRepository.existsById(studentId)) {
+			throw new StudentNotFoundException();
+		}
+
 		StudentCourseKey studentCourseId =
 				new StudentCourseKey(studentId, semesterCourseId);
 

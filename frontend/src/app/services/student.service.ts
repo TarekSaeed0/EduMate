@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { Gender } from './authentication.service';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
-import { Course } from './course.service';
 import { Task, TaskService } from './task.service';
+import { SemesterCourse } from './semester.service';
 
 export interface Student {
   id: number;
@@ -13,18 +13,12 @@ export interface Student {
   userId: number;
 }
 
+export type StudentTaskStatus = 'UPCOMING' | 'OVERDUE' | 'COMPLETED';
+
 export interface StudentTask {
   studentId: number;
   task: Task;
   submittedAt: Date | null;
-}
-
-export type StudentTaskStatus = 'UPCOMING' | 'OVERDUE' | 'COMPLETED';
-
-export interface SemesterCourse {
-  id: number;
-  semesterId: number;
-  course: Course;
 }
 
 export type StudentCourseStatus = 'REGISTERED' | 'PASSED' | 'FAILED' | 'DROPPED';

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import com.github.hciteam.edumate.model.SemesterCourseDTO;
 import com.github.hciteam.edumate.model.SemesterDTO;
 import com.github.hciteam.edumate.service.SemesterService;
 
@@ -35,27 +36,71 @@ public class SemesterController {
 		SemesterDTO createdSemester = semesterService.createSemester(semesterDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(createdSemester.getId()).toUri();
+				.path("/{semesterId}").buildAndExpand(createdSemester.getId()).toUri();
 
 		return ResponseEntity.created(location).body(createdSemester);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<SemesterDTO> getSemester(@PathVariable Long id) {
-		return ResponseEntity.ok(semesterService.getSemester(id));
+	@GetMapping("/{semesterId}")
+	public ResponseEntity<SemesterDTO> getSemester(
+			@PathVariable Long semesterId) {
+		return ResponseEntity.ok(semesterService.getSemester(semesterId));
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<SemesterDTO> updateSemester(@PathVariable Long id,
-			@RequestBody SemesterDTO semesterDTO) {
-		return ResponseEntity.ok(semesterService.updateSemester(id, semesterDTO));
+	@PutMapping("/{semesterId}")
+	public ResponseEntity<SemesterDTO> updateSemester(
+			@PathVariable Long semesterId, @RequestBody SemesterDTO semesterDTO) {
+		return ResponseEntity
+				.ok(semesterService.updateSemester(semesterId, semesterDTO));
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteSemester(@PathVariable Long id) {
-		semesterService.deleteSemester(id);
+	@DeleteMapping("/{semesterId}")
+	public ResponseEntity<Void> deleteSemester(@PathVariable Long semesterId) {
+		semesterService.deleteSemester(semesterId);
 
 		return ResponseEntity.noContent().build();
 	}
 
+	@GetMapping("/{semesterId}/courses")
+	public ResponseEntity<List<SemesterCourseDTO>> getSemesterCourses(
+			@PathVariable Long semesterId) {
+		return ResponseEntity.ok(semesterService.getSemesterCourses(semesterId));
+	}
+
+	@PostMapping("/{semesterId}/courses")
+	public ResponseEntity<SemesterCourseDTO> createSemesterCourse(
+			@PathVariable Long semesterId,
+			@RequestBody SemesterCourseDTO semesterCourseDTO) {
+		SemesterCourseDTO createdSemesterCourse =
+				semesterService.createSemesterCourse(semesterId, semesterCourseDTO);
+
+		URI location =
+				ServletUriComponentsBuilder.fromCurrentRequest().path("/{courseId}")
+						.buildAndExpand(createdSemesterCourse.getCourse().getId()).toUri();
+
+		return ResponseEntity.created(location).body(createdSemesterCourse);
+	}
+
+	@GetMapping("/{semesterId}/courses/{courseId}")
+	public ResponseEntity<SemesterCourseDTO> getSemesterCourse(
+			@PathVariable Long semesterId, @PathVariable Long courseId) {
+		return ResponseEntity
+				.ok(semesterService.getSemesterCourse(semesterId, courseId));
+	}
+
+	@PutMapping("/{semesterId}/courses/{courseId}")
+	public ResponseEntity<SemesterCourseDTO> updateSemesterCourse(
+			@PathVariable Long semesterId, @PathVariable Long courseId,
+			@RequestBody SemesterCourseDTO semesterCourseDTO) {
+		return ResponseEntity.ok(semesterService.updateSemesterCourse(semesterId,
+				courseId, semesterCourseDTO));
+	}
+
+	@DeleteMapping("/{semesterId}/courses/{courseId}")
+	public ResponseEntity<Void> deleteSemesterCourse(
+			@PathVariable Long semesterId, @PathVariable Long courseId) {
+		semesterService.deleteSemesterCourse(semesterId, courseId);
+
+		return ResponseEntity.noContent().build();
+	}
 }

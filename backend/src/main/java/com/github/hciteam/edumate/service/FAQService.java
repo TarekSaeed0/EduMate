@@ -48,10 +48,8 @@ public class FAQService {
 	}
 
 	public FAQDTO getFAQ(Long id) {
-		FAQ faq = faqRepository.findById(id)
+		return faqRepository.findById(id).map(faq -> faqMapper.toDTO(faq))
 				.orElseThrow(() -> new FAQNotFoundException());
-
-		return faqMapper.toDTO(faq);
 	}
 
 	public List<String> getCategories() {

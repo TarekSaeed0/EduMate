@@ -7,10 +7,14 @@ import com.github.hciteam.edumate.entity.SemesterCourse;
 
 public interface SemesterCourseRepository
 		extends JpaRepository<SemesterCourse, Long> {
-	List<SemesterCourse> findByCourseId(Long courseId);
-
 	List<SemesterCourse> findBySemesterId(Long semesterId);
 
-	Optional<SemesterCourse> findByCourseIdAndSemesterId(Long courseId,
-			Long semesterId);
+	List<SemesterCourse> findByCourseId(Long courseId);
+
+	Optional<SemesterCourse> findBySemesterIdAndCourseId(Long semesterId,
+			Long courseId);
+
+	boolean existsBySemesterIdAndCourseId(Long semesterId, Long courseId);
+
+	void deleteBySemesterIdAndCourseId(Long semesterId, Long courseId);
 }
