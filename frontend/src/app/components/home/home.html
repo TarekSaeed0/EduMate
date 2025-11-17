@@ -34,15 +34,15 @@
   <div class="bg bg2"></div>
   <div class="bg bg3"></div>
   <div class="content">
-    <h1>{{ greeting }}</h1>
+    <h1>{{ greeting() }}</h1>
     <h1>Welcome to EduMate</h1>
   </div>
 </div>
 
 
 <!-- ! when user is not signed in -->
-<h1>{{ greeting() }}</h1>
-@if (this.student()) {
+<!-- <h1>{{ greeting() }}</h1> -->
+<!-- @if (this.student()) {
 <table>
   <tr>
     <td>ID:</td>
@@ -65,8 +65,8 @@
 <p>Loading student information...</p>
 
 <button (click)="signout()">Sign Out</button>
+} -->
 }
-
 
 <!-- if the user isn't signed in -->
 <!-- the home page for visitors -->
