@@ -13,7 +13,9 @@
 
     @for (studentTask of studentTasks(); track studentTask.task.id) {
 
-      <div class="task-item" (click)="viewTask(studentTask)">
+      <div class="task-item" [class.expanded]="isExpanded(studentTask)" (click)="toggleTask(studentTask, $event)">
+      
+        <!-- Always visible -->
         <div class="row">
           <span class="label">Title:</span>
           <span class="value">{{ studentTask.task.title }}</span>
@@ -21,12 +23,55 @@
 
         <div class="row">
           <span class="label">Due Date:</span>
-          @if (studentTask.task.dueDate == null) {
-            <span class="value">N/A</span>
-          } @else {
-            <span class="value">{{ studentTask.task.dueDate.toLocaleString() }}</span>
-          }
+          <span class="value">
+            @if (studentTask.task.dueDate == null) {
+              N/A
+            } @else {
+              {{ studentTask.task.dueDate.toLocaleString() }}
+            }
+          </span>
         </div>
+
+        <!-- Hidden content -->
+        <div class="additional-info">
+          <div class="row">
+            <span class="label">ID:</span>
+            <span class="value">{{ studentTask.task.id }}</span>
+          </div>
+          <div class="row">
+            <span class="label">Offering ID:</span>
+            <span class="value">{{ studentTask.task.offeringId }}</span>
+          </div>
+          <div class="row">
+            <span class="label">Requirements:</span>
+            <span class="value">{{ studentTask.task.requirements }}</span>
+          </div>
+          <div class="row">
+            <span class="label">Submission URL:</span>
+            @if (studentTask.task.submissionUrl == null) {
+              N/A
+            } @else {
+              <a href="{{ studentTask.task.submissionUrl }}" target="_blank">{{ studentTask.task.submissionUrl }}</a>
+            }
+          </div>
+          <div class="row">
+            <span class="label">Notes:</span>
+            @if (studentTask.task.notes == null) {
+              N/A
+            } @else {
+              {{ studentTask.task.notes }}
+            }
+          </div>
+          <div class="row">
+            <span class="label">Submitted At:</span>
+            @if (studentTask.submittedAt == null) {
+              Not submitted
+            } @else {
+              {{ studentTask.submittedAt.toLocaleString() }}
+            }
+          </div>
+        </div>
+
       </div>
 
     } @empty {

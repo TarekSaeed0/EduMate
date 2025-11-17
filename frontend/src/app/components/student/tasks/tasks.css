@@ -138,35 +138,54 @@
     padding: 10px;
 }
 
-/* Task Card */
 .task-item {
     width: 100%;
+    min-height: 70px; /* allow expansion */
     background: #ffffff;
-
     border: solid #b0c4de;
     border-width: 1.5px 3px 3px 1.5px;
-
     border-radius: 7px;
-    padding: 40px 10px;
+    padding: 20px 10px;
     margin: 10px;
-
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: 525;
-
     cursor: pointer;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
-.task-item:hover {
-    border-color: rgb(146, 146, 146);
+.task-item.expanded {
+    overflow: visible; /* allow hidden content to show */
 }
 
-.task-item:active {
-    background-color: rgb(229, 229, 229);
-    transform: translateY(3px);
-
-    height: 500px;
+.task-item .additional-info {
+    max-height: 0;       
+    overflow: hidden;    
+    opacity: 0;          
+    transition: all 0.5s cubic-bezier(0.44, 0, 0.56, 1);
 }
+
+.task-item.expanded .additional-info {
+    max-height: 500px;   
+    opacity: 1;           
+}
+
+
+/* Task Card Rows */
+.task-item .row {
+    display: flex;
+    flex-direction: row;       
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;                 
+    margin-bottom: 8px;        
+}
+
+/* Optional: make labels bold and aligned */
+.task-item .row .label {
+    font-weight: 600;
+    min-width: 120px;          
+}
+
 
 /* RIGHT PANEL (Task View) */
 .task-view {
