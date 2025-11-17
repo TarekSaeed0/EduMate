@@ -1,0 +1,55 @@
+<app-navbar />
+
+<div class="faq">
+
+  <!-- Categories -->
+  <div class="faq-categories">
+
+    @for (category of faqCategories(); track category) {
+      <div class="faq-category" (click)="fetchFaqs(category)">
+        {{ category }}
+      </div>
+    } @empty {
+      <p>No categories.</p>
+    }
+
+  </div>
+
+  <!-- FAQ List -->
+  <div class="faqs-section">
+
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Search FAQs..." />
+    </div>
+
+    <div class="faqs-container">
+
+      @for (faq of faqs(); track faq.question) {
+        <div class="faq-item" (click)="viewFaq(faq)">
+          <p>{{ faq.question }}</p>
+        </div>
+      } @empty {
+        <p>No FAQs.</p>
+      }
+
+    </div>
+  </div>
+
+  <!-- Detail View -->
+  <div class="faq-view">
+    @if (selectedFaq()) {
+
+      <h1>{{ selectedFaq()?.question }}</h1>
+      <hr />
+      <h2>{{ selectedFaq()?.answer }}</h2>
+
+    } @else {
+
+      <div class="default">
+        <h1 id="default-text">Find the answers of all your queries here</h1>
+        <div id="default-image"></div>
+      </div>
+
+    }
+  </div>
+</div>

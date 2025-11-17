@@ -20,8 +20,8 @@
   /* background-color: var(--clr-text); */
   background: linear-gradient(45deg,
                              #ffffff 10%,
-                             #7b87ed 30%, 
-                             #3b82f6 70%, 
+                             #7b87ed 30%,
+                             #3b82f6 70%,
                              #4032be 100%);
   background-size: 400% 400%;
   /*animation: gradient 20s ease infinite;*/
@@ -62,7 +62,7 @@
   background-image: url(background.jpg);
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: -200px;
+  background-position: -250px;
   background-clip: content-box;
   /* background-size: 100%; */
 }

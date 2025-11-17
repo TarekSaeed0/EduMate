@@ -1,24 +1,32 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { StudentService, StudentTask } from '../../../services/student.service';
+import { Navbar } from '../../navbar/navbar';
 
 @Component({
   selector: 'app-student-tasks',
-  imports: [],
+  standalone: true,
+  imports: [Navbar],
   templateUrl: './tasks.html',
-  styleUrl: './tasks.css',
+  styleUrls: ['./tasks.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentTasks {
-  studentService = inject(StudentService);
+  private studentService = inject(StudentService);
 
   studentTasks = signal<StudentTask[]>([]);
+  selectedTask = signal<StudentTask | null>(null);
 
   constructor() {
     this.fetchStudentTasks();
   }
 
+  viewTask(task: StudentTask) {
+    this.selectedTask.set(task);
+  }
+
   fetchStudentTasks() {
     this.studentService.getCurrentStudentTasks().subscribe({
-      next: (tasks) => this.studentTasks.set(tasks),
+      next: (tasks: StudentTask[]) => this.studentTasks.set(tasks),
       error: () => this.studentTasks.set([]),
     });
   }

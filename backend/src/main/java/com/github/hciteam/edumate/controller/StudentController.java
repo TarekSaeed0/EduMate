@@ -54,6 +54,15 @@ public class StudentController {
 		return ResponseEntity.ok(studentService.getStudentTask(studentId, taskId));
 	}
 
+	@PutMapping("/{studentId}/tasks/{taskId}")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	public ResponseEntity<StudentTaskDTO> updateStudentTask(
+			@PathVariable Long studentId, @PathVariable Long taskId,
+			@RequestBody StudentTaskDTO studentTaskDTO) {
+		return ResponseEntity.ok(
+				studentService.updateStudentTask(studentId, taskId, studentTaskDTO));
+	}
+
 	@GetMapping("/{studentId}/courses")
 	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
 	public ResponseEntity<List<StudentCourseDTO>> getStudentCourses(
@@ -125,6 +134,15 @@ public class StudentController {
 			Authentication authentication, @PathVariable Long taskId) {
 		return ResponseEntity
 				.ok(studentService.getCurrentStudentTask(authentication, taskId));
+	}
+
+	@PutMapping("/me/tasks/{taskId}")
+	@PreAuthorize("hasRole('STUDENT')")
+	public ResponseEntity<StudentTaskDTO> updateCurrentStudentTask(
+			Authentication authentication, @PathVariable Long taskId,
+			@RequestBody StudentTaskDTO studentTaskDTO) {
+		return ResponseEntity.ok(studentService
+				.updateCurrentStudentTask(authentication, taskId, studentTaskDTO));
 	}
 
 	@GetMapping("/me/courses")

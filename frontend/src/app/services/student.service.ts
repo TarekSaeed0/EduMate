@@ -70,6 +70,18 @@ export class StudentService {
       .pipe(map(StudentService.studentTaskMapper));
   }
 
+  updateStudentTask(
+    studentId: number,
+    taskId: number,
+    studentTask: Omit<StudentTask, 'id'>,
+  ): Observable<StudentTask> {
+    return this.http
+      .put<StudentTask>(`${this.baseUrl}/${studentId}/tasks/${taskId}`, studentTask, {
+        withCredentials: true,
+      })
+      .pipe(map(StudentService.studentTaskMapper));
+  }
+
   getStudentCourses(studentId: number): Observable<StudentCourse[]> {
     return this.http.get<StudentCourse[]>(`${this.baseUrl}/${studentId}/courses`, {
       withCredentials: true,
@@ -129,6 +141,17 @@ export class StudentService {
   getCurrentStudentTask(taskId: number): Observable<StudentTask> {
     return this.http
       .get<StudentTask>(`${this.baseUrl}/me/tasks/${taskId}`, {
+        withCredentials: true,
+      })
+      .pipe(map(StudentService.studentTaskMapper));
+  }
+
+  updateCurrentStudentTask(
+    taskId: number,
+    studentTask: Omit<StudentTask, 'id'>,
+  ): Observable<StudentTask> {
+    return this.http
+      .put<StudentTask>(`${this.baseUrl}/me/tasks/${taskId}`, studentTask, {
         withCredentials: true,
       })
       .pipe(map(StudentService.studentTaskMapper));
