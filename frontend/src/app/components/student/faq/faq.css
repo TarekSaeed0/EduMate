@@ -1,0 +1,292 @@
+* {
+    font-family: "Inter", "Segoe UI", Tahoma, sans-serif;
+    box-sizing: border-box;
+}
+
+.faq {
+    height: 100vh;
+    width: 100%;
+
+    display: flex;
+
+}
+
+.faq-categories {
+    width: 200px;
+    height: 100%;
+
+    background: white;
+
+    border-right: 1.5px solid rgb(199, 199, 199);
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.25);
+
+    padding: 0px 0;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+
+    z-index: 2;
+}
+
+.faq-categories::-webkit-scrollbar {
+    width: 3.5px;
+}
+
+.faq-categories::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(199, 199, 199);
+}
+
+.faq-categories::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(146, 146, 146);
+}
+
+.faq-categories::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.faq-category {
+    width: 100%;
+
+    display: block;
+    white-space: normal;
+    word-break: break-word;
+
+    background: white;
+    
+    border: solid;
+    border-color: rgb(199, 199, 199);;
+    border-width: 0px 0px 2px 0px;
+
+    padding: 15px 16px 15px 16px;
+
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 525;
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.faq-category:hover {
+    background: rgb(246, 246, 246);
+}
+
+.faqs-section {
+    width: 300px;
+    height: 100%;
+
+    position: relative;
+    top: 1px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+
+    background: rgb(238, 246, 249);
+
+    border-style: solid;
+    border-color: rgb(8, 42, 50);
+    border-width: 0px 2.5px 0px 0px;
+
+    box-shadow: 0px 2.5px 10px rgb(93, 92, 92);
+
+    overflow-x: hidden;
+    overflow-y: visible;
+    
+
+    z-index: 1;
+}
+
+.search-bar {
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    justify-content: center;
+
+    position:sticky;
+    top: 0px;
+    z-index: 3;
+
+    background-color: rgba(238, 246, 249, 0.874);
+
+}
+
+/* FAQ Search Bar */
+#search {
+    width: 95%;                 /* nearly full width of container */
+    padding: 10px 15px;         /* comfortable height and spacing */
+    margin: 10px;        /* space from FAQ items */
+    
+    font-size: 15px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    
+    border: 1.5px solid rgb(199, 199, 199);  /* matches FAQ items */
+    border-radius: 7px;                       /* rounded corners */
+    
+    outline: none;             /* removes default blue focus outline */
+    transition: 0.3s;          /* smooth hover/focus transitions */
+    
+    background-color: white;   /* matches FAQ items */
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1); /* subtle depth */
+
+    top: 0;
+
+}
+
+/* Hover state */
+#search:hover {
+    border-color: rgb(146, 146, 146);
+}
+
+/* Focus state */
+#search:focus {
+    border-color: rgb(8, 42, 50);      /* dark accent to indicate focus */
+    box-shadow: 0 0 5px rgba(8, 42, 50, 0.3);
+}
+
+/* Placeholder styling */
+#search::placeholder {
+    color: rgb(160, 160, 160);
+    font-style: italic;
+}
+
+.faqs-container {
+    position: relative;
+    top: 0px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    
+    padding: 20px;
+    padding-top: 10px;
+
+}
+
+.faqs-section::-webkit-scrollbar {
+    width: 9px;
+}
+
+.faqs-section::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(199, 199, 199);
+}
+
+.faqs-section::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(146, 146, 146);
+}
+
+.faqs-section::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.faq-item {
+    width: 100%;
+
+    background: white;
+    
+    border: solid;
+    border-color: rgb(199, 199, 199);
+    border-width: 1.5px 3px 3px 1.5px;
+
+    border-radius: 7px;
+    padding: 10px;
+    margin: 10px;
+
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 525;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+.faq-item:hover {
+    border-color: rgb(146, 146, 146);
+}
+
+.faq-item:active {
+    background-color: rgb(229, 229, 229);
+    transform: translateY(3px);
+}
+
+.faq-view {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+    z-index: 2;
+    padding: 20px;
+    background: rgb(255, 255, 255);
+
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+
+    overflow-x: hidden;
+    overflow-y: visible;
+    
+}
+
+.faq-view h1{
+    width: 100%;
+
+    text-align: left;
+
+    font-size: 35px;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.faq-view span{
+    width: 95%;
+    height: 4px;
+
+    margin-top: 20px;
+    background-color: rgb(112, 112, 112);
+
+    border-radius: 15px;
+}
+
+.faqs-section::-webkit-scrollbar {
+    width: 9px;
+}
+
+.faqs-section::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: rgb(199, 199, 199);
+}
+
+.faqs-section::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(146, 146, 146);
+}
+
+.faqs-section::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.faq-view #default{
+
+}
+
+.faq-view #default-text{
+
+}
+
+#default-image {
+    width: 360px;
+    height: 360px;
+
+    background-image: url(FAQ-Robot.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    margin: 30px auto 0 auto;
+}

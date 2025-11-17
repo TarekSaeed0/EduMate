@@ -1,36 +1,28 @@
-<div>
-  @for (studentTask of studentTasks(); track studentTask.id) {
-    <table>
-      <tr>
-        <td>Title:</td>
-        <td>{{ studentTask.task.title }}</td>
-      </tr>
-      <tr>
-        <td>Requirements:</td>
-        <td>{{ studentTask.task.requirements }}</td>
-      </tr>
-      <tr>
-        <td>Submission URL:</td>
-        @if (studentTask.task.dueDate == null) {
-          <td>N/A</td>
-        } @else {
-          <td>{{ studentTask.task.submissionUrl }}</td>
-        }
-      </tr>
-      <tr>
-        <td>Due Date:</td>
-        @if (studentTask.task.dueDate == null) {
-          <td>N/A</td>
-        } @else {
-          <td>{{ studentTask.task.dueDate.toLocaleString() }}</td>
-        }
-      </tr>
-      <tr>
-        <td>Notes:</td>
-        <td>{{ studentTask.task.notes }}</td>
-      </tr>
-    </table>
-  } @empty {
-    <p>No tasks assigned.</p>
-  }
+<app-navbar />
+
+<div class="tasks-section">
+    <div class="search-bar">
+      <input type="text" name="FAQ-Search" id="search" placeholder="Search Assignments...">
+    </div>
+    <div class="tasks-container">
+      @for (studentTask of studentTasks(); track studentTask.id) {
+        <table class="task-item" (click)="viewTask(studentTask)">
+          <tr>
+            <td>Title:</td>
+            <td>{{ studentTask.task.title }}</td>
+          </tr>
+          
+          <tr>
+            <td>Due Date:</td>
+            @if (studentTask.task.dueDate == null) {
+              <td>N/A</td>
+            } @else {
+              <td>{{ studentTask.task.dueDate.toLocaleString() }}</td>
+            }
+          </tr>
+        </table>
+      } @empty {
+        <p>No tasks assigned.</p>
+      }
+    </div>
 </div>
