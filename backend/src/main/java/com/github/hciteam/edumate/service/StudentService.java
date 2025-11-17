@@ -98,6 +98,23 @@ public class StudentService {
 				.orElseThrow(() -> new StudentCourseNotFoundException());
 	}
 
+	public StudentTaskDTO updateStudentTask(Long studentId, Long taskId,
+			StudentTaskDTO studentTaskDTO) {
+		if (!studentRepository.existsById(studentId)) {
+			throw new StudentNotFoundException();
+		}
+
+		StudentTaskKey studentTaskId = new StudentTaskKey(studentId, taskId);
+
+		StudentTask studentTask = studentTaskRepository.findById(studentTaskId)
+				.map(existingStudentTask -> {
+					existingStudentTask.setSubmittedAt(studentTaskDTO.getSubmittedAt());
+					return existingStudentTask;
+				}).orElseThrow(() -> new StudentCourseNotFoundException());
+
+		return studentTaskMapper.toDTO(studentTaskRepository.save(studentTask));
+	}
+
 	public List<StudentCourseDTO> getStudentCourses(Long studentId) {
 		if (!studentRepository.existsById(studentId)) {
 			throw new StudentNotFoundException();
@@ -202,6 +219,15 @@ public class StudentService {
 				.orElseThrow(() -> new StudentNotFoundException());
 
 		return getStudentTask(student.getId(), taskId);
+	}
+
+	public StudentTaskDTO updateCurrentStudentTask(Authentication authentication,
+			Long taskId, StudentTaskDTO studentTaskDTO) {
+		User user = (User) authentication.getPrincipal();
+		Student student = studentRepository.findByUserId(user.getId())
+				.orElseThrow(() -> new StudentNotFoundException());
+
+		return updateStudentTask(student.getId(), taskId, studentTaskDTO);
 	}
 
 	public List<StudentCourseDTO> getCurrentStudentCourses(
