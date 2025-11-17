@@ -1,28 +1,35 @@
 <app-navbar />
 
 <div class="tasks-section">
-    <div class="search-bar">
-      <input type="text" name="FAQ-Search" id="search" placeholder="Search Assignments...">
-    </div>
-    <div class="tasks-container">
-      @for (studentTask of studentTasks(); track studentTask.id) {
-        <table class="task-item" (click)="viewTask(studentTask)">
-          <tr>
-            <td>Title:</td>
-            <td>{{ studentTask.task.title }}</td>
-          </tr>
-          
-          <tr>
-            <td>Due Date:</td>
-            @if (studentTask.task.dueDate == null) {
-              <td>N/A</td>
-            } @else {
-              <td>{{ studentTask.task.dueDate.toLocaleString() }}</td>
-            }
-          </tr>
-        </table>
-      } @empty {
-        <p>No tasks assigned.</p>
-      }
-    </div>
+
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search Assignments..." />
+  </div>
+
+  <div class="tasks-container">
+
+    @for (studentTask of studentTasks(); track studentTask.task.id) {
+
+      <div class="task-item" (click)="viewTask(studentTask)">
+        <div class="row">
+          <span class="label">Title:</span>
+          <span class="value">{{ studentTask.task.title }}</span>
+        </div>
+
+        <div class="row">
+          <span class="label">Due Date:</span>
+          @if (studentTask.task.dueDate == null) {
+            <span class="value">N/A</span>
+          } @else {
+            <span class="value">{{ studentTask.task.dueDate.toLocaleString() }}</span>
+          }
+        </div>
+      </div>
+
+    } @empty {
+      <p>No tasks assigned.</p>
+    }
+
+  </div>
+
 </div>

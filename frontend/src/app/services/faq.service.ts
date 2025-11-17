@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-interface FAQ {
+export interface FAQ {
   question: string;
   answer: string;
   categories: string[];

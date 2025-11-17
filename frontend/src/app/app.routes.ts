@@ -3,7 +3,7 @@ import { Home } from './components/home/home';
 import { Signup as Signup } from './components/signup/signup';
 import { Signin } from './components/signin/signin';
 import { StudentTasks } from './components/student/tasks/tasks';
-import { FAQ } from './components/student/faq/faq';
+import { FAQComponent } from './components/student/faq/faq.component';
 import { Main} from './components/main/main';
 
 export const routes: Routes = [
@@ -12,6 +12,6 @@ export const routes: Routes = [
   { path: 'signup', component: Signup, title: 'Sign Up' },
   { path: 'signin', component: Signin, title: 'Sign In' },
   { path: 'student/tasks', component: StudentTasks, title: 'Student Tasks' },
-  { path: 'student/faq', component: FAQ, title: 'FAQ' },
+  { path: 'student/faq', component: FAQComponent, title: 'FAQ' },
   { path: 'main', component: Main, title: 'Main page' },
 ];

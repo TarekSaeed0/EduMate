@@ -10,17 +10,6 @@
       <!-- sign out button -->
     </header>
 
-<div class="container">
-  <header>
-    <h1 class="logo">
-      <span class="Edu">Edu<span class="Mate">Mate</span></span>
-    </h1>
-    <button title="sign out" class="sign-out" (click)="signout()">
-      <i class="fa-solid fa-arrow-right-from-bracket"></i>
-    </button>
-    <!-- sign out button -->
-  </header>
-
   <div class="features">
     <a class="timeTable feature" href=""><i class="fa-solid fa-table"></i></a>
     <!-- timetable feature -->
@@ -50,6 +39,7 @@
   </div>
 </div>
 
+
 <!-- ! when user is not signed in -->
 <h1>{{ greeting() }}</h1>
 @if (this.student()) {
@@ -73,9 +63,10 @@
 </table>
 } @else {
 <p>Loading student information...</p>
-}
+
 <button (click)="signout()">Sign Out</button>
 }
+
 
 <!-- if the user isn't signed in -->
 <!-- the home page for visitors -->
