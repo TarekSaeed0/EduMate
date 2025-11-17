@@ -6,4 +6,6 @@ import com.github.hciteam.edumate.entity.Course;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
 	Optional<Course> findByCode(String code);
+
+	boolean existsByCode(String code);
 }

@@ -26,13 +26,13 @@ public class StudentCourse {
 	@EmbeddedId
 	private StudentCourseKey id;
 
-	@ManyToOne
 	@MapsId("studentId")
+	@ManyToOne
 	@JoinColumn(name = "student_id", nullable = false)
 	Student student;
 
-	@ManyToOne
 	@MapsId("semesterCourseId")
+	@ManyToOne
 	@JoinColumn(name = "semester_course_id", nullable = false)
 	SemesterCourse semesterCourse;
 

@@ -1,0 +1,139 @@
+/* Global styles */
+* {
+    font-family: "Inter", "Segoe UI", Tahoma, sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Page wrapper: hides scroll only on this page */
+.main-wrap {
+    width: 100vw;
+    height: 100vh;
+}
+
+/* Profile Section */
+.profile {
+    width: 100%;
+    height: 300px;
+
+    padding: 20px 50px;
+
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    background-color: rgb(235, 235, 235);
+    box-shadow: 0px 2.5px 15px grey;
+}
+
+.profile-photo {
+    width: 200px;
+    height: 200px;
+    background-image: url(Guest-user.png);
+    background-size: cover;
+    background-position: center;
+    border: 2px solid gray;
+    border-radius: 50%;
+}
+
+/* Profile info */
+.profile .info h1 {
+    font-size: 60px;
+    margin-bottom: 5px;
+}
+
+.profile .info h2 {
+    font-size: 30px;
+    color: #555;
+}
+
+/* Features Section */
+div.features {
+    width: 90%;
+    max-width: 1200px;
+    margin: 50px auto 0 auto; /* centers horizontally, spacing from profile */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+    border-radius: 30px;
+}
+
+/* Feature Items */
+div.features a.feature {
+    flex: 0 1 calc(50% - 20px); /* 2 per row, account for gap */
+    max-width: 250px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    font-size: 10px;
+    transform-origin: bottom center;
+}
+
+/* Feature Colors */
+div.features a.feature.faq {
+    background-color: rgba(193, 193, 193, 0.4);
+    color: gray;
+}
+
+div.features a.feature.announcement {
+    background-color: rgba(255, 77, 77, 0.4);
+    color: rgb(201, 0, 0);
+}
+
+div.features a.feature.teamCreator {
+    background-color: rgba(108, 174, 254, 0.4);
+    color: blue;
+}
+
+div.features a.feature.sources {
+    background-color: rgba(113, 247, 131, 0.4);
+    color: green;
+}
+
+div.features a.feature.map {
+    background-color: rgba(253, 210, 71, 0.4);
+    color: rgb(194, 126, 0);
+}
+
+div.features a.feature.taskTracker {
+    background-color: rgba(253, 71, 229, 0.4);
+    color: purple;
+}
+
+div.features a.feature.timeTable {
+    background-color: rgba(71, 220, 253, 0.4);
+    color: rgb(18, 147, 159);
+}
+
+/* Responsive Design */
+
+/* Smaller screens: 1 feature per row */
+@media (max-width: 800px) {
+    div.features a.feature {
+        flex: 0 1 100%;
+        max-width: 100%;
+    }
+}
+
+/* Extra small screens: reduce profile padding */
+@media (max-width: 500px) {
+    .profile {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 20px;
+        gap: 15px;
+    }
+
+    .profile-photo {
+        width: 80px;
+        height: 80px;
+    }
+}
