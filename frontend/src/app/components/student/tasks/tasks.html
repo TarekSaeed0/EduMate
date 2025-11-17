@@ -1,7 +1,6 @@
 <app-navbar />
 
-<div class="task-tracker">
-  <div class="tasks-section">
+<div class="tasks-section">
     <div class="search-bar">
       <input type="text" name="FAQ-Search" id="search" placeholder="Search Assignments...">
     </div>
@@ -24,34 +23,6 @@
         </table>
       } @empty {
         <p>No tasks assigned.</p>
-      }
-    </div>
-  </div>
-
-    <div class="task-view">
-      @if (selectedTask()) {
-        <h1>Subject Name</h1>
-
-        <h2>{{ selectedTask()?.task?.title }}</h2>
-
-        <h3>Requirements: </h3>
-        <p> {{ selectedTask()?.task?.requirements }} </p>
-
-        <h3>Submission URL: </h3>
-        <p> {{ selectedTask()?.task?.submissionUrl }} </p> 
-        
-        <h3>Due Date: </h3>
-        <p> {{ selectedTask()?.task?.dueDate }} </p>
-
-        <h3>Notes: </h3>
-        <p> {{ selectedTask()?.task?.notes }} </p>
-
-      }
-      @else {
-        <div class="default">
-          <h1 id="default-text">No task is shown</h1>
-        <div id="default-image"></div>
-      </div>
       }
     </div>
 </div>

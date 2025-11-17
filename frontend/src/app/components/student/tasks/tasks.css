@@ -13,8 +13,10 @@
 
 /* LEFT SIDEBAR (Tasks List) */
 .tasks-section {
-    width: 650px;
-    height: 100%;
+
+
+    height: 100vh;
+    width: 100%;
 
     position: relative;
     top: 1px;
@@ -128,6 +130,8 @@
 .task-item:active {
     background-color: rgb(229, 229, 229);
     transform: translateY(3px);
+
+    height: 500px;
 }
 
 /* RIGHT PANEL (Task View) */
