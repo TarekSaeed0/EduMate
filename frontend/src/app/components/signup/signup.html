@@ -1,61 +1,76 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <fieldset>
-    <legend>Sign Up</legend>
+<span class="layer"></span>
+<div class="container">
+  <div class="robot"></div>
+  <header>
+    <h1>
+      <span class="Edu">Edu<span class="Mate">Mate</span></span>
+    </h1>
+  </header>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h2>Create your account</h2>
     <div class="form-group">
-      <label for="studentId">Student ID:</label>
+      <label for="studentId"
+        >Student ID:@if ( form.get('studentId')?.invalid && (form.get('studentId')?.dirty ||
+        form.get('studentId')?.touched) ) {
+        <span class="error appear">Student ID is invalid</span>
+        }</label
+      >
       <input id="studentId" type="text" inputmode="numeric" formControlName="studentId" />
-      @if (
-        form.get('studentId')?.invalid &&
-        (form.get('studentId')?.dirty || form.get('studentId')?.touched)
-      ) {
-        <span class="error">Student ID is invalid.</span>
-      }
-      <label for="name">Name:</label>
+
+      <label for="name"
+        >Name:@if (form.get('name')?.invalid && (form.get('name')?.dirty ||
+        form.get('name')?.touched)) {
+        <span class="error appear">Name is invalid</span>
+        }</label
+      >
       <input id="name" type="text" formControlName="name" />
-      @if (form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)) {
-        <span class="error">Name is invalid.</span>
-      }
-      <label>Gender:</label>
-      <div>
+
+      <div class="gender">
+        <label>Gender:</label>
         <input id="male" type="radio" value="MALE" formControlName="gender" />
         <label for="male">Male</label>
         <input id="female" type="radio" value="FEMALE" formControlName="gender" />
         <label for="female">Female</label>
       </div>
-      <label for="email">Email:</label>
+
+      <label for="email"
+        >Email:@if (form.get('email')?.invalid && (form.get('email')?.dirty ||
+        form.get('email')?.touched)) {
+        <span class="error appear">Email is invalid</span>
+        }</label
+      >
       <input id="email" type="email" formControlName="email" />
-      @if (form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)) {
-        <span class="error">Email is invalid.</span>
-      }
-      <label>University Email:</label>
+
+      <label
+        >University Email:@if ( form.get('universityEmail')?.invalid &&
+        (form.get('universityEmail')?.dirty || form.get('universityEmail')?.touched) ) {
+        <span class="error appear">University email is invalid</span>
+        }</label
+      >
       <input id="universityEmail" type="email" formControlName="universityEmail" />
-      @if (
-        form.get('universityEmail')?.invalid &&
-        (form.get('universityEmail')?.dirty || form.get('universityEmail')?.touched)
-      ) {
-        <span class="error">University email is invalid.</span>
-      }
-      <label for="password">Password:</label>
+
+      <label for="password"
+        >Password:@if ( form.get('password')?.invalid && (form.get('password')?.dirty ||
+        form.get('password')?.touched) ) {
+        <span class="error appear">Password is invalid</span>
+        }</label
+      >
       <input id="password" type="password" formControlName="password" />
-      @if (
-        form.get('password')?.invalid &&
-        (form.get('password')?.dirty || form.get('password')?.touched)
-      ) {
-        <span class="error">Password is invalid.</span>
-      }
-      <label for="confirmPassword">Confirm Password:</label>
+
+      <label for="confirmPassword"
+        >Confirm Password:
+        <!-- @if ( form.get('confirmPassword')?.invalid &&
+        (form.get('confirmPassword')?.dirty || form.get('confirmPassword')?.touched) ) {
+        <span class="error appear">Confirm Password is invalid</span>
+        } -->
+        @if (form.hasError('passwordMismatch') && (form.dirty || form.touched)) {
+        <span class="error">Passwords do not match.</span>
+        }
+      </label>
       <input id="confirmPassword" type="password" formControlName="confirmPassword" />
-      @if (
-        form.get('confirmPassword')?.invalid &&
-        (form.get('confirmPassword')?.dirty || form.get('confirmPassword')?.touched)
-      ) {
-        <span class="error">Confirm Password is invalid.</span>
-      }
     </div>
-    @if (form.hasError('passwordMismatch') && (form.dirty || form.touched)) {
-      <span class="error">Passwords do not match.</span>
-    }
-    <button type="submit">Sign Up</button>
-    <a routerLink="/signin">Already have an account? Sign in</a>
-  </fieldset>
-</form>
+
+    <button type="submit">SIGN UP</button>
+    <span>Already have an account? <a routerLink="/signin">Sign in</a></span>
+  </form>
+</div>
