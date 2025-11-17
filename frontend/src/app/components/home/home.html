@@ -1,24 +1,32 @@
 @if (this.authenticationService.isSignedIn()) {
 
-
 <div class="container">
   <header>
     <h1 class="logo">
       <span class="Edu">Edu<span class="Mate">Mate</span></span>
     </h1>
-    <button title="sign out" class="sign-out" (click)="signout()"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>  <!-- sign out button -->
+    <button title="sign out" class="sign-out" (click)="signout()">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    </button>
+    <!-- sign out button -->
   </header>
 
   <div class="features">
-    <a class="timeTable feature" href=""><i class="fa-solid fa-table"></i></a>  <!-- timetable feature -->
-    <a class="taskTracker feature" href=""><i class="fa-solid fa-list-check"></i></a>  <!-- task tracker feature -->
-    <a class="sources feature" href=""><i class="fa-solid fa-layer-group"></i></a>  <!-- material sources feature -->
-    <a class="teamCreator feature" href=""><i class="fa-solid fa-people-group"></i></a>  <!-- team creator feature -->
-    <a class="faq feature" href=""><i class="fa-solid fa-clipboard-question"></i></a>  <!-- FAQ feature -->
-    <a class="map feature" href=""><i class="fa-solid fa-map-location-dot"></i></a>  <!-- college map feature -->
-    <a class="announcement feature" href=""><i class="fa-solid fa-scroll"></i></a>  <!-- announcements feature -->
+    <a class="timeTable feature" href=""><i class="fa-solid fa-table"></i></a>
+    <!-- timetable feature -->
+    <a class="taskTracker feature" href=""><i class="fa-solid fa-list-check"></i></a>
+    <!-- task tracker feature -->
+    <a class="sources feature" href=""><i class="fa-solid fa-layer-group"></i></a>
+    <!-- material sources feature -->
+    <a class="teamCreator feature" href=""><i class="fa-solid fa-people-group"></i></a>
+    <!-- team creator feature -->
+    <a class="faq feature" href=""><i class="fa-solid fa-clipboard-question"></i></a>
+    <!-- FAQ feature -->
+    <a class="map feature" href=""><i class="fa-solid fa-map-location-dot"></i></a>
+    <!-- college map feature -->
+    <a class="announcement feature" href=""><i class="fa-solid fa-scroll"></i></a>
+    <!-- announcements feature -->
   </div>
-
 </div>
 
 <!--? background 1 -->
@@ -32,32 +40,111 @@
   </div>
 </div>
 
-
 <!-- ! when user is not signed in -->
-  <h1>{{ greeting() }}</h1>
-  @if (this.student()) {
-    <table>
-      <tr>
-        <td>ID:</td>
-        <td>{{ student()!.id }}</td>
-      </tr>
-      <tr>
-        <td>Name:</td>
-        <td>{{ student()!.name }}</td>
-      </tr>
-      <tr>
-        <td>Email:</td>
-        <td>{{ student()!.email }}</td>
-      </tr>
-      <tr>
-        <td>Gender:</td>
-        <td>{{ student()!.gender }}</td>
-      </tr>
-    </table>
-  } @else {
-    <p>Loading student information...</p>
-  }
-  <button (click)="signout()">Sign Out</button>
+<h1>{{ greeting() }}</h1>
+@if (this.student()) {
+<table>
+  <tr>
+    <td>ID:</td>
+    <td>{{ student()!.id }}</td>
+  </tr>
+  <tr>
+    <td>Name:</td>
+    <td>{{ student()!.name }}</td>
+  </tr>
+  <tr>
+    <td>Email:</td>
+    <td>{{ student()!.email }}</td>
+  </tr>
+  <tr>
+    <td>Gender:</td>
+    <td>{{ student()!.gender }}</td>
+  </tr>
+</table>
 } @else {
-<a routerLink="/signin"><h1>You must sign in first</h1></a>
+<p>Loading student information...</p>
+}
+<button (click)="signout()">Sign Out</button>
+}
+
+<!-- if the user isn't signed in -->
+<!-- the home page for visitors -->
+
+@else {
+<div class="container unsigned">
+  <div class="firstPage" style="height: 100vh; display: flex;flex-direction: column;align-items: center;">
+    <header class="unsigned">
+      <h1 class="logo">
+        <span class="Edu">Edu<span class="Mate">Mate</span></span>
+      </h1>
+      <ul>
+        <li><a href="">About us</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="">Contact</a></li>
+        <li><a routerLink="/signin" style="border: 3px solid;">Sign in</a></li>
+      </ul>
+    </header>
+
+    <section class="desc">
+      Find <span class="s1"></span> focus <br />
+      Learn <span class="and"><span>&</span></span> Inspire <span class="s2"></span>
+    </section>
+    <div style="flex-grow: 1;"><a routerLink="/signup"><i class="fa-solid fa-angles-right"> </i>SIGN UP NOW!</a></div>
+  </div>
+
+
+  <main class="features">
+  <h2 class="title">Explore EduMate Features</h2>
+
+  <div id="features" class="features-grid">
+
+    <div class="feature-card">
+      <i class="fas fa-question-circle"></i>
+      <h3>FAQ</h3>
+      <p>Find instant answers to your most common questions.</p>
+    </div>
+
+    <div class="feature-card">
+      <i class="fas fa-calendar-alt"></i>
+      <h3>Time Table</h3>
+      <p>Track your classes and daily schedule with ease.</p>
+    </div>
+
+    <div class="feature-card">
+      <i class="fas fa-tasks"></i>
+      <h3>Task Tracker</h3>
+      <p>Organize your assignments and stay productive.</p>
+    </div>
+
+    <div class="feature-card">
+      <i class="fas fa-users"></i>
+      <h3>Team Creator</h3>
+      <p>Create groups and collaborate on projects smoothly.</p>
+    </div>
+
+    <div class="feature-card">
+      <i class="fas fa-bullhorn"></i>
+      <h3>Announcements</h3>
+      <p>Stay updated with important news and notifications.</p>
+    </div>
+
+    <div class="feature-card">
+      <i class="fas fa-book"></i>
+      <h3>Material Sources</h3>
+      <p>Access your study materials quickly in one place.</p>
+    </div>
+
+    <div class="feature-card">
+      <i class="fas fa-map-marked-alt"></i>
+      <h3>Map</h3>
+      <p>Navigate the campus or your classrooms effortlessly.</p>
+    </div>
+
+  </div>
+</main>
+
+  <main class="AboutUs">
+    About us coming soon...
+  </main>
+</div>
 }
