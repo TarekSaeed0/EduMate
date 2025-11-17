@@ -94,44 +94,46 @@ public class DataInitializer implements CommandLineRunner {
 			}
 		}
 
-		taskRepository.save(new Task(null,
-				semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
-						courseRepository.findByCode("CSE 213").get().getId()).get(),
-				"Sheet 2",
-				"https://drive.google.com/file/d/1lIeYK2_Wl2R8ovUSZlD_I61G2HR51Z3o/view?usp=drive_link",
-				"https://forms.gle/7PdZu7dNPbjdiLJt5",
-				LocalDateTime.of(2025, 11, 26, 12, 10), null, null));
+		if (taskRepository.count() == 0) {
+			taskRepository.save(new Task(null,
+					semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
+							courseRepository.findByCode("CSE 213").get().getId()).get(),
+					"Sheet 2",
+					"https://drive.google.com/file/d/1lIeYK2_Wl2R8ovUSZlD_I61G2HR51Z3o/view?usp=drive_link",
+					"https://forms.gle/7PdZu7dNPbjdiLJt5",
+					LocalDateTime.of(2025, 11, 26, 12, 10), null, null));
 
-		taskRepository.save(new Task(null,
-				semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
-						courseRepository.findByCode("CSE 233").get().getId()).get(),
-				"Sheet 5",
-				"https://drive.google.com/open?id=1GeseBHSR08TXDqpUqxKrit4U0vlgXI2W&usp=drive_fs",
-				"https://forms.gle/kDbyjQprpLziLLo66",
-				LocalDateTime.of(2025, 11, 19, 23, 50), null, null));
+			taskRepository.save(new Task(null,
+					semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
+							courseRepository.findByCode("CSE 233").get().getId()).get(),
+					"Sheet 5",
+					"https://drive.google.com/open?id=1GeseBHSR08TXDqpUqxKrit4U0vlgXI2W&usp=drive_fs",
+					"https://forms.gle/kDbyjQprpLziLLo66",
+					LocalDateTime.of(2025, 11, 19, 23, 50), null, null));
 
-		taskRepository.save(new Task(null,
-				semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
-						courseRepository.findByCode("CSE 233").get().getId()).get(),
-				"Lab 5",
-				"https://drive.google.com/file/d/18JTDoG6ro1oqCZvwxfNQLBruiJlZH9OV/view?usp=drivesdk",
-				null, LocalDateTime.of(2025, 11, 1, 23, 50), null, null));
+			taskRepository.save(new Task(null,
+					semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
+							courseRepository.findByCode("CSE 233").get().getId()).get(),
+					"Lab 5",
+					"https://drive.google.com/file/d/18JTDoG6ro1oqCZvwxfNQLBruiJlZH9OV/view?usp=drivesdk",
+					null, LocalDateTime.of(2025, 11, 1, 23, 50), null, null));
 
-		taskRepository.save(new Task(null,
-				semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
-						courseRepository.findByCode("CSE 214").get().getId()).get(),
-				"Sheet 3",
-				"https://drive.google.com/file/d/1h4XWUnYP4FYSk40eKFX7LbmTZqvhiIDH/view?usp=drive_link",
-				null, LocalDateTime.of(2025, 11, 6, 12, 0),
-				"This should be submitted through microsoft teams.", null));
+			taskRepository.save(new Task(null,
+					semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
+							courseRepository.findByCode("CSE 214").get().getId()).get(),
+					"Sheet 3",
+					"https://drive.google.com/file/d/1h4XWUnYP4FYSk40eKFX7LbmTZqvhiIDH/view?usp=drive_link",
+					null, LocalDateTime.of(2025, 11, 6, 12, 0),
+					"This should be submitted through microsoft teams.", null));
 
-		taskRepository.save(new Task(null,
-				semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
-						courseRepository.findByCode("CSE 214").get().getId()).get(),
-				"Lab 1",
-				"https://drive.google.com/file/d/1NbZzkrRwHxhE_kGl6qz4-wJA6KYWckUt/view?usp=drivesdk",
-				null, LocalDateTime.of(2025, 11, 20, 12, 0),
-				"This should be submitted through microsoft teams.", null));
+			taskRepository.save(new Task(null,
+					semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
+							courseRepository.findByCode("CSE 214").get().getId()).get(),
+					"Lab 1",
+					"https://drive.google.com/file/d/1NbZzkrRwHxhE_kGl6qz4-wJA6KYWckUt/view?usp=drivesdk",
+					null, LocalDateTime.of(2025, 11, 20, 12, 0),
+					"This should be submitted through microsoft teams.", null));
+		}
 
 		FAQCategory generalInformationCategory =
 				new FAQCategory(null, "General Information", null);
