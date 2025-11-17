@@ -3,7 +3,10 @@
 <div class="tasks-section">
 
   <div class="search-bar">
-    <input type="text" id="search" placeholder="Search Assignments..." />
+    <div class="task-type" id="all-tasks" (click)="toggleStatus(null)">All</div>
+    <div class="task-type" id="upcoming-tasks" (click)="toggleStatus('UPCOMING')">Upcoming</div>
+    <div class="task-type" id="overdue-tasks" (click)="toggleStatus('OVERDUE')">Overdue</div>
+    <div class="task-type" id="completed-tasks" (click)="toggleStatus('COMPLETED')">Completed</div>
   </div>
 
   <div class="tasks-container">
