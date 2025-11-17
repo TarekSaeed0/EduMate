@@ -62,55 +62,69 @@ div.features {
 }
 
 /* Feature Items */
-div.features a.feature {
-    flex: 0 1 calc(50% - 20px); /* 2 per row, account for gap */
-    max-width: 250px;
-    height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-decoration: none;
-    font-size: 10px;
-    transform-origin: bottom center;
+/* Features Section styling */
+main.features {
+  padding: 60px 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
 }
 
-/* Feature Colors */
-div.features a.feature.faq {
-    background-color: rgba(193, 193, 193, 0.4);
-    color: gray;
+main.features .title {
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  color: #171717;
 }
 
-div.features a.feature.announcement {
-    background-color: rgba(255, 77, 77, 0.4);
-    color: rgb(201, 0, 0);
+/* Grid layout */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 25px;
+  padding: 10px 20px;
 }
 
-div.features a.feature.teamCreator {
-    background-color: rgba(108, 174, 254, 0.4);
-    color: blue;
+/* Feature cards */
+.feature-card {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  transition: all 0.35s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
-div.features a.feature.sources {
-    background-color: rgba(113, 247, 131, 0.4);
-    color: green;
+/* Floating hover animation */
+.feature-card:hover {
+  transform: translateY(-12px) scale(1.04);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
 }
 
-div.features a.feature.map {
-    background-color: rgba(253, 210, 71, 0.4);
-    color: rgb(194, 126, 0);
+/* Icon styling */
+.feature-card i {
+  font-size: 45px;
+  color: #4a90e2;
+  margin-bottom: 15px;
+  transition: transform 0.35s ease;
 }
 
-div.features a.feature.taskTracker {
-    background-color: rgba(253, 71, 229, 0.4);
-    color: purple;
+/* Icon animation on hover */
+.feature-card:hover i {
+  transform: rotate(8deg) scale(1.15);
 }
 
-div.features a.feature.timeTable {
-    background-color: rgba(71, 220, 253, 0.4);
-    color: rgb(18, 147, 159);
+/* Title + text */
+.feature-card h3 {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #171717;
+}
+
+.feature-card p {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.5;
 }
 
 /* Responsive Design */
