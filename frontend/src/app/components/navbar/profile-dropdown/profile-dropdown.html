@@ -1,0 +1,21 @@
+<button 
+  class="profile-button" 
+  aria-haspopup="true" 
+  aria-expanded="false" 
+  aria-label="User account menu" 
+  id="profileBtn"
+  (click)="toggleDropdown()"
+  type="button"
+></button>
+
+<ul 
+  class="dropdown-menu" 
+  role="menu" 
+  aria-labelledby="profileBtn"
+  [class.show]="dropdownOpen"
+  id="dropdownMenu"
+>
+  <li role="none"><a href="#" role="menuitem" tabindex="-1">Your Account</a></li>
+  <li role="none"><a href="#" role="menuitem" tabindex="-1">Switch Account</a></li>
+  <li role="none"><a href="#" role="menuitem" class="sign-out" tabindex="-1">Sign Out</a></li>
+</ul>

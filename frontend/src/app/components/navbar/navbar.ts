@@ -1,11 +1,12 @@
-import { Component, ChangeDetectorRef, HostListener, viewChild, ElementRef } from '@angular/core';
+import { Component, ChangeDetectorRef, HostListener, viewChild, ElementRef ,AfterViewInit} from '@angular/core';
+import { ProfileDropdownComponent } from './profile-dropdown/profile-dropdown';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [ProfileDropdownComponent],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css', './sidebar.css', './profile.css'],
+  styleUrls: ['./navbar.css', './sidebar.css'],
 })
 export class Navbar {
   sidebar = viewChild.required<ElementRef<HTMLDivElement>>('sidebar');

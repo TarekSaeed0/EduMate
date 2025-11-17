@@ -1,23 +1,20 @@
-Profile dropdown container
-.profile-dropdown {
-  position: relative;
-  display: inline-block;
-  margin-left: 10px; /* adjust spacing */
-}
-
-/* Circular profile button */
+/* Profile button */
 .profile-button {
   width: 55px;
   height: 55px;
-  border-radius: 50%; /* fully round */
-  border: 2px solid rgb(255, 250, 250);
-  background-image: url('/navbar/Guest-user.JPG'); /* replace with your avatar */
+  border-radius: 50%;
+  border: 2px solid gray;
+  /* Suppose CSS file is in profile-dropdown/ */
+background-image: url('/navbar/Guest-user.JPG');
+
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   cursor: pointer;
   outline: none;
   transition: box-shadow 0.3s ease;
+  background-color: transparent;
 }
 
 .profile-button:hover,
@@ -31,17 +28,17 @@ Profile dropdown container
   top: 65px;
   right: 0;
   background-color: white;
-  border-radius: 12px; /* smooth rounded corners */
+  border-radius: 12px;
   box-shadow: 0 6px 12px rgba(0,0,0,0.15);
   list-style: none;
   padding: 8px 0;
   margin: 0;
   min-width: 180px;
-  display: none; /* hidden by default */
+  display: none;
   z-index: 1000;
 }
 
-/* Show dropdown */
+/* Show dropdown when toggled */
 .dropdown-menu.show {
   display: block;
 }
@@ -62,7 +59,7 @@ Profile dropdown container
   outline: none;
 }
 
-/* Sign out */
+/* Sign out styling */
 .dropdown-menu li a.sign-out {
   color: #d9534f;
   font-weight: 700;
