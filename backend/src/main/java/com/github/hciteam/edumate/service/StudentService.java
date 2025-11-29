@@ -4,27 +4,17 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import com.github.hciteam.edumate.entity.SemesterCourse;
-import com.github.hciteam.edumate.entity.Student;
-import com.github.hciteam.edumate.entity.StudentCourse;
-import com.github.hciteam.edumate.entity.StudentTask;
-import com.github.hciteam.edumate.entity.User;
-import com.github.hciteam.edumate.exception.SemesterCourseNotFoundException;
-import com.github.hciteam.edumate.exception.StudentCourseAlreadyExistsException;
-import com.github.hciteam.edumate.exception.StudentCourseNotFoundException;
+import com.github.hciteam.edumate.model.Student;
+import com.github.hciteam.edumate.model.StudentTask;
+import com.github.hciteam.edumate.model.User;
+import com.github.hciteam.edumate.exception.CourseRegistrationNotFoundException;
 import com.github.hciteam.edumate.exception.StudentNotFoundException;
-import com.github.hciteam.edumate.key.StudentCourseKey;
 import com.github.hciteam.edumate.key.StudentTaskKey;
-import com.github.hciteam.edumate.mapper.StudentCourseMapper;
 import com.github.hciteam.edumate.mapper.StudentMapper;
 import com.github.hciteam.edumate.mapper.StudentTaskMapper;
-import com.github.hciteam.edumate.model.StudentCourseDTO;
-import com.github.hciteam.edumate.model.StudentCourseStatus;
-import com.github.hciteam.edumate.model.StudentDTO;
-import com.github.hciteam.edumate.model.StudentTaskDTO;
+import com.github.hciteam.edumate.dto.StudentDTO;
+import com.github.hciteam.edumate.dto.StudentTaskDTO;
 import com.github.hciteam.edumate.model.StudentTaskStatus;
-import com.github.hciteam.edumate.repository.SemesterCourseRepository;
-import com.github.hciteam.edumate.repository.StudentCourseRepository;
 import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.StudentTaskRepository;
 import com.github.hciteam.edumate.specification.StudentTaskSpecifications;
@@ -33,25 +23,24 @@ import com.github.hciteam.edumate.specification.StudentTaskSpecifications;
 public class StudentService {
 	private final StudentRepository studentRepository;
 	private final StudentTaskRepository studentTaskRepository;
-	private final StudentCourseRepository studentCourseRepository;
-	private final SemesterCourseRepository semesterCourseRepository;
 	private final StudentMapper studentMapper;
 	private final StudentTaskMapper studentTaskMapper;
-	private final StudentCourseMapper studentCourseMapper;
 
 	public StudentService(StudentRepository studentRepository,
-			StudentTaskRepository studentTaskRepository,
-			StudentCourseRepository studentCourseRepository,
-			SemesterCourseRepository semesterCourseRepository,
-			StudentMapper studentMapper, StudentTaskMapper studentTaskMapper,
-			StudentCourseMapper studentCourseMapper) {
+			StudentTaskRepository studentTaskRepository, StudentMapper studentMapper,
+			StudentTaskMapper studentTaskMapper) {
 		this.studentRepository = studentRepository;
 		this.studentTaskRepository = studentTaskRepository;
-		this.studentCourseRepository = studentCourseRepository;
-		this.semesterCourseRepository = semesterCourseRepository;
 		this.studentMapper = studentMapper;
 		this.studentTaskMapper = studentTaskMapper;
-		this.studentCourseMapper = studentCourseMapper;
+	}
+
+	public StudentDTO getCurrentStudent(Authentication authentication) {
+		User user = (User) authentication.getPrincipal();
+		Student student = studentRepository.findByUserId(user.getId())
+				.orElseThrow(() -> new StudentNotFoundException());
+
+		return studentMapper.toDTO(student);
 	}
 
 	public StudentDTO getStudent(Long studentId) {
@@ -60,14 +49,24 @@ public class StudentService {
 				.orElseThrow(() -> new StudentNotFoundException());
 	}
 
-	public List<StudentTaskDTO> getStudentTasks(Long studentId, Long courseId,
-			StudentTaskStatus status) {
+	public List<StudentTaskDTO> getStudentTasks(Long studentId, Long taskId,
+			Long semesterId, Long courseId, StudentTaskStatus status) {
 		if (!studentRepository.existsById(studentId)) {
 			throw new StudentNotFoundException();
 		}
 
 		Specification<StudentTask> specification =
 				StudentTaskSpecifications.ofStudent(studentId);
+
+		if (taskId != null) {
+			specification =
+					specification.and(StudentTaskSpecifications.ofTask(taskId));
+		}
+
+		if (semesterId != null) {
+			specification =
+					specification.and(StudentTaskSpecifications.ofSemester(semesterId));
+		}
 
 		if (courseId != null) {
 			specification =
@@ -95,7 +94,7 @@ public class StudentService {
 
 		return studentTaskRepository.findById(studentTaskId)
 				.map(studentTask -> studentTaskMapper.toDTO(studentTask))
-				.orElseThrow(() -> new StudentCourseNotFoundException());
+				.orElseThrow(() -> new CourseRegistrationNotFoundException());
 	}
 
 	public StudentTaskDTO updateStudentTask(Long studentId, Long taskId,
@@ -110,170 +109,8 @@ public class StudentService {
 				.map(existingStudentTask -> {
 					existingStudentTask.setSubmittedAt(studentTaskDTO.getSubmittedAt());
 					return existingStudentTask;
-				}).orElseThrow(() -> new StudentCourseNotFoundException());
+				}).orElseThrow(() -> new CourseRegistrationNotFoundException());
 
 		return studentTaskMapper.toDTO(studentTaskRepository.save(studentTask));
-	}
-
-	public List<StudentCourseDTO> getStudentCourses(Long studentId) {
-		if (!studentRepository.existsById(studentId)) {
-			throw new StudentNotFoundException();
-		}
-
-		return studentCourseRepository.findByStudentId(studentId).stream()
-				.map(course -> studentCourseMapper.toDTO(course)).toList();
-	}
-
-	public StudentCourseDTO createStudentCourse(Long studentId,
-			StudentCourseDTO studentCourseDTO) {
-		Student student = studentRepository.findById(studentId)
-				.orElseThrow(() -> new StudentNotFoundException());
-		SemesterCourse semesterCourse = semesterCourseRepository
-				.findById(studentCourseDTO.getSemesterCourse().getId())
-				.orElseThrow(() -> new SemesterCourseNotFoundException());
-
-		StudentCourseKey studentCourseId = new StudentCourseKey(studentId,
-				studentCourseDTO.getSemesterCourse().getId());
-
-		if (studentCourseRepository.existsById(studentCourseId)) {
-			throw new StudentCourseAlreadyExistsException();
-		}
-
-		StudentCourse studentCourse = new StudentCourse(studentCourseId, student,
-				semesterCourse, StudentCourseStatus.REGISTERED);
-
-		return studentCourseMapper
-				.toDTO(studentCourseRepository.save(studentCourse));
-	}
-
-	public StudentCourseDTO getStudentCourse(Long studentId,
-			Long semesterCourseId) {
-		if (!studentRepository.existsById(studentId)) {
-			throw new StudentNotFoundException();
-		}
-
-		StudentCourseKey studentCourseId =
-				new StudentCourseKey(studentId, semesterCourseId);
-
-		return studentCourseRepository.findById(studentCourseId)
-				.map(studentCourse -> studentCourseMapper.toDTO(studentCourse))
-				.orElseThrow(() -> new StudentCourseNotFoundException());
-	}
-
-	public StudentCourseDTO updateStudentCourse(Long studentId,
-			Long semesterCourseId, StudentCourseDTO studentCourseDTO) {
-		if (!studentRepository.existsById(studentId)) {
-			throw new StudentNotFoundException();
-		}
-
-		StudentCourseKey studentCourseId =
-				new StudentCourseKey(studentId, semesterCourseId);
-
-		StudentCourse studentCourse = studentCourseRepository
-				.findById(studentCourseId).map(existingSudentCourse -> {
-					existingSudentCourse.setStatus(studentCourseDTO.getStatus());
-					return existingSudentCourse;
-				}).orElseThrow(() -> new StudentCourseNotFoundException());
-
-		return studentCourseMapper
-				.toDTO(studentCourseRepository.save(studentCourse));
-
-	}
-
-	public void deleteStudentCourse(Long studentId, Long semesterCourseId) {
-		if (!studentRepository.existsById(studentId)) {
-			throw new StudentNotFoundException();
-		}
-
-		StudentCourseKey studentCourseId =
-				new StudentCourseKey(studentId, semesterCourseId);
-
-		if (!studentCourseRepository.existsById(studentCourseId)) {
-			throw new StudentCourseNotFoundException();
-		}
-
-		studentCourseRepository.deleteById(studentCourseId);
-	}
-
-	public StudentDTO getCurrentStudent(Authentication authentication) {
-		User user = (User) authentication.getPrincipal();
-		Student student = studentRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new StudentNotFoundException());
-
-		return studentMapper.toDTO(student);
-	}
-
-	public List<StudentTaskDTO> getCurrentStudentTasks(
-			Authentication authentication, Long courseId, StudentTaskStatus status) {
-		User user = (User) authentication.getPrincipal();
-		Student student = studentRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new StudentNotFoundException());
-
-		return getStudentTasks(student.getId(), courseId, status);
-	}
-
-	public StudentTaskDTO getCurrentStudentTask(Authentication authentication,
-			Long taskId) {
-		User user = (User) authentication.getPrincipal();
-		Student student = studentRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new StudentNotFoundException());
-
-		return getStudentTask(student.getId(), taskId);
-	}
-
-	public StudentTaskDTO updateCurrentStudentTask(Authentication authentication,
-			Long taskId, StudentTaskDTO studentTaskDTO) {
-		User user = (User) authentication.getPrincipal();
-		Student student = studentRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new StudentNotFoundException());
-
-		return updateStudentTask(student.getId(), taskId, studentTaskDTO);
-	}
-
-	public List<StudentCourseDTO> getCurrentStudentCourses(
-			Authentication authentication) {
-		User user = (User) authentication.getPrincipal();
-		Student student = studentRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new StudentNotFoundException());
-
-		return getStudentCourses(student.getId());
-	}
-
-	public StudentCourseDTO createCurrentStudentCourse(
-			Authentication authentication, StudentCourseDTO studentCourseDTO) {
-		User user = (User) authentication.getPrincipal();
-		Student student = studentRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new StudentNotFoundException());
-
-		return createStudentCourse(student.getId(), studentCourseDTO);
-	}
-
-	public StudentCourseDTO getCurrentStudentCourse(Authentication authentication,
-			Long semesterCourseId) {
-		User user = (User) authentication.getPrincipal();
-		Student student = studentRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new StudentNotFoundException());
-
-		return getStudentCourse(student.getId(), semesterCourseId);
-	}
-
-	public StudentCourseDTO updateCurrentStudentCourse(
-			Authentication authentication, Long semesterCourseId,
-			StudentCourseDTO studentCourseDTO) {
-		User user = (User) authentication.getPrincipal();
-		Student student = studentRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new StudentNotFoundException());
-
-		return updateStudentCourse(student.getId(), semesterCourseId,
-				studentCourseDTO);
-	}
-
-	public void deleteCurrentStudentCourse(Authentication authentication,
-			Long semesterCourseId) {
-		User user = (User) authentication.getPrincipal();
-		Student student = studentRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new StudentNotFoundException());
-
-		deleteStudentCourse(student.getId(), semesterCourseId);
 	}
 }

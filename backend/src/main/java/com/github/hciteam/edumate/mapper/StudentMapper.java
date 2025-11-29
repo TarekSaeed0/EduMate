@@ -2,8 +2,8 @@ package com.github.hciteam.edumate.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import com.github.hciteam.edumate.entity.Student;
-import com.github.hciteam.edumate.model.StudentDTO;
+import com.github.hciteam.edumate.model.Student;
+import com.github.hciteam.edumate.dto.StudentDTO;
 
 @Mapper(componentModel = "spring")
 public interface StudentMapper {
@@ -11,7 +11,7 @@ public interface StudentMapper {
 	StudentDTO toDTO(Student student);
 
 	@Mapping(source = "userId", target = "user.id")
-	@Mapping(target = "studentCourses", ignore = true)
+	@Mapping(target = "registrations", ignore = true)
 	@Mapping(target = "studentTasks", ignore = true)
 	Student toEntity(StudentDTO studentDTO);
 }

@@ -2,11 +2,11 @@ package com.github.hciteam.edumate.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import com.github.hciteam.edumate.entity.Course;
-import com.github.hciteam.edumate.exception.CourseAlreadyExistsException;
+import com.github.hciteam.edumate.model.Course;
 import com.github.hciteam.edumate.exception.CourseNotFoundException;
+import com.github.hciteam.edumate.exception.CourseAlreadyExistsException;
 import com.github.hciteam.edumate.mapper.CourseMapper;
-import com.github.hciteam.edumate.model.CourseDTO;
+import com.github.hciteam.edumate.dto.CourseDTO;
 import com.github.hciteam.edumate.repository.CourseRepository;
 
 @Service

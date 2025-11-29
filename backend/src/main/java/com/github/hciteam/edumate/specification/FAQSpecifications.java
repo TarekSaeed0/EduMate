@@ -2,8 +2,8 @@ package com.github.hciteam.edumate.specification;
 
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
-import com.github.hciteam.edumate.entity.FAQ;
-import com.github.hciteam.edumate.entity.FAQCategory;
+import com.github.hciteam.edumate.model.FAQ;
+import com.github.hciteam.edumate.model.FAQCategory;
 import jakarta.persistence.criteria.Join;
 
 public class FAQSpecifications {

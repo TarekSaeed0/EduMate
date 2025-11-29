@@ -4,8 +4,8 @@ import java.util.Optional;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import com.github.hciteam.edumate.entity.Student;
-import com.github.hciteam.edumate.entity.User;
+import com.github.hciteam.edumate.model.Student;
+import com.github.hciteam.edumate.model.User;
 import com.github.hciteam.edumate.repository.StudentRepository;
 
 @Service("authorizationService")

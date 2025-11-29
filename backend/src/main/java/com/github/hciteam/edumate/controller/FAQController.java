@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
-import com.github.hciteam.edumate.model.FAQDTO;
+import com.github.hciteam.edumate.dto.FAQDTO;
 import org.springframework.http.ResponseEntity;
 import com.github.hciteam.edumate.service.FAQService;
 import org.springframework.web.bind.annotation.GetMapping;

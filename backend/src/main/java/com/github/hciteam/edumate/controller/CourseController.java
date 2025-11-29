@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import com.github.hciteam.edumate.model.CourseDTO;
+import com.github.hciteam.edumate.dto.CourseDTO;
 import com.github.hciteam.edumate.service.CourseService;
 
 @RestController
@@ -35,27 +35,26 @@ public class CourseController {
 		CourseDTO createdCourse = courseService.createCourse(courseDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(createdCourse.getId()).toUri();
+				.path("/{courseId}").buildAndExpand(createdCourse.getId()).toUri();
 
 		return ResponseEntity.created(location).body(createdCourse);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<CourseDTO> getCourse(@PathVariable Long id) {
-		return ResponseEntity.ok(courseService.getCourse(id));
+	@GetMapping("/{courseId}")
+	public ResponseEntity<CourseDTO> getCourse(@PathVariable Long courseId) {
+		return ResponseEntity.ok(courseService.getCourse(courseId));
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<CourseDTO> updateCourse(@PathVariable Long id,
+	@PutMapping("/{courseId}")
+	public ResponseEntity<CourseDTO> updateCourse(@PathVariable Long courseId,
 			@RequestBody CourseDTO courseDTO) {
-		return ResponseEntity.ok(courseService.updateCourse(id, courseDTO));
+		return ResponseEntity.ok(courseService.updateCourse(courseId, courseDTO));
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteCourse(@PathVariable Long id) {
-		courseService.deleteCourse(id);
+	@DeleteMapping("/{courseId}")
+	public ResponseEntity<Void> deleteCourse(@PathVariable Long courseId) {
+		courseService.deleteCourse(courseId);
 
 		return ResponseEntity.noContent().build();
 	}
-
 }

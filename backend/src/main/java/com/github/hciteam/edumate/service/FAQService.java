@@ -6,9 +6,9 @@ import org.springframework.data.jpa.domain.Specification;
 import com.github.hciteam.edumate.specification.FAQSpecifications;
 import com.github.hciteam.edumate.repository.FAQCategoryRepository;
 import com.github.hciteam.edumate.repository.FAQRepository;
-import com.github.hciteam.edumate.entity.FAQ;
+import com.github.hciteam.edumate.model.FAQ;
 import com.github.hciteam.edumate.exception.FAQNotFoundException;
-import com.github.hciteam.edumate.model.FAQDTO;
+import com.github.hciteam.edumate.dto.FAQDTO;
 import com.github.hciteam.edumate.mapper.FAQMapper;
 
 @Service

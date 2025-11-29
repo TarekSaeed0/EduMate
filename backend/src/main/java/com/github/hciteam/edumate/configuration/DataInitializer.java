@@ -3,46 +3,45 @@ package com.github.hciteam.edumate.configuration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import com.github.hciteam.edumate.entity.Course;
-import com.github.hciteam.edumate.entity.FAQ;
-import com.github.hciteam.edumate.entity.FAQCategory;
-import com.github.hciteam.edumate.entity.Role;
-import com.github.hciteam.edumate.entity.Semester;
-import com.github.hciteam.edumate.entity.SemesterCourse;
-import com.github.hciteam.edumate.entity.Task;
+import com.github.hciteam.edumate.model.Course;
+import com.github.hciteam.edumate.model.FAQ;
+import com.github.hciteam.edumate.model.FAQCategory;
+import com.github.hciteam.edumate.model.UserRole;
+import com.github.hciteam.edumate.model.Semester;
+import com.github.hciteam.edumate.model.CourseOffering;
+import com.github.hciteam.edumate.model.Task;
 import com.github.hciteam.edumate.model.Term;
 import com.github.hciteam.edumate.repository.CourseRepository;
 import com.github.hciteam.edumate.repository.FAQCategoryRepository;
 import com.github.hciteam.edumate.repository.FAQRepository;
-import com.github.hciteam.edumate.repository.RoleRepository;
-import com.github.hciteam.edumate.repository.SemesterCourseRepository;
+import com.github.hciteam.edumate.repository.UserRoleRepository;
+import com.github.hciteam.edumate.repository.CourseOfferingRepository;
 import com.github.hciteam.edumate.repository.SemesterRepository;
 import com.github.hciteam.edumate.repository.TaskRepository;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
-	private final RoleRepository roleRepository;
+	private final UserRoleRepository roleRepository;
 	private final CourseRepository courseRepository;
 	private final SemesterRepository semesterRepository;
-	private final SemesterCourseRepository semesterCourseRepository;
+	private final CourseOfferingRepository offeringRepository;
 	private final TaskRepository taskRepository;
 	private final FAQCategoryRepository faqCategoryRepository;
 	private final FAQRepository faqRepository;
 
-	public DataInitializer(RoleRepository roleRepository,
+	public DataInitializer(UserRoleRepository roleRepository,
 			CourseRepository courseRepository, SemesterRepository semesterRepository,
-			SemesterCourseRepository semesterCourseRepository,
+			CourseOfferingRepository offeringRepository,
 			TaskRepository taskRepository,
 			FAQCategoryRepository faqCategoryRepository,
 			FAQRepository faqRepository) {
 		this.roleRepository = roleRepository;
 		this.courseRepository = courseRepository;
 		this.semesterRepository = semesterRepository;
-		this.semesterCourseRepository = semesterCourseRepository;
+		this.offeringRepository = offeringRepository;
 		this.taskRepository = taskRepository;
 		this.faqCategoryRepository = faqCategoryRepository;
 		this.faqRepository = faqRepository;
@@ -53,7 +52,7 @@ public class DataInitializer implements CommandLineRunner {
 		String[] roleNames = {"STUDENT", "COORDINATOR", "ADMINISTRATOR"};
 		Arrays.stream(roleNames).forEach(roleName -> {
 			if (!roleRepository.existsByName(roleName)) {
-				Role role = new Role(null, roleName);
+				UserRole role = new UserRole(null, roleName);
 				roleRepository.save(role);
 			}
 		});
@@ -87,16 +86,16 @@ public class DataInitializer implements CommandLineRunner {
 			Long courseId =
 					courseRepository.findByCode(course.getCode()).get().getId();
 
-			if (!semesterCourseRepository.existsBySemesterIdAndCourseId(semesterId,
+			if (!offeringRepository.existsBySemesterIdAndCourseId(semesterId,
 					courseId)) {
-				semesterCourseRepository
-						.save(new SemesterCourse(null, semester, course, null, null));
+				offeringRepository
+						.save(new CourseOffering(null, semester, course, null, null));
 			}
 		}
 
 		if (taskRepository.count() == 0) {
 			taskRepository.save(new Task(null,
-					semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
+					offeringRepository.findBySemesterIdAndCourseId(semesterId,
 							courseRepository.findByCode("CSE 213").get().getId()).get(),
 					"Sheet 2",
 					"https://drive.google.com/file/d/1lIeYK2_Wl2R8ovUSZlD_I61G2HR51Z3o/view?usp=drive_link",
@@ -104,7 +103,7 @@ public class DataInitializer implements CommandLineRunner {
 					LocalDateTime.of(2025, 11, 26, 12, 10), null, null));
 
 			taskRepository.save(new Task(null,
-					semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
+					offeringRepository.findBySemesterIdAndCourseId(semesterId,
 							courseRepository.findByCode("CSE 233").get().getId()).get(),
 					"Sheet 5",
 					"https://drive.google.com/open?id=1GeseBHSR08TXDqpUqxKrit4U0vlgXI2W&usp=drive_fs",
@@ -112,14 +111,14 @@ public class DataInitializer implements CommandLineRunner {
 					LocalDateTime.of(2025, 11, 19, 23, 50), null, null));
 
 			taskRepository.save(new Task(null,
-					semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
+					offeringRepository.findBySemesterIdAndCourseId(semesterId,
 							courseRepository.findByCode("CSE 233").get().getId()).get(),
 					"Lab 5",
 					"https://drive.google.com/file/d/18JTDoG6ro1oqCZvwxfNQLBruiJlZH9OV/view?usp=drivesdk",
 					null, LocalDateTime.of(2025, 11, 1, 23, 50), null, null));
 
 			taskRepository.save(new Task(null,
-					semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
+					offeringRepository.findBySemesterIdAndCourseId(semesterId,
 							courseRepository.findByCode("CSE 214").get().getId()).get(),
 					"Sheet 3",
 					"https://drive.google.com/file/d/1h4XWUnYP4FYSk40eKFX7LbmTZqvhiIDH/view?usp=drive_link",
@@ -127,7 +126,7 @@ public class DataInitializer implements CommandLineRunner {
 					"This should be submitted through microsoft teams.", null));
 
 			taskRepository.save(new Task(null,
-					semesterCourseRepository.findBySemesterIdAndCourseId(semesterId,
+					offeringRepository.findBySemesterIdAndCourseId(semesterId,
 							courseRepository.findByCode("CSE 214").get().getId()).get(),
 					"Lab 1",
 					"https://drive.google.com/file/d/1NbZzkrRwHxhE_kGl6qz4-wJA6KYWckUt/view?usp=drivesdk",
