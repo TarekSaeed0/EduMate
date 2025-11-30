@@ -44,4 +44,8 @@ public class CourseOffering {
 	@OneToMany(mappedBy = "offering", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private Set<Task> tasks;
+
+	@OneToMany(mappedBy = "offering", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	private Set<TeamGroup> teamGroups;
 }
