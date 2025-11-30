@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, catchError, of } from 'rxjs';
 import { Student } from './student.service';
 
 export enum Gender {
@@ -39,12 +39,13 @@ export class AuthenticationService {
   user = signal<User | null>(null);
   isSignedIn = computed(() => this.user() !== null);
 
-  loadUser(): Observable<User> {
+  loadUser(): Observable<User | null> { // Changed return type to allow null
     return this.http.get<User>(`${this.baseUrl}/me`, { withCredentials: true }).pipe(
-      tap({
-        next: (user) => this.user.set(user),
-        error: () => this.user.set(null),
-      }),
+      tap((user) => this.user.set(user)),
+      catchError(() => {
+        this.user.set(null);
+        return of(null);
+      })
     );
   }
 
