@@ -29,7 +29,7 @@ export class Signup {
   private authenticationService = inject(AuthenticationService);
 
   private formBuilder = inject(FormBuilder);
-  form = this.formBuilder.group(
+  form = this.formBuilder.nonNullable.group(
     {
       studentId: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       name: ['', Validators.required],
@@ -47,15 +47,8 @@ export class Signup {
   private router = inject(Router);
 
   onSubmit() {
-    const value = this.form.value;
-    if (
-      value.studentId &&
-      value.name &&
-      value.gender &&
-      value.email &&
-      value.universityEmail &&
-      value.password
-    ) {
+    if (this.form.valid) {
+      const value = this.form.getRawValue();
       this.authenticationService
         .signup({
           studentId: parseInt(value.studentId, 10),
@@ -65,15 +58,7 @@ export class Signup {
           universityEmail: value.universityEmail,
           password: value.password,
         })
-        .subscribe({
-          next: () => {
-            console.log('Sign up successful');
-            this.router.navigateByUrl('/signin');
-          },
-          error: (error) => {
-            console.error('Sign up failed', error);
-          },
-        });
+        .subscribe(() => this.router.navigateByUrl('/signin'));
     }
   }
 }
