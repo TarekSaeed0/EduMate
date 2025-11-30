@@ -13,18 +13,18 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
-import com.github.hciteam.edumate.entity.Role;
-import com.github.hciteam.edumate.entity.Student;
-import com.github.hciteam.edumate.entity.StudentCourse;
-import com.github.hciteam.edumate.entity.StudentTask;
-import com.github.hciteam.edumate.entity.User;
-import com.github.hciteam.edumate.model.SigninRequest;
-import com.github.hciteam.edumate.model.SignupRequest;
-import com.github.hciteam.edumate.model.StudentCourseStatus;
-import com.github.hciteam.edumate.model.UserDTO;
-import com.github.hciteam.edumate.repository.RoleRepository;
-import com.github.hciteam.edumate.repository.SemesterCourseRepository;
-import com.github.hciteam.edumate.repository.StudentCourseRepository;
+import com.github.hciteam.edumate.model.UserRole;
+import com.github.hciteam.edumate.model.Student;
+import com.github.hciteam.edumate.model.CourseRegistration;
+import com.github.hciteam.edumate.model.StudentTask;
+import com.github.hciteam.edumate.model.User;
+import com.github.hciteam.edumate.dto.SigninRequest;
+import com.github.hciteam.edumate.dto.SignupRequest;
+import com.github.hciteam.edumate.model.CourseRegistrationStatus;
+import com.github.hciteam.edumate.dto.UserDTO;
+import com.github.hciteam.edumate.repository.UserRoleRepository;
+import com.github.hciteam.edumate.repository.CourseOfferingRepository;
+import com.github.hciteam.edumate.repository.CourseRegistrationRepository;
 import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.StudentTaskRepository;
 import com.github.hciteam.edumate.repository.UserRepository;
@@ -32,7 +32,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import com.github.hciteam.edumate.exception.UserAlreadyExistsException;
-import com.github.hciteam.edumate.key.StudentCourseKey;
 import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.mapper.UserMapper;
 import com.github.hciteam.edumate.exception.StudentAlreadyExistsException;
@@ -42,10 +41,10 @@ public class AuthenticationService {
 	private final AuthenticationManager authenticationManager;
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
-	private final RoleRepository roleRepository;
+	private final UserRoleRepository roleRepository;
 	private final StudentRepository studentRepository;
-	private final SemesterCourseRepository semesterCourseRepository;
-	private final StudentCourseRepository studentCourseRepository;
+	private final CourseOfferingRepository offeringRepository;
+	private final CourseRegistrationRepository registrationRepository;
 	private final StudentTaskRepository studentTaskRepository;
 	private final UserMapper userMapper;
 	private SecurityContextRepository securityContextRepository =
@@ -55,17 +54,17 @@ public class AuthenticationService {
 
 	public AuthenticationService(AuthenticationManager authenticationManager,
 			PasswordEncoder passwordEncoder, UserRepository userRepository,
-			RoleRepository roleRepository, StudentRepository studentRepository,
-			SemesterCourseRepository semesterCourseRepository,
-			StudentCourseRepository studentCourseRepository,
+			UserRoleRepository roleRepository, StudentRepository studentRepository,
+			CourseOfferingRepository courseOfferingRepository,
+			CourseRegistrationRepository registrationRepository,
 			StudentTaskRepository studentTaskRepository, UserMapper userMapper) {
 		this.authenticationManager = authenticationManager;
 		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 		this.studentRepository = studentRepository;
-		this.semesterCourseRepository = semesterCourseRepository;
-		this.studentCourseRepository = studentCourseRepository;
+		this.offeringRepository = courseOfferingRepository;
+		this.registrationRepository = registrationRepository;
 		this.studentTaskRepository = studentTaskRepository;
 		this.userMapper = userMapper;
 	}
@@ -76,10 +75,10 @@ public class AuthenticationService {
 			throw new UserAlreadyExistsException();
 		}
 
-		Role studentRole = roleRepository.findByName("STUDENT")
+		UserRole studentRole = roleRepository.findByName("STUDENT")
 				.orElseThrow(() -> new RuntimeException("STUDENT Role not found"));
 
-		Set<Role> roles = new HashSet<>();
+		Set<UserRole> roles = new HashSet<>();
 		roles.add(studentRole);
 
 		User user = User.builder().email(signupRequest.getEmail())
@@ -99,17 +98,16 @@ public class AuthenticationService {
 
 		User createdUser = userRepository.save(user);
 
-		List<StudentCourse> studentCourses = semesterCourseRepository.findAll()
-				.stream()
-				.map(semesterCourse -> new StudentCourse(
-						new StudentCourseKey(createdUser.getStudent().getId(), null),
-						student, semesterCourse, StudentCourseStatus.REGISTERED))
-				.toList();
+		List<CourseRegistration> registrations =
+				offeringRepository
+						.findAll().stream().map(offering -> new CourseRegistration(null,
+								offering, student, CourseRegistrationStatus.REGISTERED))
+						.toList();
 
-		studentCourseRepository.saveAll(studentCourses);
+		registrationRepository.saveAll(registrations);
 
-		List<StudentTask> studentTasks = semesterCourseRepository.findAll().stream()
-				.flatMap(semesterCourse -> semesterCourse.getTasks().stream()
+		List<StudentTask> studentTasks = offeringRepository.findAll().stream()
+				.flatMap(offering -> offering.getTasks().stream()
 						.map(task -> new StudentTask(
 								new StudentTaskKey(createdUser.getStudent().getId(),
 										task.getId()),

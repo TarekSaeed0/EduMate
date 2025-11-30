@@ -24,15 +24,15 @@ export class CourseService {
     return this.http.post<Course>(`${this.baseUrl}`, course, { withCredentials: true });
   }
 
-  getCourse(id: number): Observable<Course> {
-    return this.http.get<Course>(`${this.baseUrl}/${id}`, { withCredentials: true });
+  getCourse(courseId: number): Observable<Course> {
+    return this.http.get<Course>(`${this.baseUrl}/${courseId}`, { withCredentials: true });
   }
 
-  updateCourse(id: number, course: Omit<Course, 'id'>): Observable<Course> {
-    return this.http.put<Course>(`${this.baseUrl}/${id}`, course, { withCredentials: true });
+  updateCourse(courseId: number, course: Omit<Course, 'id'>): Observable<Course> {
+    return this.http.put<Course>(`${this.baseUrl}/${courseId}`, course, { withCredentials: true });
   }
 
-  deleteCourse(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
+  deleteCourse(courseId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${courseId}`, { withCredentials: true });
   }
 }

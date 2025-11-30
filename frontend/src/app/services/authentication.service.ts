@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
+import { Student } from './student.service';
 
 export enum Gender {
   Male = 'MALE',
@@ -24,7 +25,8 @@ export interface SigninRequest {
 export interface User {
   id: number;
   email: string;
-  role: 'STUDENT' | 'COORDINATOR' | 'ADMINSTRATOR';
+  roles: string[];
+  student: Student;
 }
 
 @Injectable({
@@ -37,11 +39,13 @@ export class AuthenticationService {
   user = signal<User | null>(null);
   isSignedIn = computed(() => this.user() !== null);
 
-  fetchUser() {
-    this.http.get<User>(`${this.baseUrl}/me`, { withCredentials: true }).subscribe({
-      next: (user) => this.user.set(user),
-      error: () => this.user.set(null),
-    });
+  loadUser(): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/me`, { withCredentials: true }).pipe(
+      tap({
+        next: (user) => this.user.set(user),
+        error: () => this.user.set(null),
+      }),
+    );
   }
 
   signup(request: SignupRequest): Observable<Object> {
@@ -51,7 +55,7 @@ export class AuthenticationService {
   signin(request: SigninRequest): Observable<void> {
     return this.http.post<void>(`${this.baseUrl}/signin`, request, { withCredentials: true }).pipe(
       tap(() => {
-        this.fetchUser();
+        this.loadUser().subscribe();
       }),
     );
   }

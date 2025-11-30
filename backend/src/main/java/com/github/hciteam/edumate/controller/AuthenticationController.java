@@ -2,9 +2,9 @@ package com.github.hciteam.edumate.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.github.hciteam.edumate.model.SigninRequest;
-import com.github.hciteam.edumate.model.SignupRequest;
-import com.github.hciteam.edumate.model.UserDTO;
+import com.github.hciteam.edumate.dto.SigninRequest;
+import com.github.hciteam.edumate.dto.SignupRequest;
+import com.github.hciteam.edumate.dto.UserDTO;
 import com.github.hciteam.edumate.service.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

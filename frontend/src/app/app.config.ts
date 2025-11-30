@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideAppInitializer(() => {
       const authenticationService = inject(AuthenticationService);
-      return authenticationService.fetchUser();
+      return authenticationService.loadUser();
     }),
   ],
 };
