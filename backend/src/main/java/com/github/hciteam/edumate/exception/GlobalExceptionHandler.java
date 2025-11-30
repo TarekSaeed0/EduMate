@@ -12,7 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import com.github.hciteam.edumate.model.ApiErrorResponse;
+import com.github.hciteam.edumate.dto.ApiErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice

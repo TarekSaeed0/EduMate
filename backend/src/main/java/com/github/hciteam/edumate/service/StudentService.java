@@ -2,11 +2,8 @@ package com.github.hciteam.edumate.service;
 
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import com.github.hciteam.edumate.model.Student;
 import com.github.hciteam.edumate.model.StudentTask;
-import com.github.hciteam.edumate.model.User;
 import com.github.hciteam.edumate.exception.CourseRegistrationNotFoundException;
 import com.github.hciteam.edumate.exception.StudentNotFoundException;
 import com.github.hciteam.edumate.key.StudentTaskKey;
@@ -33,14 +30,6 @@ public class StudentService {
 		this.studentTaskRepository = studentTaskRepository;
 		this.studentMapper = studentMapper;
 		this.studentTaskMapper = studentTaskMapper;
-	}
-
-	public StudentDTO getCurrentStudent(Authentication authentication) {
-		User user = (User) authentication.getPrincipal();
-		Student student = studentRepository.findByUserId(user.getId())
-				.orElseThrow(() -> new StudentNotFoundException());
-
-		return studentMapper.toDTO(student);
 	}
 
 	public StudentDTO getStudent(Long studentId) {

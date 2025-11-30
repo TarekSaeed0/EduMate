@@ -48,6 +48,8 @@ public class SecurityConfiguration {
 						.requestMatchers("/api/semesters/**").hasRole("ADMINISTRATOR")
 						.requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
 						.requestMatchers("/api/courses/**").hasRole("ADMINISTRATOR")
+						.requestMatchers(HttpMethod.GET, "/api/offerings/**").permitAll()
+						.requestMatchers("/api/offerings/**").hasRole("ADMINISTRATOR")
 						.requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
 						.requestMatchers("/api/tasks/**")
 						.hasAnyRole("COORDINATOR", "ADMINISTRATOR")

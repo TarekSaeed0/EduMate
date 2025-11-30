@@ -10,7 +10,6 @@ import com.github.hciteam.edumate.service.StudentService;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,13 +25,6 @@ public class StudentController {
 		this.studentService = studentService;
 	}
 
-	@GetMapping("/me")
-	@PreAuthorize("hasRole('STUDENT')")
-	public ResponseEntity<StudentDTO> getCurrentStudent(
-			Authentication authentication) {
-		return ResponseEntity.ok(studentService.getCurrentStudent(authentication));
-	}
-
 	@GetMapping("/{studentId}")
 	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
 	public ResponseEntity<StudentDTO> getStudent(@PathVariable Long studentId) {
@@ -46,7 +38,7 @@ public class StudentController {
 			@RequestParam(required = false) Long semesterId,
 			@RequestParam(required = false) Long courseId,
 			@RequestParam(required = false) StudentTaskStatus status) {
-		return ResponseEntity.ok(studentService.getStudentTasks(taskId, studentId,
+		return ResponseEntity.ok(studentService.getStudentTasks(studentId, taskId,
 				semesterId, courseId, status));
 	}
 

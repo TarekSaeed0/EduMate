@@ -7,7 +7,7 @@ import com.github.hciteam.edumate.model.UserRole;
 import com.github.hciteam.edumate.model.User;
 import com.github.hciteam.edumate.dto.UserDTO;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {StudentMapper.class})
 public interface UserMapper {
 	UserDTO toDTO(User user);
 
