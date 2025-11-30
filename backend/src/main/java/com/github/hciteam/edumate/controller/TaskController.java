@@ -34,25 +34,25 @@ public class TaskController {
 		TaskDTO createdTask = taskService.createTask(taskDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}").buildAndExpand(createdTask.getId()).toUri();
+				.path("/{taskId}").buildAndExpand(createdTask.getId()).toUri();
 
 		return ResponseEntity.created(location).body(createdTask);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<TaskDTO> getTask(@PathVariable Long id) {
-		return ResponseEntity.ok(taskService.getTask(id));
+	@GetMapping("/{taskId}")
+	public ResponseEntity<TaskDTO> getTask(@PathVariable Long taskId) {
+		return ResponseEntity.ok(taskService.getTask(taskId));
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<TaskDTO> updateTask(@PathVariable Long id,
+	@PutMapping("/{taskId}")
+	public ResponseEntity<TaskDTO> updateTask(@PathVariable Long taskId,
 			@RequestBody TaskDTO taskDTO) {
-		return ResponseEntity.ok(taskService.updateTask(id, taskDTO));
+		return ResponseEntity.ok(taskService.updateTask(taskId, taskDTO));
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
-		taskService.deleteTask(id);
+	@DeleteMapping("/{taskId}")
+	public ResponseEntity<Void> deleteTask(@PathVariable Long taskId) {
+		taskService.deleteTask(taskId);
 
 		return ResponseEntity.noContent().build();
 	}

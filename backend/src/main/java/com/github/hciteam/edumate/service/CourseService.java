@@ -21,8 +21,8 @@ public class CourseService {
 	}
 
 	public List<CourseDTO> getCourses() {
-		return courseRepository.findAll().stream()
-				.map(course -> courseMapper.toDTO(course)).toList();
+		return courseRepository.findAll().stream().map(courseMapper::toDTO)
+				.toList();
 	}
 
 	public CourseDTO createCourse(CourseDTO courseDTO) {

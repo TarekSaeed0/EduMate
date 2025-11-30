@@ -33,8 +33,7 @@ public class TaskService {
 	}
 
 	public List<TaskDTO> getTasks() {
-		return taskRepository.findAll().stream().map(task -> taskMapper.toDTO(task))
-				.toList();
+		return taskRepository.findAll().stream().map(taskMapper::toDTO).toList();
 	}
 
 	@Transactional
@@ -66,7 +65,7 @@ public class TaskService {
 	}
 
 	public TaskDTO getTask(Long taskId) {
-		return taskRepository.findById(taskId).map(task -> taskMapper.toDTO(task))
+		return taskRepository.findById(taskId).map(taskMapper::toDTO)
 				.orElseThrow(() -> new TaskNotFoundException());
 	}
 

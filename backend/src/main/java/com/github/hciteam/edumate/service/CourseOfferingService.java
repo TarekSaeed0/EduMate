@@ -48,7 +48,7 @@ public class CourseOfferingService {
 		}
 
 		return offeringRepository.findAll(specification).stream()
-				.map(task -> offeringMapper.toDTO(task)).toList();
+				.map(offeringMapper::toDTO).toList();
 	}
 
 	public CourseOfferingDTO createOffering(CourseOfferingDTO offeringDTO) {
@@ -69,8 +69,7 @@ public class CourseOfferingService {
 	}
 
 	public CourseOfferingDTO getOffering(Long offeringId) {
-		return offeringRepository.findById(offeringId)
-				.map(offering -> offeringMapper.toDTO(offering))
+		return offeringRepository.findById(offeringId).map(offeringMapper::toDTO)
 				.orElseThrow(() -> new SemesterNotFoundException());
 	}
 

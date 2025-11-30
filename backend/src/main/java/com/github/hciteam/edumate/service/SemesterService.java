@@ -21,8 +21,8 @@ public class SemesterService {
 	}
 
 	public List<SemesterDTO> getSemesters() {
-		return semesterRepository.findAll().stream()
-				.map(semester -> semesterMapper.toDTO(semester)).toList();
+		return semesterRepository.findAll().stream().map(semesterMapper::toDTO)
+				.toList();
 	}
 
 	public SemesterDTO createSemester(SemesterDTO semesterDTO) {
@@ -39,8 +39,7 @@ public class SemesterService {
 	}
 
 	public SemesterDTO getSemester(Long semesterId) {
-		return semesterRepository.findById(semesterId)
-				.map(semester -> semesterMapper.toDTO(semester))
+		return semesterRepository.findById(semesterId).map(semesterMapper::toDTO)
 				.orElseThrow(() -> new SemesterNotFoundException());
 	}
 

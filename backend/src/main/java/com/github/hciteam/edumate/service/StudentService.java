@@ -33,8 +33,7 @@ public class StudentService {
 	}
 
 	public StudentDTO getStudent(Long studentId) {
-		return studentRepository.findById(studentId)
-				.map(student -> studentMapper.toDTO(student))
+		return studentRepository.findById(studentId).map(studentMapper::toDTO)
 				.orElseThrow(() -> new StudentNotFoundException());
 	}
 
@@ -71,7 +70,7 @@ public class StudentService {
 		}
 
 		return studentTaskRepository.findAll(specification).stream()
-				.map(task -> studentTaskMapper.toDTO(task)).toList();
+				.map(studentTaskMapper::toDTO).toList();
 	}
 
 	public StudentTaskDTO getStudentTask(Long studentId, Long taskId) {
@@ -82,7 +81,7 @@ public class StudentService {
 		StudentTaskKey studentTaskId = new StudentTaskKey(studentId, taskId);
 
 		return studentTaskRepository.findById(studentTaskId)
-				.map(studentTask -> studentTaskMapper.toDTO(studentTask))
+				.map(studentTaskMapper::toDTO)
 				.orElseThrow(() -> new CourseRegistrationNotFoundException());
 	}
 

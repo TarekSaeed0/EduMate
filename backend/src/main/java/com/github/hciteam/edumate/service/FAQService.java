@@ -43,12 +43,12 @@ public class FAQService {
 					.and(FAQSpecifications.hasAllCategoriesNames(categories));
 		}
 
-		return faqRepository.findAll(specification).stream()
-				.map(faq -> faqMapper.toDTO(faq)).toList();
+		return faqRepository.findAll(specification).stream().map(faqMapper::toDTO)
+				.toList();
 	}
 
 	public FAQDTO getFAQ(Long id) {
-		return faqRepository.findById(id).map(faq -> faqMapper.toDTO(faq))
+		return faqRepository.findById(id).map(faqMapper::toDTO)
 				.orElseThrow(() -> new FAQNotFoundException());
 	}
 

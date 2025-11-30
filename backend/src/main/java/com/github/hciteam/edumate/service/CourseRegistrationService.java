@@ -67,7 +67,7 @@ public class CourseRegistrationService {
 		}
 
 		return registrationRepository.findAll(specification).stream()
-				.map(task -> registrationMapper.toDTO(task)).toList();
+				.map(registrationMapper::toDTO).toList();
 	}
 
 	public CourseRegistrationDTO createRegistration(
@@ -91,7 +91,7 @@ public class CourseRegistrationService {
 
 	public CourseRegistrationDTO getRegistration(Long registrationId) {
 		return registrationRepository.findById(registrationId)
-				.map(registration -> registrationMapper.toDTO(registration))
+				.map(registrationMapper::toDTO)
 				.orElseThrow(() -> new CourseRegistrationNotFoundException());
 	}
 
