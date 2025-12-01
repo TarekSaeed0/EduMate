@@ -16,7 +16,6 @@
   </div>
 
   <div class="nav-right">
-    <!--@if(student.isSignedIn)-->
     <div class="profile-photo">
       <div class="default-user">
         <span class="user"></span>
@@ -30,8 +29,6 @@
       <option value="logout">Sign Out</option>
     </select>
 
-    <!--@else
-    <button id="sign-in"></button>-->
   </div>
 </nav>
 
@@ -39,49 +36,49 @@
   <ul>
     <li>
       <a href="home"
-        >
+      >
         <span>Home Page</span>
       </a>
     </li>
     <li>
       <a href="student/task"
-        >
+      >
         <span>Task Tracker</span>
       </a>
     </li>
     <li>
-      <a href=""
-        >
+      <a routerLink="/team-creator"
+      >
         <span>Team Creator</span>
       </a>
     </li>
     <li>
       <a href=""
-        >
+      >
         <span>Time Table</span>
       </a>
     </li>
     <li>
       <a href="signin"
-        >
+      >
         <span>Map</span>
       </a>
     </li>
     <li>
       <a href="signup"
-        >
+      >
         <span>Announcement</span>
       </a>
     </li>
     <li>
       <a href=""
-        >
+      >
         <span>Material Sources</span>
       </a>
     </li>
     <li>
       <a href="student/faq"
-        >
+      >
         <span>FAQ</span>
       </a>
     </li>

@@ -5,6 +5,7 @@ import { Signin } from './components/signin/signin';
 import { StudentTasks } from './components/student/tasks/tasks';
 import { FAQComponent } from './components/student/faq/faq.component';
 import { Main} from './components/main/main';
+import { TeamCreatorPageComponent } from './components/teamcreator/teamcreator';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -13,5 +14,7 @@ export const routes: Routes = [
   { path: 'signin', component: Signin, title: 'Sign In' },
   { path: 'student/tasks', component: StudentTasks, title: 'Student Tasks' },
   { path: 'student/faq', component: FAQComponent, title: 'FAQ' },
+  { path: 'team-creator', component: TeamCreatorPageComponent, title: 'Team Creator' },
+
   { path: 'main', component: Main, title: 'Main page' },
 ];
