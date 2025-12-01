@@ -1,76 +1,110 @@
-<span class="layer"></span>
-<div class="container">
-  <div class="robot"></div>
-  <header>
-    <h1>
-      <span class="Edu">Edu<span class="Mate">Mate</span></span>
-    </h1>
-  </header>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <h2>Create your account</h2>
-    <div class="form-group">
-      <label for="studentId"
-        >Student ID:@if ( form.get('studentId')?.invalid && (form.get('studentId')?.dirty ||
-        form.get('studentId')?.touched) ) {
-        <span class="error appear">Student ID is invalid</span>
-        }</label
-      >
-      <input id="studentId" type="text" inputmode="numeric" formControlName="studentId" />
+<div class="signup-container">
 
-      <label for="name"
-        >Name:@if (form.get('name')?.invalid && (form.get('name')?.dirty ||
-        form.get('name')?.touched)) {
-        <span class="error appear">Name is invalid</span>
-        }</label
-      >
-      <input id="name" type="text" formControlName="name" />
+  <!-- MAIN CARD WRAPPER (Fixes alignment issues) -->
+  <div class="signup-card-wrapper">
 
-      <div class="gender">
-        <label>Gender:</label>
-        <input id="male" type="radio" value="MALE" formControlName="gender" />
-        <label for="male">Male</label>
-        <input id="female" type="radio" value="FEMALE" formControlName="gender" />
-        <label for="female">Female</label>
+    <!-- LEFT SIDE: BRAND PANEL -->
+    <div class="brand-side">
+      <div class="brand-content">
+        <h1 class="logo">Edu<span class="mate">Mate</span></h1>
+        <div class="divider"></div>
+        <p class="tagline">Your Campus Companion</p>
       </div>
-
-      <label for="email"
-        >Email:@if (form.get('email')?.invalid && (form.get('email')?.dirty ||
-        form.get('email')?.touched)) {
-        <span class="error appear">Email is invalid</span>
-        }</label
-      >
-      <input id="email" type="email" formControlName="email" />
-
-      <label
-        >University Email:@if ( form.get('universityEmail')?.invalid &&
-        (form.get('universityEmail')?.dirty || form.get('universityEmail')?.touched) ) {
-        <span class="error appear">University email is invalid</span>
-        }</label
-      >
-      <input id="universityEmail" type="email" formControlName="universityEmail" />
-
-      <label for="password"
-        >Password:@if ( form.get('password')?.invalid && (form.get('password')?.dirty ||
-        form.get('password')?.touched) ) {
-        <span class="error appear">Password is invalid</span>
-        }</label
-      >
-      <input id="password" type="password" formControlName="password" />
-
-      <label for="confirmPassword"
-        >Confirm Password:
-        <!-- @if ( form.get('confirmPassword')?.invalid &&
-        (form.get('confirmPassword')?.dirty || form.get('confirmPassword')?.touched) ) {
-        <span class="error appear">Confirm Password is invalid</span>
-        } -->
-        @if (form.hasError('passwordMismatch') && (form.dirty || form.touched)) {
-        <span class="error">Passwords do not match.</span>
-        }
-      </label>
-      <input id="confirmPassword" type="password" formControlName="confirmPassword" />
+      <!-- Decorative Background -->
+      <div class="circle c1"></div>
+      <div class="circle c2"></div>
     </div>
 
-    <button type="submit">SIGN UP</button>
-    <span>Already have an account? <a routerLink="/signin">Sign in</a></span>
-  </form>
+    <!-- RIGHT SIDE: FORM PANEL -->
+    <div class="form-side">
+      <div class="form-header">
+        <h2>Create Account</h2>
+        <p>Please fill in your details to register.</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <!-- Row 1: ID & Name -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="studentId">Student ID</label>
+            <input id="studentId" type="text" inputmode="numeric" formControlName="studentId" placeholder="e.g. 2023001" />
+            @if (form.get('studentId')?.invalid && (form.get('studentId')?.dirty || form.get('studentId')?.touched)) {
+              <span class="error">Valid ID required</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="name">Full Name</label>
+            <input id="name" type="text" formControlName="name" placeholder="John Doe" />
+            @if (form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)) {
+              <span class="error">Name required</span>
+            }
+          </div>
+        </div>
+
+        <!-- Gender Selection -->
+        <div class="form-group">
+          <label>Gender</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" value="MALE" formControlName="gender" />
+              <span class="radio-custom"></span> Male
+            </label>
+            <label class="radio-label">
+              <input type="radio" value="FEMALE" formControlName="gender" />
+              <span class="radio-custom"></span> Female
+            </label>
+          </div>
+        </div>
+
+        <!-- Row 2: Emails -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="email">Personal Email</label>
+            <input id="email" type="email" formControlName="email" placeholder="john@example.com" />
+            @if (form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)) {
+              <span class="error">Valid email required</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="universityEmail">University Email</label>
+            <input id="universityEmail" type="email" formControlName="universityEmail" placeholder="john@uni.edu.eg" />
+            @if (form.get('universityEmail')?.invalid && (form.get('universityEmail')?.dirty || form.get('universityEmail')?.touched)) {
+              <span class="error">Valid uni email required</span>
+            }
+          </div>
+        </div>
+
+        <!-- Row 3: Passwords -->
+        <div class="form-row">
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" formControlName="password" placeholder="••••••••" />
+            @if (form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)) {
+              <span class="error">Password required</span>
+            }
+          </div>
+
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="••••••••" />
+            @if (form.hasError('passwordMismatch') && (form.get('confirmPassword')?.dirty || form.get('confirmPassword')?.touched)) {
+              <span class="error">Passwords do not match</span>
+            }
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" [disabled]="form.invalid" class="submit-btn">SIGN UP</button>
+
+        <p class="signin-link">
+          Already have an account? <a routerLink="/signin">Sign in</a>
+        </p>
+
+      </form>
+    </div>
+
+  </div>
 </div>
