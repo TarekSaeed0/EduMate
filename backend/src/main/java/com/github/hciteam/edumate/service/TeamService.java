@@ -58,7 +58,7 @@ public class TeamService {
 			});
 		}
 
-		return teamRepository.findAll(specification).stream().map(TeamMapper::toDTO)
+		return teamRepository.findAll(specification).stream().map(teamMapper::toDTO)
 				.toList();
 	}
 
