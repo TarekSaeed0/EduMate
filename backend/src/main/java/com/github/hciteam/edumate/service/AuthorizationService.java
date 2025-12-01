@@ -6,19 +6,24 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.CourseRegistration;
 import com.github.hciteam.edumate.model.Student;
+import com.github.hciteam.edumate.model.Team;
 import com.github.hciteam.edumate.model.User;
 import com.github.hciteam.edumate.repository.CourseRegistrationRepository;
 import com.github.hciteam.edumate.repository.StudentRepository;
+import com.github.hciteam.edumate.repository.TeamRepository;
 
 @Service("authorizationService")
 public class AuthorizationService {
 	StudentRepository studentRepository;
 	CourseRegistrationRepository registrationRepository;
+	TeamRepository teamRepository;
 
 	public AuthorizationService(StudentRepository studentRepository,
-			CourseRegistrationRepository registrationRepository) {
+			CourseRegistrationRepository registrationRepository,
+			TeamRepository teamRepository) {
 		this.studentRepository = studentRepository;
 		this.registrationRepository = registrationRepository;
+		this.teamRepository = teamRepository;
 	}
 
 	public boolean isStudentSelf(Long studentId) {
@@ -52,5 +57,23 @@ public class AuthorizationService {
 
 		return registration.get().getStudent().getId()
 				.equals(student.get().getId());
+	}
+
+	public boolean isTeamLeader(Long teamId) {
+		Authentication authentication =
+				SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+
+		Optional<Student> student = studentRepository.findByUserId(user.getId());
+		if (student.isEmpty()) {
+			return false;
+		}
+
+		Optional<Team> team = teamRepository.findById(teamId);
+		if (team.isEmpty()) {
+			return false;
+		}
+
+		return team.get().getLeader().getId().equals(student.get().getId());
 	}
 }
