@@ -1,5 +1,6 @@
 package com.github.hciteam.edumate.dto;
 
+import com.github.hciteam.edumate.model.TeamJoinStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,5 +11,6 @@ import lombok.NoArgsConstructor;
 public class TeamJoinInviteDTO {
 	private Long id;
 	private TeamDTO team;
-	private Long studentId;
+	private StudentDTO student;
+	private TeamJoinStatus status;
 }

@@ -33,4 +33,7 @@ public class TeamJoinRequest {
 	@ManyToOne
 	@JoinColumn(name = "student_id", nullable = false)
 	private Student student;
+
+	@JoinColumn(nullable = false)
+	private TeamJoinStatus status;
 }
