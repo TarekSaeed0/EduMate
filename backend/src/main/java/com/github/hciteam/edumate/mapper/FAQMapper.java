@@ -3,9 +3,9 @@ package com.github.hciteam.edumate.mapper;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
-import com.github.hciteam.edumate.entity.FAQCategory;
-import com.github.hciteam.edumate.entity.FAQ;
-import com.github.hciteam.edumate.model.FAQDTO;
+import com.github.hciteam.edumate.model.FAQCategory;
+import com.github.hciteam.edumate.model.FAQ;
+import com.github.hciteam.edumate.dto.FAQDTO;
 
 @Mapper(componentModel = "spring")
 public interface FAQMapper {

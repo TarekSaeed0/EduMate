@@ -1,151 +1,218 @@
-@if (this.authenticationService.isSignedIn()) {
-  <div class="container">
-    <header>
-      <h1 class="logo">
-        <span class="Edu">Edu<span class="Mate">Mate</span></span>
-      </h1>
-      <button title="sign out" class="sign-out" (click)="signout()">
-        <i class="fa-solid fa-arrow-right-from-bracket"></i>
-      </button>
-      <!-- sign out button -->
-    </header>
+<!-- ============================================= -->
+<!-- STATE 1: USER IS SIGNED IN (DASHBOARD LAYOUT) -->
+<!-- ============================================= -->
+@if (authenticationService.isSignedIn()) {
+  <div class="dashboard-container">
 
-  <div class="features">
-    <a class="timeTable feature" href=""><i class="fa-solid fa-table"></i></a>
-    <!-- timetable feature -->
-    <a class="taskTracker feature" routerLink="/student/tasks"><i class="fa-solid fa-list-check"></i></a>
-    <!-- task tracker feature -->
-    <a class="sources feature" href=""><i class="fa-solid fa-layer-group"></i></a>
-    <!-- material sources feature -->
-    <a class="teamCreator feature" href=""><i class="fa-solid fa-people-group"></i></a>
-    <!-- team creator feature -->
-    <a class="faq feature" routerLink="/student/faq"><i class="fa-solid fa-clipboard-question"></i></a>
-    <!-- FAQ feature -->
-    <a class="map feature" href=""><i class="fa-solid fa-map-location-dot"></i></a>
-    <!-- college map feature -->
-    <a class="announcement feature" href=""><i class="fa-solid fa-scroll"></i></a>
-    <!-- announcements feature -->
+    <!-- Fixed Navbar (ONLY BUTTONS NOW) -->
+    <nav class="dash-navbar">
+      <div class="nav-left">
+        <!-- 1. Hamburger Menu Button (Must be an imported component or standalone button) -->
+        <!-- Assuming you will create the app-navbar component later and place the button here -->
+        <button class="menu-toggle" title="Open Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div class="nav-brand">
+          <span class="edu">Edu</span><span class="mate">Mate</span>
+        </div>
+      </div>
+      <div class="nav-right">
+        <!-- 2. Profile Dropdown Button -->
+        <button class="profile-toggle" title="Open Profile">
+          <div class="avatar-sm">
+            <i class="fa-solid fa-user-circle"></i>
+          </div>
+          Profile
+          <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Main Content Area (Side-by-Side Layout) -->
+    <div class="dashboard-content">
+
+      <!-- LEFT SIDEBAR: PROFILE CARD -->
+      <aside class="profile-card">
+        <!-- Card Header (Blue bar, height fixed in CSS now) -->
+        <div class="card-header"></div>
+
+        <div class="avatar-container">
+          <div class="avatar">
+            <!-- Placeholder Icon -->
+            <i class="fa-solid fa-user"></i>
+          </div>
+        </div>
+
+        <div class="user-details">
+          <h2>{{ greeting() }}</h2>
+
+          @if (authenticationService.user()?.student) {
+            <span class="student-id">ID: {{ authenticationService.user()?.student?.id }}</span>
+            <span class="status-badge">Active Student</span>
+          }
+        </div>
+
+        <div class="stats-list">
+          <div class="stat-item">
+            <label>ACADEMIC YEAR</label>
+            <span>2024 / 2025</span>
+          </div>
+          <div class="stat-item">
+            <label>SEMESTER</label>
+            <span>Spring Term</span>
+          </div>
+        </div>
+      </aside>
+
+
+      <!-- RIGHT CONTENT: FEATURES GRID -->
+      <main class="features-area">
+        <div class="features-header">
+          <h1>Overview</h1>
+          <p>Everything you need, right here.</p>
+        </div>
+
+        <div class="features-grid">
+
+          <!-- Feature 1: Time Table -->
+          <a href="" class="feature-card blue-card">
+            <div class="icon-box">📅</div>
+            <h3>Time Table</h3>
+            <p>View your daily classes.</p>
+          </a>
+
+          <!-- Feature 2: Task Tracker -->
+          <a routerLink="/student/tasks" class="feature-card teal-card">
+            <div class="icon-box">✓</div>
+            <h3>Task Tracker</h3>
+            <p>Manage assignments.</p>
+          </a>
+
+          <!-- Feature 3: Announcements -->
+          <a href="" class="feature-card orange-card">
+            <div class="icon-box">!</div>
+            <h3>Announcements</h3>
+            <p>Check recent news.</p>
+          </a>
+
+          <!-- Feature 4: Team Creator -->
+          <a href="" class="feature-card purple-card">
+            <div class="icon-box">👥</div>
+            <h3>Team Creator</h3>
+            <p>Collaborate on projects.</p>
+          </a>
+
+          <!-- Feature 5: Material Sources -->
+          <a href="" class="feature-card green-card">
+            <div class="icon-box">📚</div>
+            <h3>Material Sources</h3>
+            <p>Access study files.</p>
+          </a>
+
+          <!-- Feature 6: Map -->
+          <a href="" class="feature-card pink-card">
+            <div class="icon-box">📍</div>
+            <h3>Campus Map</h3>
+            <p>Find your way.</p>
+          </a>
+
+          <!-- Feature 7: FAQ -->
+          <a routerLink="/student/faq" class="feature-card lime-card">
+            <div class="icon-box">❓</div>
+            <h3>FAQ</h3>
+            <p>Get help instantly.</p>
+          </a>
+
+        </div>
+      </main>
+
+    </div>
   </div>
-</div>
-
-<!--? background 1 -->
-<div class="background">
-  <div class="bg"></div>
-  <div class="bg bg2"></div>
-  <div class="bg bg3"></div>
-  <div class="content">
-    <h1>{{ greeting() }}</h1>
-    <h1>Welcome to EduMate</h1>
-  </div>
-</div>
-
-
-<!-- ! when user is not signed in -->
-<!-- <h1>{{ greeting() }}</h1> -->
-<!-- @if (this.student()) {
-<table>
-  <tr>
-    <td>ID:</td>
-    <td>{{ student()!.id }}</td>
-  </tr>
-  <tr>
-    <td>Name:</td>
-    <td>{{ student()!.name }}</td>
-  </tr>
-  <tr>
-    <td>Email:</td>
-    <td>{{ student()!.email }}</td>
-  </tr>
-  <tr>
-    <td>Gender:</td>
-    <td>{{ student()!.gender }}</td>
-  </tr>
-</table>
 } @else {
-<p>Loading student information...</p>
+  <!-- ============================================= -->
+    <!-- STATE 2: NOT SIGNED IN (LANDING PAGE V2)      -->
+    <!-- ============================================= -->
+  <div class="landing-container">
 
-<button (click)="signout()">Sign Out</button>
-} -->
-}
-
-<!-- if the user isn't signed in -->
-<!-- the home page for visitors -->
-
-@else {
-<div class="container unsigned">
-  <div class="firstPage" style="height: 100vh; display: flex;flex-direction: column;align-items: center;">
-    <header class="unsigned">
-      <h1 class="logo">
-        <span class="Edu">Edu<span class="Mate">Mate</span></span>
-      </h1>
-      <ul>
-        <li><a href="">About us</a></li>
-        <li><a href="#features">Features</a></li>
-        <li><a href="">Contact</a></li>
-        <li><a routerLink="/signin" style="border: 3px solid;">Sign in</a></li>
-      </ul>
+    <!-- Landing Navbar -->
+    <header class="landing-header">
+      <div class="logo">
+        <span class="edu">Edu</span><span class="mate">Mate</span>
+      </div>
+      <nav class="landing-nav">
+        <a href="#">Home</a>
+        <a href="#features">Features</a>
+        <a href="#">Contact</a>
+      </nav>
+      <div class="auth-buttons">
+        <a routerLink="/signin" class="btn-ghost">Sign In</a>
+        <a routerLink="/signup" class="btn-primary">Sign Up</a>
+      </div>
     </header>
 
-    <section class="desc">
-      Find <span class="s1"></span> focus <br />
-      Learn <span class="and"><span>&</span></span> Inspire <span class="s2"></span>
+    <!-- Hero Section (Centered Content) -->
+    <section class="hero-section">
+      <div class="hero-content-centered">
+        <span class="pill">WELCOME TO EDUMATE</span>
+        <h1>Find Focus.<br>Learn <span class="accent">&</span> Inspire.</h1>
+        <p>Your ultimate companion for tracking tasks, managing teams, and acing your academic journey.</p>
+        <a routerLink="/signup" class="cta-button">
+          GET STARTED <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
     </section>
-    <div style="flex-grow: 1;"><a routerLink="/signup"><i class="fa-solid fa-angles-right"> </i>SIGN UP NOW!</a></div>
+
+    <!-- Features Preview Grid (Same as Dashboard but static) -->
+    <section id="features" class="landing-features">
+      <h2>Explore Features</h2>
+      <div class="features-grid">
+
+        <div class="feature-card blue-card">
+          <div class="icon-box">📅</div>
+          <h3>Time Table</h3>
+          <p>Track your classes and daily schedule.</p>
+        </div>
+
+        <div class="feature-card teal-card">
+          <div class="icon-box">✓</div>
+          <h3>Task Tracker</h3>
+          <p>Organize assignments and stay productive.</p>
+        </div>
+
+        <div class="feature-card orange-card">
+          <div class="icon-box">!</div>
+          <h3>Announcements</h3>
+          <p>Never miss important updates.</p>
+        </div>
+
+        <div class="feature-card purple-card">
+          <div class="icon-box">👥</div>
+          <h3>Team Creator</h3>
+          <p>Create groups and collaborate smoothly.</p>
+        </div>
+
+        <div class="feature-card green-card">
+          <div class="icon-box">📚</div>
+          <h3>Material Sources</h3>
+          <p>Access your study materials quickly.</p>
+        </div>
+
+        <div class="feature-card pink-card">
+          <div class="icon-box">📍</div>
+          <h3>Campus Map</h3>
+          <p>Navigate the campus effortlessly.</p>
+        </div>
+
+        <div class="feature-card lime-card">
+          <div class="icon-box">❓</div>
+          <h3>FAQ</h3>
+          <p>Find instant answers to common questions.</p>
+        </div>
+
+      </div>
+    </section>
+
   </div>
-
-
-  <main class="features">
-  <h2 class="title">Explore EduMate Features</h2>
-
-  <div id="features" class="features-grid">
-
-    <div class="feature-card">
-      <i class="fas fa-question-circle"></i>
-      <h3>FAQ</h3>
-      <p>Find instant answers to your most common questions.</p>
-    </div>
-
-    <div class="feature-card">
-      <i class="fas fa-calendar-alt"></i>
-      <h3>Time Table</h3>
-      <p>Track your classes and daily schedule with ease.</p>
-    </div>
-
-    <div class="feature-card">
-      <i class="fas fa-tasks"></i>
-      <h3>Task Tracker</h3>
-      <p>Organize your assignments and stay productive.</p>
-    </div>
-
-    <div class="feature-card">
-      <i class="fas fa-users"></i>
-      <h3>Team Creator</h3>
-      <p>Create groups and collaborate on projects smoothly.</p>
-    </div>
-
-    <div class="feature-card">
-      <i class="fas fa-bullhorn"></i>
-      <h3>Announcements</h3>
-      <p>Stay updated with important news and notifications.</p>
-    </div>
-
-    <div class="feature-card">
-      <i class="fas fa-book"></i>
-      <h3>Material Sources</h3>
-      <p>Access your study materials quickly in one place.</p>
-    </div>
-
-    <div class="feature-card">
-      <i class="fas fa-map-marked-alt"></i>
-      <h3>Map</h3>
-      <p>Navigate the campus or your classrooms effortlessly.</p>
-    </div>
-
-  </div>
-</main>
-
-  <main class="AboutUs">
-    About us coming soon...
-  </main>
-</div>
 }

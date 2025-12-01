@@ -1,21 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
-html,
-body {
+:root {
+  /* Brand Colors */
+  --primary: #0066CC;
+  --primary-light: #EAF4FC; /* also Used for light backgrounds */
+
+  --secondary: #00B894;
+  --secondary-light: #E0F2F1;
+
+  --accent: #FFA726;
+  --accent-light: #FFF3E0;
+
+  /* App Structure */
+  --bg-main: #F0F6FC;       /* Main page background */
+  --bg-white: #FFFFFF;      /* Card backgrounds */
+  --border-color: #E0E0E0;
+
+  /* Typography */
+  --text-dark: #131313;     /* Headings */
+  --text-grey: #626262;     /* Body text */
+  --text-light: #9E9E9E;    /* Meta text */
+
+  /* Utility Colors */
+  --danger: #D32F2F;
+  --danger-bg: #FFF3E0;
+
+  /* Feature Card Colors (Backgrounds & Text) */
+  --feat-purple-bg: #F3E5F5; --feat-purple-text: #9C27B0;
+  --feat-green-bg: #E8F5E9;  --feat-green-text: #4CAF50;
+  --feat-pink-bg: #FFEBEE;   --feat-pink-text: #E91E63;
+  --feat-lime-bg: #F9FBE7;   --feat-lime-text: #CDDC39;
+}
+
+/* Global Resets */
+html, body {
   margin: 0;
   padding: 0;
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-dark);
 }
 
-body {
-  width: 100vw;
-  height: 100vh;
-  overflow-x: hidden;
-}
-
-h1 {
-  padding: 0;
+/* Typography Defaults */
+h1, h2, h3, h4, h5, h6 {
   margin: 0;
+  font-weight: 700;
 }
 
-* {
-  caret-color: transparent;
+p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
 }

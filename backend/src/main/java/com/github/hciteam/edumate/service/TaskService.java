@@ -1,31 +1,34 @@
 package com.github.hciteam.edumate.service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
-import com.github.hciteam.edumate.entity.SemesterCourse;
-import com.github.hciteam.edumate.entity.StudentTask;
-import com.github.hciteam.edumate.entity.Task;
-import com.github.hciteam.edumate.exception.SemesterCourseNotFoundException;
+import com.github.hciteam.edumate.model.CourseOffering;
+import com.github.hciteam.edumate.model.StudentTask;
+import com.github.hciteam.edumate.model.Task;
+import com.github.hciteam.edumate.exception.CourseOfferingNotFoundException;
 import com.github.hciteam.edumate.exception.TaskNotFoundException;
+import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.mapper.TaskMapper;
-import com.github.hciteam.edumate.model.StudentCourseStatus;
-import com.github.hciteam.edumate.model.TaskDTO;
-import com.github.hciteam.edumate.repository.SemesterCourseRepository;
+import com.github.hciteam.edumate.model.CourseRegistrationStatus;
+import com.github.hciteam.edumate.dto.TaskDTO;
+import com.github.hciteam.edumate.repository.CourseOfferingRepository;
+import com.github.hciteam.edumate.repository.StudentTaskRepository;
 import com.github.hciteam.edumate.repository.TaskRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class TaskService {
 	private final TaskRepository taskRepository;
-	private final SemesterCourseRepository semesterCourseRepository;
+	private final CourseOfferingRepository offeringRepository;
+	private final StudentTaskRepository studentTaskRepository;
 	private final TaskMapper taskMapper;
 
 	public TaskService(TaskRepository taskRepository,
-			SemesterCourseRepository semesterCourseRepository,
-			TaskMapper taskMapper) {
+			CourseOfferingRepository offeringRepository,
+			StudentTaskRepository studentTaskRepository, TaskMapper taskMapper) {
 		this.taskRepository = taskRepository;
-		this.semesterCourseRepository = semesterCourseRepository;
+		this.offeringRepository = offeringRepository;
+		this.studentTaskRepository = studentTaskRepository;
 		this.taskMapper = taskMapper;
 	}
 
@@ -34,25 +37,32 @@ public class TaskService {
 				.toList();
 	}
 
+	@Transactional
 	public TaskDTO createTask(TaskDTO taskDTO) {
-		SemesterCourse semesterCourse =
-				semesterCourseRepository.findById(taskDTO.getSemesterCourse().getId())
-						.orElseThrow(() -> new SemesterCourseNotFoundException());
+		CourseOffering offering =
+				offeringRepository.findById(taskDTO.getOffering().getId())
+						.orElseThrow(() -> new CourseOfferingNotFoundException());
 
-		Task task = new Task(null, semesterCourse, taskDTO.getTitle(),
+		Task task = new Task(null, offering, taskDTO.getTitle(),
 				taskDTO.getRequirements(), taskDTO.getSubmissionUrl(),
 				taskDTO.getDueDate(), taskDTO.getNotes(), null);
 
-		Set<StudentTask> studentTasks = semesterCourse.getStudentCourses().stream()
-				.filter(studentCourse -> studentCourse
-						.getStatus() == StudentCourseStatus.REGISTERED)
-				.map(studentCourse -> new StudentTask(null, studentCourse.getStudent(),
-						task, null))
-				.collect(Collectors.toSet());
+		Task createdTask = taskRepository.save(task);
 
-		task.setStudentTasks(studentTasks);
+		List<StudentTask> studentTasks =
+				offering.getRegistrations().stream()
+						.filter(registration -> registration
+								.getStatus() == CourseRegistrationStatus.REGISTERED)
+						.map(registration -> new StudentTask(
+								new StudentTaskKey(registration.getStudent().getId(),
+										createdTask.getId()),
+								registration.getStudent(), task, null))
+						.toList();
 
-		return taskMapper.toDTO(taskRepository.save(task));
+		studentTaskRepository.saveAll(studentTasks);
+
+
+		return taskMapper.toDTO(createdTask);
 	}
 
 	public TaskDTO getTask(Long taskId) {
@@ -62,11 +72,11 @@ public class TaskService {
 
 	public TaskDTO updateTask(Long taskId, TaskDTO taskDTO) {
 		Task task = taskRepository.findById(taskId).map(existingTask -> {
-			SemesterCourse semesterCourse =
-					semesterCourseRepository.findById(taskDTO.getSemesterCourse().getId())
-							.orElseThrow(() -> new SemesterCourseNotFoundException());
+			CourseOffering offering =
+					offeringRepository.findById(taskDTO.getOffering().getId())
+							.orElseThrow(() -> new CourseOfferingNotFoundException());
 
-			existingTask.setSemesterCourse(semesterCourse);
+			existingTask.setOffering(offering);
 			existingTask.setTitle(taskDTO.getTitle());
 			existingTask.setRequirements(taskDTO.getRequirements());
 			existingTask.setSubmissionUrl(taskDTO.getSubmissionUrl());

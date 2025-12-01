@@ -8,10 +8,9 @@ import { Navbar } from '../../navbar/navbar';
   imports: [Navbar],
   templateUrl: './faq.html',
   styleUrls: ['./faq.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FAQComponent {
-
   private faqService = inject(FAQService);
 
   faqs = signal<FAQ[]>([]);
@@ -30,7 +29,7 @@ export class FAQComponent {
   }
 
   fetchFaqs(category: string) {
-    this.faqService.getFAQs(undefined, undefined, [category]).subscribe({
+    this.faqService.getFAQs({ categories: [category] }).subscribe({
       next: (data) => this.faqs.set(data),
       error: () => this.faqs.set([]),
     });

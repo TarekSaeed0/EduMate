@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import com.github.hciteam.edumate.model.TaskDTO;
+import com.github.hciteam.edumate.dto.TaskDTO;
 import com.github.hciteam.edumate.service.TaskService;
 
 @RestController
