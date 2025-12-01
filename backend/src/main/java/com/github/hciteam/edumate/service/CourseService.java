@@ -30,8 +30,8 @@ public class CourseService {
 			throw new CourseAlreadyExistsException();
 		}
 
-		Course course = new Course(null, courseDTO.getCode(), courseDTO.getName(),
-				courseDTO.getCredits(), null);
+		Course course = Course.builder().code(courseDTO.getCode())
+				.name(courseDTO.getName()).credits(courseDTO.getCredits()).build();
 
 		return courseMapper.toDTO(courseRepository.save(course));
 	}

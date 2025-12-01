@@ -42,21 +42,21 @@ public class TaskService {
 				offeringRepository.findById(taskDTO.getOffering().getId())
 						.orElseThrow(() -> new CourseOfferingNotFoundException());
 
-		Task task = new Task(null, offering, taskDTO.getTitle(),
-				taskDTO.getRequirements(), taskDTO.getSubmissionUrl(),
-				taskDTO.getDueDate(), taskDTO.getNotes(), null);
+		Task task = Task.builder().offering(offering).title(taskDTO.getTitle())
+				.requirements(taskDTO.getRequirements())
+				.submissionUrl(taskDTO.getSubmissionUrl()).dueDate(taskDTO.getDueDate())
+				.notes(taskDTO.getNotes()).build();
 
 		Task createdTask = taskRepository.save(task);
 
-		List<StudentTask> studentTasks =
-				offering.getRegistrations().stream()
-						.filter(registration -> registration
-								.getStatus() == CourseRegistrationStatus.REGISTERED)
-						.map(registration -> new StudentTask(
-								new StudentTaskKey(registration.getStudent().getId(),
-										createdTask.getId()),
-								registration.getStudent(), task, null))
-						.toList();
+		List<StudentTask> studentTasks = offering.getRegistrations().stream()
+				.filter(registration -> registration
+						.getStatus() == CourseRegistrationStatus.REGISTERED)
+				.map(registration -> StudentTask.builder()
+						.id(new StudentTaskKey(registration.getStudent().getId(),
+								createdTask.getId()))
+						.student(registration.getStudent()).task(task).build())
+				.toList();
 
 		studentTaskRepository.saveAll(studentTasks);
 

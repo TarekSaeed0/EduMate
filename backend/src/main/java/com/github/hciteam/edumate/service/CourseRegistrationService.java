@@ -83,8 +83,9 @@ public class CourseRegistrationService {
 			throw new CourseRegistrationAlreadyExistsException();
 		}
 
-		CourseRegistration registration = new CourseRegistration(null, offering,
-				student, CourseRegistrationStatus.REGISTERED);
+		CourseRegistration registration =
+				CourseRegistration.builder().offering(offering).student(student)
+						.status(registrationDTO.getStatus()).build();
 
 		return registrationMapper.toDTO(registrationRepository.save(registration));
 	}

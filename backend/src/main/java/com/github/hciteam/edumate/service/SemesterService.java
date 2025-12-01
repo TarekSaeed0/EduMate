@@ -31,9 +31,9 @@ public class SemesterService {
 			throw new SemesterAlreadyExistsException();
 		}
 
-		Semester semester =
-				new Semester(null, semesterDTO.getTerm(), semesterDTO.getYear(),
-						semesterDTO.getStartDate(), semesterDTO.getEndDate(), null);
+		Semester semester = Semester.builder().term(semesterDTO.getTerm())
+				.year(semesterDTO.getYear()).startDate(semesterDTO.getStartDate())
+				.endDate(semesterDTO.getEndDate()).build();
 
 		return semesterMapper.toDTO(semesterRepository.save(semester));
 	}

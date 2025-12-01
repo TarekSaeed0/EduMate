@@ -63,7 +63,7 @@ public class CourseOfferingService {
 		}
 
 		CourseOffering offering =
-				new CourseOffering(null, semester, course, null, null);
+				CourseOffering.builder().semester(semester).course(course).build();
 
 		return offeringMapper.toDTO(offeringRepository.save(offering));
 	}
