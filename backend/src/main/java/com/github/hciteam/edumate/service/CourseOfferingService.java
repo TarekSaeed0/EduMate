@@ -79,7 +79,7 @@ public class CourseOfferingService {
 		CourseOffering offering =
 				offeringRepository.findById(offeringId).map(existingOffering -> {
 					return existingOffering;
-				}).orElseThrow(() -> new SemesterNotFoundException());
+				}).orElseThrow(() -> new CourseOfferingNotFoundException());
 
 		return offeringMapper.toDTO(offeringRepository.save(offering));
 	}

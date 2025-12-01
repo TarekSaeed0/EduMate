@@ -49,6 +49,17 @@ public class TeamGroupService {
 				.orElseThrow(() -> new TeamGroupNotFoundException());
 	}
 
+	public TeamGroupDTO updateGroup(Long groupId, TeamGroupDTO groupDTO) {
+		TeamGroup group = groupRepository.findById(groupId).map(existingGroup -> {
+			existingGroup.setName(groupDTO.getName());
+			existingGroup.setMinimumMemberCount(groupDTO.getMinimumMemberCount());
+			existingGroup.setMaximumMemberCount(groupDTO.getMaximumMemberCount());
+			return existingGroup;
+		}).orElseThrow(() -> new TeamGroupNotFoundException());
+
+		return groupMapper.toDTO(groupRepository.save(group));
+	}
+
 	public void deleteGroup(Long groupId) {
 		if (!groupRepository.existsById(groupId)) {
 			throw new TeamGroupNotFoundException();
