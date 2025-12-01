@@ -1,5 +1,6 @@
 package com.github.hciteam.edumate.dto;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class TeamDTO {
 	private Long id;
 	private TeamGroupDTO group;
-	private Long leaderId;
-	private List<Long> memberIds;
+	private StudentDTO leader;
+	private List<StudentDTO> members;
 }
