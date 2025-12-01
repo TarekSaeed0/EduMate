@@ -1,9 +1,7 @@
-.profile-button {
-    
-    width: 55px;
-    height: 55px;
+.nav-right {
+    width: 150px;
+    height: 40px;
 
-    background-image: url(Guest-user.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -12,7 +10,7 @@
     border: solid;
     border-color: gray;
     border-width: 2px;
-    border-radius: 50%;
+    border-radius: 20px;
     padding: 10px;
 
     appearance: none;
@@ -20,6 +18,53 @@
     color: transparent;        /* hide the selected text */
     text-shadow: 0 0 0 transparent;
 
+    display: flex;
+    justify-content: space-between;
+}
+
+.profile-button {
+    
+    width: 100px;
+    height: 40px;
+    
+    border: none;
+
+    appearance: none;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: large;
+
+}
+
+.profile-photo {
+    width: 35px;
+    height: 35px;
+    background-color: #EAF4FC;
+    border-radius: 50%;
+}
+
+.default-user{
+
+    border: solid;
+    border-color: #0066CC;
+    border-radius: 50%;
+
+    display: block;
+
+}
+
+.user {
+    width: 20px;
+    height: 20px;
+
+    background-color: #0066CC;
+
+    
+
+    border-radius: 50%;
+
+    display: block;
 }
 
 .profile-button option {
@@ -31,5 +76,4 @@
     font-family: Arial, Helvetica, sans-serif;
     font-size: large;
 
-    color: black;
 }

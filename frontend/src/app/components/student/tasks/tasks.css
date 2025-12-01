@@ -6,161 +6,135 @@
 
 /* Layout */
 .task-tracker {
-    height: 100vh;
+    padding-top: 50px;
+    height: 100%;
     width: 100%;
     display: flex;
-}
-
-/* LEFT SIDEBAR (Tasks List) */
-.tasks-section {
-
-
-    height: 100vh;
-    width: 100%;
-
-    position: relative;
-    top: 1px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-
-    /* Option B Theme */
-    background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
-    border-right: 2.5px solid #90CAF9;
-
-    overflow-x: hidden;
-    overflow-y: auto;
-
-    z-index: 1;
-}
-
-/* Scrollbar */
-.tasks-section::-webkit-scrollbar {
-    width: 9px;
-}
-.tasks-section::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background-color: rgb(199, 199, 199);
-}
-.tasks-section::-webkit-scrollbar-thumb:hover {
-    background-color: rgb(146, 146, 146);
-}
-.tasks-section::-webkit-scrollbar-track {
-    background: transparent;
+    flex-direction: row;
+    justify-content: space-evenly;
+    gap: 20px;
+    background-color: #EAF4FC;
 }
 
 /* Search Bar */
 .search-bar {
-    width: 100%;
-    display: flex;
+    width: 300px;
+    height: 700px;
 
-    justify-content: space-evenly;   /* <-- EVEN SPACING */
-    align-items: center;             /* <-- CENTER VERTICALLY */
+    border: solid #E0E0E0 1px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
 
     padding: 20px;
 
-    position: sticky;
-    top: 0;
-    z-index: 3;
-
-    background-color: transparent;
+    background-color: #FFFFFF;
 }
 
-.task-type {
-    width: 150px;
-    height: 50px;
+.search-bar button{
+    width: 260px;
+    height: 48px;
 
-    background-color: rgb(255, 255, 255);
-    
+    background-color: #0066CC;
 
-    display: flex;                  
-    justify-content: center;        
-    align-items: center;            
+    border: none;
+    border-radius: 15px;
 
-    text-align: center;
+    color: #ffffff;
+    font-family: 'Open Sans', sans-serif;
     font-size: 20px;
     font-weight: 600;
 
-    border: solid;
-    border-color: rgb(205, 205, 205);
-    border-width: 2px 2px 3.5px 2px;
-    border-radius: 18px;
+}
+
+.task-types{
+    width: 260px;
+    height: 179px;
+
+    margin-top: 40px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.task-type {
+    width: 260px;
+    height: 40px;
+
+    border-radius: 10px;
+
+    padding: 10px;
+
+    color: #626262;
+
     cursor: pointer;
     transition: 0.25s;
 }
 
 .task-type:hover {
-    background-color: #f0f0f0;
-    border-bottom-width: 2px;
+   background-color: #EAF4FC;
 }
 
 .task-type:active{
-    background-color: #f0f0f0;
-    border-bottom-width: 2px;
-    transform: translateY(3px);
+    
 }
 
+/* LEFT SIDEBAR (Tasks List) */
 
-#search {
-    width: 95%;
-    padding: 10px 15px;
-    margin: 10px;
 
-    font-size: 15px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
 
-    border: 1.5px solid rgb(199, 199, 199);
-    border-radius: 7px;
-    background-color: white;
+.tasks-section {
+    width: 940px;
+    height: 545px;
 
-    outline: none;
-    transition: 0.3s;
-    box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
 }
 
-#search:hover {
-    border-color: rgb(146, 146, 146);
+.general-discription{
+    font-family: 'Open Sans', sans-serif;
 }
 
-#search:focus {
-    border-color: rgb(8, 42, 50);
-    box-shadow: 0 0 5px rgba(8, 42, 50, 0.3);
+.general-discription h1{
+    color: #131313;
+    font-size: 32px;
+
+}
+
+.general-discription h2{
+    color: #626262;
+    font-size: 16px;
+    font-weight: 600;
+
 }
 
 /* Task Items Container */
 .tasks-container {
-    width: 95%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
+    width: auto;
 }
 
 .task-item {
-    width: 100%;
+    width: auto;
     min-height: 70px; /* allow expansion */
     background: #ffffff;
-    border: solid #b0c4de;
-    border-width: 1.5px 3px 3px 1.5px;
-    border-radius: 7px;
+    border: solid #e0e0e0;
+    border-width: 2px;
+    border-radius: 10px;
     padding: 20px 10px;
-    margin: 10px;
+    margin-bottom: 25px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: 525;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.task-item.expanded {
-    overflow: visible; /* allow hidden content to show */
-}
-
 .task-item .additional-info {
     max-height: 0;       
     overflow: hidden;    
-    opacity: 0;          
+    opacity: 0;               
     transition: all 0.5s cubic-bezier(0.44, 0, 0.56, 1);
 }
 

@@ -1,7 +1,7 @@
 .navbar {
     width: 100vw;
     height: 80px;
-    background-color: rgb(231, 234, 235);
+    background-color: #FFFFFF;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -50,10 +50,7 @@
 
 .main-menu span {
     display: block;
-    background: #fafafa;
-    background: linear-gradient(45deg,
-                     rgb(107, 107, 107) 37%,
-                     rgb(173, 172, 172) 100%);
+    background: #0066CC;
     width: 30px;
     height: 3px;
     border-radius: 6px;
@@ -78,12 +75,9 @@
 }
 
 .web-title #Edu {
-  font-family: 'Merriweather', serif;
+  font-family: 'Open Sans', sans-serif;
   font-size: 1.7em;
-  background: #fafafa;
-  background: linear-gradient(-45deg,
-                     rgb(107, 107, 107) 17%,
-                     rgb(173, 172, 172) 100%);
+  background: #0066CC;
 
   -webkit-background-clip: text;  /* makes background apply to text only */
   -webkit-text-fill-color: transparent; /* hides normal text color */
@@ -92,15 +86,24 @@
 .web-title #Mate {
   font-family: 'Open Sans', sans-serif;
   font-size: 1.7em;
-  background: linear-gradient(-45deg,
-                     #3b82f6 17%,
-                     rgb(82, 102, 255) 100%,
-                     rgb(233, 233, 233) 47%);
+  background: #00B894;
 
   -webkit-background-clip: text;  /* makes background apply to text only */
   -webkit-text-fill-color: transparent;
 
-  color: #3b82f6;
   margin-bottom: 20px;
+}
+
+.background {
+  width: 100vw;
+  height: 100vh;
+
+  top: 0px;
+
+  background-color: #EAF4FC;
+
+  position: fixed;
+  z-index: -900;
+  display: block;
 }
 

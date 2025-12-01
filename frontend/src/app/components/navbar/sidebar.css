@@ -7,7 +7,7 @@
     left: -300px;
     transition: left 0.5s ease;
 
-    background-color: rgb(244, 246, 247);
+    background-color: #FFFFFF;
 
     padding: 0px 15px;
 
@@ -28,7 +28,14 @@
     list-style: none;
     padding-left: 0;
 
+    list-style-type: disc;
+    margin-left: 20px;
+
     gap: 20px;
+}
+
+.sidebar li::marker{
+    color: #626262;
 }
 
 .sidebar li {
@@ -51,24 +58,14 @@
 
     text-decoration: none;
 
-    color: black;
-    font-family: Arial, Helvetica, sans-serif;
+    color: #626262;
+    font-family: 'Open Sans', sans-serif;
     font-size: large;
-}
-
-.sidebar li a i {
-    width: 35px;
-    align-items: center;
-}
-
-.sidebar li:nth-child(8) {
-    padding-left: 12px;
-
 }
 
 .sidebar .separator {
     width: auto;
-    height: 2.5px;
+    height: 1px;
 
     border-radius: 20px;
     margin-top: 10px;
