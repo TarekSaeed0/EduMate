@@ -31,5 +31,5 @@ public class FAQCategory {
 	private String name;
 
 	@ManyToMany(mappedBy = "categories")
-	private Set<FAQ> faqs = new HashSet<>();
+	private Set<FAQ> faqs;
 }

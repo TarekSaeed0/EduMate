@@ -3,6 +3,7 @@ package com.github.hciteam.edumate.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import com.github.hciteam.edumate.dto.UserCreationDTO;
 import com.github.hciteam.edumate.dto.UserDTO;
 import com.github.hciteam.edumate.service.UserService;
 import java.net.URI;
@@ -37,7 +38,8 @@ public class UserController {
 	}
 
 	@PostMapping
-	public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+	public ResponseEntity<UserDTO> createUser(
+			@RequestBody UserCreationDTO userDTO) {
 		UserDTO createdUser = userService.createUser(userDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()

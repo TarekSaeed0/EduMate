@@ -40,5 +40,5 @@ public class FAQ {
 	@JoinTable(name = "faqs_categories",
 			joinColumns = @JoinColumn(name = "faq_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
-	private Set<FAQCategory> categories = new HashSet<>();
+	private Set<FAQCategory> categories;
 }

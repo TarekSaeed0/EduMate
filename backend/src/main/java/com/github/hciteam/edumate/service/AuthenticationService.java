@@ -32,6 +32,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import com.github.hciteam.edumate.exception.UserAlreadyExistsException;
+import com.github.hciteam.edumate.exception.UserRoleNotFoundException;
 import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.mapper.UserMapper;
 import com.github.hciteam.edumate.exception.StudentAlreadyExistsException;
@@ -76,7 +77,7 @@ public class AuthenticationService {
 		}
 
 		UserRole studentRole = roleRepository.findByName("STUDENT")
-				.orElseThrow(() -> new RuntimeException("STUDENT Role not found"));
+				.orElseThrow(() -> new UserRoleNotFoundException());
 
 		Set<UserRole> roles = new HashSet<>();
 		roles.add(studentRole);
