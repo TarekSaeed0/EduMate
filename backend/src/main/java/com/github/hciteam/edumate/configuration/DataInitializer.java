@@ -89,7 +89,7 @@ public class DataInitializer implements CommandLineRunner {
 			if (!offeringRepository.existsBySemesterIdAndCourseId(semesterId,
 					courseId)) {
 				offeringRepository
-						.save(new CourseOffering(null, semester, course, null, null));
+						.save(new CourseOffering(null, semester, course, null, null, null));
 			}
 		}
 

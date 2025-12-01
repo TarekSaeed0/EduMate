@@ -13,5 +13,6 @@ public interface CourseOfferingMapper {
 	@Mapping(source = "semesterId", target = "semester.id")
 	@Mapping(target = "registrations", ignore = true)
 	@Mapping(target = "tasks", ignore = true)
+	@Mapping(target = "teamGroups", ignore = true)
 	CourseOffering toEntity(CourseOfferingDTO offeringDTO);
 }

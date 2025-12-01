@@ -1,6 +1,5 @@
 package com.github.hciteam.edumate.model;
 
-import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,6 +12,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +21,7 @@ import lombok.Setter;
 @Table(name = "teams")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Team {
@@ -39,5 +40,5 @@ public class Team {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "team_members", joinColumns = @JoinColumn(name = "team_id"),
 			inverseJoinColumns = @JoinColumn(name = "student_id"))
-	private Set<Student> members = new HashSet<>();
+	private Set<Student> members;
 }
