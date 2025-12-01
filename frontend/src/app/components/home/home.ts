@@ -1,10 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { RouterLink } from '@angular/router';
+import { Navbar } from '../navbar/navbar';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink],
+  imports: [RouterLink, Navbar],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })

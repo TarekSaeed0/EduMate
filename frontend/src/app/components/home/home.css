@@ -1,18 +1,10 @@
-/* === HOST BLOCK === */
 :host {
   display: block;
   min-height: 100vh;
-  /* Uses the global background defined in styles.css */
-  background-color: var(--bg-main);
 }
 
-/* === BRANDING === */
 .edu { color: var(--primary); font-weight: 800; font-size: 1.5rem; }
 .mate { color: var(--secondary); font-weight: 800; font-size: 1.5rem; }
-
-/* ============================================= */
-/* DASHBOARD STYLES (LOGGED IN)                  */
-/* ============================================= */
 
 .dashboard-container {
   min-height: 100vh;
@@ -20,14 +12,13 @@
   flex-direction: column;
 }
 
-/* Fixed Navbar */
 .dash-navbar {
-  height: 70px;
+  height: 60px;
   background: var(--bg-white);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 40px;
+  padding: 0 30px;
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
@@ -37,125 +28,100 @@
 .nav-left {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 15px;
 }
 
-/* FIX 3: Hamburger Menu Button Styling */
 .menu-toggle {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 10px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  transition: transform 0.2s;
+  gap: 4px;
 }
-
 .menu-toggle span {
   display: block;
-  width: 25px;
-  height: 3px;
+  width: 20px;
+  height: 2px;
   background: var(--primary);
-  border-radius: 2px;
+  border-radius: 1px;
 }
+.menu-toggle:hover { opacity: 0.8; }
 
-.menu-toggle:hover {
-  transform: scale(1.1);
-}
-
-/* FIX 3: Profile Button Styling (Copied from external navbar component) */
 .profile-toggle {
   background: var(--bg-main);
   border: 1px solid var(--border-color);
-  padding: 8px 15px;
-  border-radius: 20px;
+  padding: 6px 12px;
+  border-radius: 18px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   font-weight: 600;
   color: var(--text-dark);
-  transition: background 0.2s;
-  position: relative;
 }
-
-.profile-toggle:hover {
-  background: var(--primary-light);
-  border-color: var(--primary);
-}
+.profile-toggle:hover { background: var(--primary-light); }
 
 .avatar-sm {
   color: var(--primary);
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
-.dropdown-arrow {
-  font-size: 0.7rem;
-  margin-left: 5px;
-}
-
-/* Dashboard Layout */
 .dashboard-content {
   display: flex;
   flex: 1;
-  padding: 40px;
-  gap: 40px;
-  max-width: 1600px;
+  padding: 30px;
+  gap: 30px;
+  max-width: 1200px;
   margin: 0 auto;
   width: 100%;
   box-sizing: border-box;
 }
 
-/* Sidebar Profile Card FIXES */
 .profile-card {
-  width: 320px;
+  width: 250px;
   background: var(--bg-white);
-  border-radius: 16px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
   height: fit-content;
 }
 
-/* FIX 1: Blue Header Height (Reduced to prevent overlap) */
 .card-header {
-  height: 70px;
+  height: 50px;
   background: var(--primary);
-  position: static;
 }
 
-/* FIX 1: Avatar Position relative to smaller header */
 .avatar-container {
-  margin-top: -50px;
+  margin-top: -30px;
   display: flex;
   justify-content: center;
 }
 
 .avatar {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   background: var(--bg-white);
   border-radius: 50%;
-  border: 4px solid var(--bg-main);
+  border: 3px solid var(--bg-main);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--primary);
-  font-size: 2.5rem;
+  font-size: 2rem;
 }
 
 .user-details {
   text-align: center;
-  padding: 20px;
+  padding: 15px;
   border-bottom: 1px solid var(--border-color);
 }
 
 .user-details h2 {
   margin: 0;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   color: var(--text-dark);
 }
 
@@ -163,7 +129,7 @@
   display: block;
   color: var(--text-grey);
   margin-top: 5px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .status-badge {
@@ -171,153 +137,136 @@
   margin-top: 10px;
   background: var(--secondary-light);
   color: var(--secondary);
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.8rem;
+  padding: 3px 10px;
+  border-radius: 10px;
+  font-size: 0.75rem;
   font-weight: 700;
 }
 
 .stats-list {
-  padding: 25px;
+  padding: 15px;
 }
 
 .stat-item {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .stat-item label {
   display: block;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: var(--text-light);
   letter-spacing: 1px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
 }
 
 .stat-item span {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: var(--text-grey);
   font-weight: 500;
 }
 
-/* Features Area */
 .features-area {
   flex: 1;
 }
 
 .features-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .features-header h1 {
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: var(--text-dark);
   margin: 0;
 }
 
 .features-header p {
   color: var(--text-grey);
+  margin-top: 5px;
 }
 
-/* Grid Layout */
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
 }
 
 .feature-card {
   background: var(--bg-white);
-  border-radius: 16px;
-  padding: 24px;
+  border-radius: 10px;
+  padding: 18px;
   text-decoration: none;
   border: 1px solid var(--border-color);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: box-shadow 0.2s;
   position: relative;
   overflow: hidden;
 }
 
 .feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-  border-color: transparent;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .icon-box {
-  width: 50px;
-  height: 50px;
-  border-radius: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
-  margin-bottom: 16px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
 }
 
 .feature-card h3 {
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
   color: var(--text-dark);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
 .feature-card p {
   margin: 0;
   color: var(--text-grey);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
-/* Card Colors */
-.feature-card::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 4px;
-  background: currentColor;
-}
-
-/* Using Variables for Card Colors */
+.blue-card { border-left: 4px solid var(--primary); }
 .blue-card .icon-box { background: var(--primary-light); color: var(--primary); }
-.blue-card { color: var(--primary); }
+
+.teal-card { border-left: 4px solid var(--secondary); }
 .teal-card .icon-box { background: var(--secondary-light); color: var(--secondary); }
-.teal-card { color: var(--secondary); }
+
+.orange-card { border-left: 4px solid var(--accent); }
 .orange-card .icon-box { background: var(--accent-light); color: var(--accent); }
-.orange-card { color: var(--accent); }
+
+.purple-card { border-left: 4px solid var(--feat-purple-text); }
 .purple-card .icon-box { background: var(--feat-purple-bg); color: var(--feat-purple-text); }
-.purple-card { color: var(--feat-purple-text); }
+
+.green-card { border-left: 4px solid var(--feat-green-text); }
 .green-card .icon-box { background: var(--feat-green-bg); color: var(--feat-green-text); }
-.green-card { color: var(--feat-green-text); }
+
+.pink-card { border-left: 4px solid var(--feat-pink-text); }
 .pink-card .icon-box { background: var(--feat-pink-bg); color: var(--feat-pink-text); }
-.pink-card { color: var(--feat-pink-text); }
+
+.lime-card { border-left: 4px solid var(--feat-lime-text); }
 .lime-card .icon-box { background: var(--feat-lime-bg); color: var(--feat-lime-text); }
-.lime-card { color: var(--feat-lime-text); }
-
-
-/* ============================================= */
-/* LANDING PAGE STYLES (NOT LOGGED IN) FIXES     */
-/* ============================================= */
 
 .landing-container {
   background: var(--bg-white);
 }
 
 .landing-header {
-  height: 80px;
+  height: 60px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 60px;
+  padding: 0 30px;
   border-bottom: 1px solid var(--border-color);
 }
 
 .landing-nav a {
   text-decoration: none;
   color: var(--text-grey);
-  margin: 0 20px;
+  margin: 0 15px;
   font-weight: 500;
   transition: color 0.2s;
 }
@@ -325,43 +274,40 @@
 
 .auth-buttons {
   display: flex;
-  gap: 12px;
+  gap: 10px;
 }
 
 .btn-ghost {
-  padding: 10px 20px;
+  padding: 8px 16px;
   border: 2px solid var(--primary);
-  border-radius: 8px;
+  border-radius: 6px;
   color: var(--primary);
   text-decoration: none;
   font-weight: 700;
 }
 
 .btn-primary {
-  padding: 10px 20px;
+  padding: 10px 18px;
   background: var(--primary);
-  border-radius: 8px;
+  border-radius: 6px;
   color: white;
   text-decoration: none;
   font-weight: 700;
 }
 
-/* FIX 2: Centering and Sizing the Hero Content */
 .hero-section {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 60px;
+  padding: 60px 30px;
   background: var(--bg-main);
-  min-height: 500px;
-  position: relative;
-  overflow: hidden;
+  min-height: 400px;
   text-align: center;
 }
 
 .hero-content-centered {
-  max-width: 900px;
-  padding: 100px 0;
+  max-width: 800px;
+  padding: 80px 0;
   box-sizing: border-box;
 }
 
@@ -375,19 +321,19 @@
 }
 
 .hero-content-centered h1 {
-  font-size: 6rem; /* Bigger size */
+  font-size: 4rem;
   line-height: 1.1;
   color: var(--text-dark);
-  margin: 10px 0 25px 0;
+  margin: 10px 0 20px 0;
 }
 
 .hero-content-centered .accent { color: var(--secondary); }
 
 .hero-content-centered p {
-  font-size: 1.6rem; /* Bigger size */
+  font-size: 1.2rem;
   color: var(--text-grey);
-  max-width: 800px;
-  margin: 0 auto 50px auto;
+  max-width: 700px;
+  margin: 0 auto 30px auto;
 }
 
 .cta-button {
@@ -396,21 +342,19 @@
   gap: 10px;
   background: var(--accent);
   color: var(--text-dark);
-  padding: 18px 40px;
+  padding: 15px 30px;
   border-radius: 50px;
   text-decoration: none;
-  font-weight: 800;
-  box-shadow: 0 4px 15px rgba(255, 167, 38, 0.4);
-  transition: transform 0.2s;
+  font-weight: 700;
 }
-.cta-button:hover { transform: scale(1.05); }
+.cta-button:hover { opacity: 0.9; }
 
 .landing-features {
-  padding: 80px 60px;
+  padding: 60px 30px;
 }
 .landing-features h2 {
   text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 50px;
+  font-size: 2rem;
+  margin-bottom: 40px;
   color: var(--text-dark);
 }
