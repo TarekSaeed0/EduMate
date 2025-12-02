@@ -1,0 +1,186 @@
+<app-navbar></app-navbar>
+
+<div class="page-content-wrapper">
+  <!-- !++++++++++++++++++++++++ -->
+   @if(showModal) {
+   <div class="container">
+    <div class="modal">
+      <!-- Header -->
+      <div class="header">
+        <h1 class="title">Create Course Teams</h1>
+        <button class="close-button" (click)="closeModal()">✕</button>
+      </div>
+
+      <!-- Divider -->
+      <div class="divider"></div>
+
+      <!-- Form Content -->
+      <div class="form-content">
+        <!-- Select Course -->
+        <div class="form-group">
+          <label class="label">SELECT COURSE</label>
+          <div class="select-wrapper">
+            <select id="course" class="select-input">
+              <option>Software Engineering (CS401)</option>
+              <option>Data Structures (CS301)</option>
+              <option>Algorithms (CS302)</option>
+            </select>
+            <div class="select-arrow">▾</div>
+          </div>
+        </div>
+
+        <!-- Max Members Per Team -->
+        <div class="form-group">
+          <label class="label">MAX MEMBERS PER TEAM</label>
+          <div class="number-wrapper">
+            <input
+              type="number"
+              id="maxMembers"
+              value="5"
+              class="number-input"
+            />
+            <div class="number-controls">
+              <button id="increment" class="control-button">▲</button>
+              <button id="decrement" class="control-button">▼</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Registration End Date -->
+        <div class="form-group">
+          <label class="label">REGISTRATION END DATE</label>
+          <div class="date-wrapper">
+            <input
+              type="date"
+              id="endDate"
+              value="2024-12-15"
+              class="date-input"
+            />
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="button-group">
+          <button class="button button-cancel">Cancel</button>
+          <button class="button button-create">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>}
+  <!-- !++++++++++++++++++++++++ -->
+  <main class="main-content-layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-header bg-accent">
+        Team Creator
+      </div>
+
+      <section class="sidebar-section instructions">
+        <h3 class="section-title">How it works</h3>
+        <div class="step">
+          <span class="step-num">1</span>
+          <p class="step-text">Select a course from the list.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <p class="step-text">Find an open team or create one.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <p class="step-text">Chat and collaborate!</p>
+        </div>
+      </section>
+
+      <hr class="divider">
+
+      <section class="sidebar-section active-teams">
+        <h3 class="section-title">Your Active Teams</h3>
+        <div class="team-card">
+          <div class="team-icon">✓</div>
+          <div class="team-info">
+            <p class="team-name">Group Alpha</p>
+            <p class="team-course">HCI Project</p>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <section class="course-list-content">
+      <div class="header-row">
+        <div>
+          <h1 class="page-title">Available Courses</h1>
+          <p class="page-subtitle">Select a course to manage your team.</p>
+        </div>
+
+        <button class="add-course-btn" (click)="openModal()">
+          + Add Course Team
+        </button>
+      </div>
+
+      <div class="course-grid">
+        <div
+          *ngFor="let course of courses"
+          class="course-card"
+          [class.status-joined]="course.status === 'Joined'"
+          [class.status-closed]="course.status === 'Closed'"
+        >
+          <div
+            class="card-header"
+            [class.bg-card-blue]="course.color === 'blue'"
+            [class.bg-card-green]="course.color === 'green'"
+            [class.bg-card-red]="course.color === 'red'"
+            [class.bg-card-orange]="course.color === 'orange'"
+          >
+            <span class="course-code">{{ course.code }}</span>
+            <h2 class="course-name">{{ course.name }}</h2>
+          </div>
+
+          <div class="card-body">
+            <span
+              class="status-tag"
+              [class.tag-joined]="course.status === 'Joined'"
+              [class.tag-closed]="course.status === 'Closed'"
+              [class.tag-default]="course.status !== 'Joined' && course.status !== 'Closed'"
+            >
+              <span *ngIf="course.status === 'Joined'" class="status-dot"></span>
+              {{ course.status === 'Joined' ? 'Joined' : course.status === 'Closed' ? 'Reg. Closed' : 'No Team' }}
+            </span>
+
+            <p class="deadline-text">
+              {{ course.team ? 'Team: "' + course.team + '"' : 'Deadline: ' + course.deadline }}
+            </p>
+
+            <ng-container [ngSwitch]="course.action">
+
+              <button
+                *ngSwitchCase="'Find / Create Team'"
+                class="action-btn primary-btn"
+                (click)="handleCourseAction(course.code, 'Find / Create Team')"
+              >
+                Find / Create Team
+              </button>
+
+              <button
+                *ngSwitchCase="'View Team'"
+                class="action-btn secondary-btn"
+                (click)="handleCourseAction(course.code, 'View Team')"
+              >
+                View Team
+              </button>
+
+              <button
+                *ngSwitchCase="'Unavailable'"
+                class="action-btn disabled-btn"
+                [disabled]="true"
+              >
+                Unavailable
+              </button>
+
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
