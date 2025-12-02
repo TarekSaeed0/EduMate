@@ -1,4 +1,6 @@
-/* Global styles */
+/* =========================================
+   GLOBAL
+========================================= */
 * {
     font-family: "Inter", "Segoe UI", Tahoma, sans-serif;
     box-sizing: border-box;
@@ -6,169 +8,226 @@
     padding: 0;
 }
 
-/* Page wrapper: hides scroll only on this page */
+/* =========================================
+   PAGE LAYOUT
+========================================= */
 .user-page {
+    width: 100%;
+    margin: 50px;
+
+    /* MAKE LEFT AND RIGHT SAME HEIGHT */
+    display: flex;
+    align-items: stretch;   /* ← important */
+    gap: 40px;
+
+}
+
+/* =========================================
+   PROFILE SIDEBAR
+========================================= */
+.profile {
+    width: 340px;
+    background-color: #ffffff;
+    border: 1px solid #E0E0E0;
+    border-radius: 10px;
 
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    align-items: center;
+
+    /* GIVE IT FULL HEIGHT LIKE RIGHT PANEL */
+    height: auto;       /* allows flex to stretch it */
+    padding-bottom: 25px;
 }
 
-/* Profile Section */
-.profile {
-
-    width: 340px;
-    height: 730px;
-
-    gap: 30px;
-
-    background-color: #ffffff;
-    box-shadow: 0px 2.5px 15px grey;
+/* Top banner background */
+.back-display {
+    width: 100%;
+    height: 130px;
+    background-color: #0066CC;
+    border-radius: 10px 10px 0 0;
+    position: relative;
 }
 
-.back-display{
-  width: 340px;
-  height: 100px;
-  background-color: #0066CC;
-}
-
+/* Profile photo */
 .profile-photo {
     width: 120px;
     height: 120px;
     background-image: url(Guest-user.png);
     background-size: cover;
     background-position: center;
+
     border: 5px solid #ffffff;
     border-radius: 50%;
 
-    position: relative;
-    left: 110px;
-    top: -60px;
+    position: absolute;
+    top: 200px;
 }
 
+/* Inner soft border */
 .profile-photo::after {
     content: "";
     position: absolute;
-    inset: 1px;                     /* controls spacing of the inner border */
-    border: 2.7px solid #CCE0F5;      /* inner border color */
+    inset: 2px;
+    border: 3px solid #CCE0F5;
     border-radius: 50%;
-    pointer-events: none;           /* allows clicks to pass through */
+    pointer-events: none;
 }
 
-/* Profile info */
+/* Profile text */
+.profile .info {
+    margin-top: 90px;  /* space after photo */
+    text-align: center;
+}
+
 .profile .info h1 {
-    font-size: 60px;
-    margin-bottom: 5px;
+    font-size: 40px;
+    margin-bottom: 10px;
 }
 
 .profile .info h2 {
-    font-size: 30px;
-    color: #555;
+    font-size: 22px;
+    padding: 6px 18px;
+    color: #00b894;
+    background-color: #e0f2f1;
+    border-radius: 20px;
+    display: inline-block;
 }
 
-/* Features Section */
-div.features {
-    width: 90%;
-    max-width: 1200px;
-    margin: 50px auto 0 auto; /* centers horizontally, spacing from profile */
+.profile span{
+  width: 80%;
+  height: 2px;
+
+  margin-top: 25px;
+  margin-bottom: 25px;
+
+  background-color: #E0E0E0;
+
+}
+
+.profile .sub-info{
+    width: 80%;          /* keeps spacing clean */
+    align-items: flex-start;
+    text-align: left;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 15px;
-    border-radius: 30px;
+    flex-direction: column;
 }
 
-/* Feature Items */
-/* Features Section styling */
-main.features {
-  padding: 60px 20px;
-  font-family: Arial, sans-serif;
+.profile .sub-info h1{
+  color: #9e9e9e;
+  font-size: 23px;
+  font-weight: 500;
 }
 
-main.features .title {
-  font-size: 2.5rem;
-  margin-bottom: 40px;
-  color: #171717;
+.profile .sub-info h2{
+  color: #626262;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+/* =========================================
+   FEATURES SECTION
+========================================= */
+.features {
+    flex: 1; /* take full remaining width */
+    display: flex;
+    flex-direction: column;
+
+    /* MAKE IT STRETCH SO LEFT PANEL MATCHES HEIGHT */
+    height: auto;
+}
+
+.features .title {
+    font-size: 2.5rem;
+    margin-bottom: 25px;
+    color: #171717;
 }
 
 /* Grid layout */
 .features-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
-  padding: 10px 20px;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
 }
 
-/* Feature cards */
+/* Feature Cards */
 .feature-card {
-  width: 300px;
-  height: 200px;
+    width: calc(33.33% - 25px);
+    min-width: 260px;
+    max-width: 300px;
+    height: 200px;
 
-  text-align: center;
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    text-align: center;
 
-  background: white;
-  padding: 25px;
-  border-radius: 18px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  transition: all 0.35s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: all 0.35s ease;
+    overflow: hidden;
 }
 
-/* Floating hover animation */
+/* Hover animation */
 .feature-card:hover {
-  transform: translateY(-12px) scale(1.04);
-  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
 }
 
-/* Icon styling */
+/* Icons */
 .feature-card i {
-  font-size: 45px;
-  color: #4a90e2;
-  margin-bottom: 15px;
-  transition: transform 0.35s ease;
+    font-size: 45px;
+    color: #4a90e2;
+    margin-bottom: 15px;
+    transition: transform 0.35s ease;
 }
 
-/* Icon animation on hover */
 .feature-card:hover i {
-  transform: rotate(8deg) scale(1.15);
+    transform: rotate(8deg) scale(1.15);
 }
 
-/* Title + text */
+/* Card text */
 .feature-card h3 {
-  font-size: 1.4rem;
-  margin-bottom: 10px;
-  color: #171717;
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    color: #171717;
 }
 
 .feature-card p {
-  color: #555;
-  font-size: 0.95rem;
-  line-height: 1.5;
+    font-size: 0.95rem;
+    color: #555;
+    line-height: 1.5;
 }
 
-/* Responsive Design */
-
-/* Smaller screens: 1 feature per row */
-@media (max-width: 800px) {
-    div.features a.feature {
-        flex: 0 1 100%;
-        max-width: 100%;
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media (max-width: 1050px) {
+    .feature-card {
+        width: calc(50% - 25px);
     }
 }
 
-/* Extra small screens: reduce profile padding */
-@media (max-width: 500px) {
-    .profile {
+@media (max-width: 800px) {
+    .user-page {
         flex-direction: column;
         align-items: center;
-        padding: 15px 20px;
-        gap: 15px;
     }
 
-    .profile-photo {
-        width: 80px;
-        height: 80px;
+    .features-grid {
+        justify-content: center;
+    }
+
+    .feature-card {
+        width: 100%;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 500px) {
+    .profile {
+        width: 100%;
+        max-width: 350px;
     }
 }

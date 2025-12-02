@@ -18,20 +18,20 @@
   <div class="nav-right">
     <!--@if(student.isSignedIn)-->
     <div class="profile-photo">
-      <div class="default-user">
-        <span class="user"></span>
-      </div>
     </div>
 
-    <select class="profile-button" (change)="onProfileSelect($event)">
-      <option value="">Profile</option>
-      <option value="main">Your Account</option>
-      <option value="switch">Switch Account</option>
-      <option value="logout">Sign Out</option>
-    </select>
+    <div class="dropdown" [class.open]="dropdownOpen">
+      <div class="dropdown-btn" (click)="toggleDropdown()">
+        Profile
+        <span class="arrow"></span>
+      </div>
 
-    <!--@else
-    <button id="sign-in"></button>-->
+      <div class="dropdown-menu">
+        <div class="dropdown-item" (click)="onProfileSelect('main')">Your Account</div>
+        <div class="dropdown-item" (click)="onProfileSelect('switch')">Switch Account</div>
+        <div class="dropdown-item" (click)="onProfileSelect('logout')">Sign Out</div>
+      </div>
+    </div>
   </div>
 </nav>
 
