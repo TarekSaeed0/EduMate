@@ -5,13 +5,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.CourseRegistration;
-import com.github.hciteam.edumate.model.Student;
 import com.github.hciteam.edumate.model.Team;
 import com.github.hciteam.edumate.model.TeamJoinInvite;
+import com.github.hciteam.edumate.model.TeamJoinRequest;
 import com.github.hciteam.edumate.model.User;
 import com.github.hciteam.edumate.repository.CourseRegistrationRepository;
 import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.TeamJoinInviteRepository;
+import com.github.hciteam.edumate.repository.TeamJoinRequestRepository;
 import com.github.hciteam.edumate.repository.TeamRepository;
 
 @Service("authorizationService")
@@ -20,15 +21,17 @@ public class AuthorizationService {
 	CourseRegistrationRepository registrationRepository;
 	TeamRepository teamRepository;
 	TeamJoinInviteRepository inviteRepository;
+	TeamJoinRequestRepository requestRepository;
 
 	public AuthorizationService(StudentRepository studentRepository,
 			CourseRegistrationRepository registrationRepository,
-			TeamRepository teamRepository,
-			TeamJoinInviteRepository inviteRepository) {
+			TeamRepository teamRepository, TeamJoinInviteRepository inviteRepository,
+			TeamJoinRequestRepository requestRepository) {
 		this.studentRepository = studentRepository;
 		this.registrationRepository = registrationRepository;
 		this.teamRepository = teamRepository;
 		this.inviteRepository = inviteRepository;
+		this.requestRepository = requestRepository;
 	}
 
 	public boolean isStudentSelf(Long studentId) {
@@ -36,12 +39,11 @@ public class AuthorizationService {
 				SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
 
-		Optional<Student> student = studentRepository.findByUserId(user.getId());
-		if (student.isEmpty()) {
+		if (user.getStudent() == null) {
 			return false;
 		}
 
-		return student.get().getId().equals(studentId);
+		return user.getStudent().getId().equals(studentId);
 	}
 
 	public boolean isRegistrationOwner(Long registrationId) {
@@ -49,8 +51,7 @@ public class AuthorizationService {
 				SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
 
-		Optional<Student> student = studentRepository.findByUserId(user.getId());
-		if (student.isEmpty()) {
+		if (user.getStudent() == null) {
 			return false;
 		}
 
@@ -61,7 +62,7 @@ public class AuthorizationService {
 		}
 
 		return registration.get().getStudent().getId()
-				.equals(student.get().getId());
+				.equals(user.getStudent().getId());
 	}
 
 	public boolean isTeamLeader(Long teamId) {
@@ -69,8 +70,7 @@ public class AuthorizationService {
 				SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
 
-		Optional<Student> student = studentRepository.findByUserId(user.getId());
-		if (student.isEmpty()) {
+		if (user.getStudent() == null) {
 			return false;
 		}
 
@@ -79,7 +79,7 @@ public class AuthorizationService {
 			return false;
 		}
 
-		return team.get().getLeader().getId().equals(student.get().getId());
+		return team.get().getLeader().getId().equals(user.getStudent().getId());
 	}
 
 	public boolean isInviteSender(Long inviteId) {
@@ -87,8 +87,7 @@ public class AuthorizationService {
 				SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
 
-		Optional<Student> student = studentRepository.findByUserId(user.getId());
-		if (student.isEmpty()) {
+		if (user.getStudent() == null) {
 			return false;
 		}
 
@@ -98,7 +97,7 @@ public class AuthorizationService {
 		}
 
 		return invite.get().getTeam().getLeader().getId()
-				.equals(student.get().getId());
+				.equals(user.getStudent().getId());
 	}
 
 	public boolean isInviteRecipient(Long inviteId) {
@@ -106,8 +105,7 @@ public class AuthorizationService {
 				SecurityContextHolder.getContext().getAuthentication();
 		User user = (User) authentication.getPrincipal();
 
-		Optional<Student> student = studentRepository.findByUserId(user.getId());
-		if (student.isEmpty()) {
+		if (user.getStudent() == null) {
 			return false;
 		}
 
@@ -116,6 +114,41 @@ public class AuthorizationService {
 			return false;
 		}
 
-		return invite.get().getStudent().getId().equals(student.get().getId());
+		return invite.get().getStudent().getId().equals(user.getStudent().getId());
+	}
+
+	public boolean isRequestSender(Long requestId) {
+		Authentication authentication =
+				SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+
+		if (user.getStudent() == null) {
+			return false;
+		}
+
+		Optional<TeamJoinRequest> request = requestRepository.findById(requestId);
+		if (request.isEmpty()) {
+			return false;
+		}
+
+		return request.get().getTeam().getLeader().getId()
+				.equals(user.getStudent().getId());
+	}
+
+	public boolean isRequestRecipient(Long requestId) {
+		Authentication authentication =
+				SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+
+		if (user.getStudent() == null) {
+			return false;
+		}
+
+		Optional<TeamJoinRequest> request = requestRepository.findById(requestId);
+		if (request.isEmpty()) {
+			return false;
+		}
+
+		return request.get().getStudent().getId().equals(user.getStudent().getId());
 	}
 }

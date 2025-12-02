@@ -2,7 +2,6 @@ package com.github.hciteam.edumate.controller;
 
 import java.net.URI;
 import java.util.List;
-import org.apache.catalina.connector.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
