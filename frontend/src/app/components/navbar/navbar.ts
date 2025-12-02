@@ -37,21 +37,24 @@ export class Navbar {
     }
   }
 
-  onProfileSelect(event: any) {
-    const value = event.target.value;
+  dropdownOpen = false;
 
-    if (value === "main") {
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  onProfileSelect(option: string) {
+    console.log("Selected:", option);
+    this.dropdownOpen = false;
+
+    if (option === "main") {
       window.location.href = "main";
     }
-    else if (value === "switch") {
-
+    else if (option === "switch") {
+      // your code here
     }
-    else if (value === "logout") {
-
-      this.authenticationService.signout().subscribe(() => {
-
-        window.location.reload();
-      });
+    else if (option === "logout") {
+      // logout logic
     }
   }
 }

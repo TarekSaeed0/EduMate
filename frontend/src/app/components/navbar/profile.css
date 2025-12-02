@@ -2,78 +2,120 @@
     width: 150px;
     height: 40px;
 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: transparent;
+    position: relative;
 
     border: solid;
-    border-color: gray;
+    border-color: #e0e0e0;
     border-width: 2px;
-    border-radius: 20px;
+    border-radius: 40px;
     padding: 10px;
 
     appearance: none;
 
-    color: transparent;        /* hide the selected text */
     text-shadow: 0 0 0 transparent;
 
     display: flex;
     justify-content: space-between;
-}
 
-.profile-button {
-    
-    width: 100px;
-    height: 40px;
-    
-    border: none;
-
-    appearance: none;
-
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 600;
-    font-size: large;
-
+    z-index: 1;
 }
 
 .profile-photo {
-    width: 35px;
-    height: 35px;
+    width: 50px;
+    height: 50px;
+
+    background-image: url("Guest-user.png");
+    background-size: cover;       /* better for circular images */
+    background-position: center;
     background-color: #EAF4FC;
-    border-radius: 50%;
-}
 
-.default-user{
-
-    border: solid;
-    border-color: #0066CC;
     border-radius: 50%;
 
-    display: block;
+    position: relative;
 
+    top: -5px;
 }
 
-.user {
-    width: 20px;
+.profile-photo::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    border: 2px solid #CCE0F5;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Main button */
+.dropdown-btn {
     height: 20px;
+    background: #fff;
+    border-radius: 40px;
+    padding: 8px 14px;
+    cursor: pointer;
 
-    background-color: #0066CC;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    font-size: 15px;
 
-    
+    transition: 0.15s ease-in-out;
+}
 
-    border-radius: 50%;
+/* Arrow styling */
+.dropdown-btn .arrow {
+    border: solid #777;
+    border-width: 0 2px 2px 0;
+    padding: 3px;
+    transform: rotate(45deg);
+    margin-left: 5px;
+    transition: 0.2s;
+}
 
+/* Rotate arrow when open */
+.dropdown.open .arrow {
+    transform: rotate(-135deg);
+}
+
+/* Focus state (instead of ugly default outline) */
+.dropdown-btn:focus,
+.dropdown.open .dropdown-btn {
+    border-color: #b8c7d9;
+}
+
+/* Dropdown panel */
+.dropdown-menu {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+
+    width: 150px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.12);
+    overflow: hidden;
+
+    display: none;
+}
+
+/* Show when open */
+.dropdown.open .dropdown-menu {
     display: block;
 }
 
-.profile-button option {
-    background-color: rgb(244, 246, 247);
+/* Dropdown option */
+.dropdown-item {
+    padding: 10px 14px;
+    font-size: 14px;
+    cursor: pointer;
+}
 
-    border-radius: 10px;
-    padding: 10px;
-
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: large;
-
+.dropdown-item:hover {
+    background: #f0f4ff;
+    color: #3d6aff;
 }
