@@ -50,10 +50,10 @@ export class Navbar {
     if (option === "main") {
       window.location.href = "main";
     }
-    else if (value === "switch") {
+    else if (option === "switch") {
       // your code here
     }
-    else if (value === "logout") {
+    else if (option === "logout") {
       // logout logic
     }
   }
