@@ -36,7 +36,7 @@ public class TeamJoinRequestController {
 	}
 
 	@PostMapping
-	@PreAuthorize("@authorizationService.isTeamLeader(#requestDTO.team.id)")
+	@PreAuthorize("@authorizationService.isStudentSelf(#requestDTO.studentId)")
 	public ResponseEntity<TeamJoinRequestDTO> createRequest(
 			@RequestBody TeamJoinRequestDTO requestDTO) {
 		TeamJoinRequestDTO createdRequest =

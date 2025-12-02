@@ -131,8 +131,7 @@ public class AuthorizationService {
 			return false;
 		}
 
-		return request.get().getTeam().getLeader().getId()
-				.equals(user.getStudent().getId());
+		return request.get().getStudent().getId().equals(user.getStudent().getId());
 	}
 
 	public boolean isRequestRecipient(Long requestId) {
@@ -149,6 +148,8 @@ public class AuthorizationService {
 			return false;
 		}
 
-		return request.get().getStudent().getId().equals(user.getStudent().getId());
+		return request.get().getTeam().getLeader().getId()
+				.equals(user.getStudent().getId());
 	}
+
 }
