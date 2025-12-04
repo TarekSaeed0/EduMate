@@ -1,6 +1,5 @@
 package com.github.hciteam.edumate.model;
 
-import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

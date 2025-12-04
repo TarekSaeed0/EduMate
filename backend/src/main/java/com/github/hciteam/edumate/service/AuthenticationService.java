@@ -73,7 +73,7 @@ public class AuthenticationService {
 	@Transactional
 	public UserDTO signup(SignupRequest signupRequest) {
 		if (userRepository.existsByEmail(signupRequest.getEmail())) {
-			throw new UserAlreadyExistsException();
+			throw new UserAlreadyExistsException(signupRequest.getEmail());
 		}
 
 		UserRole studentRole = roleRepository.findByName("STUDENT")

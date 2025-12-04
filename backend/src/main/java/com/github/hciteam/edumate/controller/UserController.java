@@ -3,13 +3,15 @@ package com.github.hciteam.edumate.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import com.github.hciteam.edumate.dto.UserCreationDTO;
 import com.github.hciteam.edumate.dto.UserDTO;
+import com.github.hciteam.edumate.dto.UserRequestDTO;
 import com.github.hciteam.edumate.service.UserService;
+import com.github.hciteam.edumate.validation.ValidationGroups;
 import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +41,7 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<UserDTO> createUser(
-			@RequestBody UserCreationDTO userDTO) {
+			@Validated(ValidationGroups.Create.class) @RequestBody UserRequestDTO userDTO) {
 		UserDTO createdUser = userService.createUser(userDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -55,7 +57,7 @@ public class UserController {
 
 	@PutMapping("/{userId}")
 	public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId,
-			@RequestBody UserDTO userDTO) {
+			@Validated(ValidationGroups.Create.class) @RequestBody UserRequestDTO userDTO) {
 		return ResponseEntity.ok(userService.updateUser(userId, userDTO));
 	}
 
