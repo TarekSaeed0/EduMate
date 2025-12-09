@@ -1,11 +1,13 @@
 package com.github.hciteam.edumate.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.StudentTask;
 import com.github.hciteam.edumate.exception.CourseRegistrationNotFoundException;
 import com.github.hciteam.edumate.exception.StudentNotFoundException;
+import com.github.hciteam.edumate.exception.StudentTaskNotFoundException;
 import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.mapper.StudentMapper;
 import com.github.hciteam.edumate.mapper.StudentTaskMapper;
@@ -82,11 +84,10 @@ public class StudentService {
 
 		return studentTaskRepository.findById(studentTaskId)
 				.map(studentTaskMapper::toDTO)
-				.orElseThrow(() -> new CourseRegistrationNotFoundException());
+				.orElseThrow(() -> new StudentTaskNotFoundException());
 	}
 
-	public StudentTaskDTO updateStudentTask(Long studentId, Long taskId,
-			StudentTaskDTO studentTaskDTO) {
+	public StudentTaskDTO submitStudentTask(Long studentId, Long taskId) {
 		if (!studentRepository.existsById(studentId)) {
 			throw new StudentNotFoundException();
 		}
@@ -95,9 +96,25 @@ public class StudentService {
 
 		StudentTask studentTask = studentTaskRepository.findById(studentTaskId)
 				.map(existingStudentTask -> {
-					existingStudentTask.setSubmittedAt(studentTaskDTO.getSubmittedAt());
+					existingStudentTask.setSubmittedAt(LocalDateTime.now());
 					return existingStudentTask;
-				}).orElseThrow(() -> new CourseRegistrationNotFoundException());
+				}).orElseThrow(() -> new StudentTaskNotFoundException());
+
+		return studentTaskMapper.toDTO(studentTaskRepository.save(studentTask));
+	}
+
+	public StudentTaskDTO unsubmitStudentTask(Long studentId, Long taskId) {
+		if (!studentRepository.existsById(studentId)) {
+			throw new StudentNotFoundException();
+		}
+
+		StudentTaskKey studentTaskId = new StudentTaskKey(studentId, taskId);
+
+		StudentTask studentTask = studentTaskRepository.findById(studentTaskId)
+				.map(existingStudentTask -> {
+					existingStudentTask.setSubmittedAt(null);
+					return existingStudentTask;
+				}).orElseThrow(() -> new StudentTaskNotFoundException());
 
 		return studentTaskMapper.toDTO(studentTaskRepository.save(studentTask));
 	}

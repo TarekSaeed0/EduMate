@@ -51,13 +51,19 @@ public class StudentController {
 		return ResponseEntity.ok(studentService.getStudentTask(studentId, taskId));
 	}
 
-	@PutMapping("/{studentId}/tasks/{taskId}")
+	@PutMapping("/{studentId}/tasks/{taskId}/submit")
 	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
-	public ResponseEntity<StudentTaskDTO> updateStudentTask(
-			@PathVariable Long studentId, @PathVariable Long taskId,
-			@Validated(ValidationGroups.Update.class) @RequestBody StudentTaskDTO studentTaskDTO) {
-		return ResponseEntity.ok(
-				studentService.updateStudentTask(studentId, taskId, studentTaskDTO));
+	public ResponseEntity<StudentTaskDTO> submitStudentTask(
+			@PathVariable Long studentId, @PathVariable Long taskId) {
+		return ResponseEntity
+				.ok(studentService.submitStudentTask(studentId, taskId));
 	}
 
+	@PutMapping("/{studentId}/tasks/{taskId}/unsubmit")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	public ResponseEntity<StudentTaskDTO> unsubmitStudentTask(
+			@PathVariable Long studentId, @PathVariable Long taskId) {
+		return ResponseEntity
+				.ok(studentService.unsubmitStudentTask(studentId, taskId));
+	}
 }

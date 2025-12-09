@@ -9,9 +9,4 @@ import com.github.hciteam.edumate.dto.StudentTaskDTO;
 public interface StudentTaskMapper {
 	@Mapping(source = "student.id", target = "studentId")
 	StudentTaskDTO toDTO(StudentTask studentTask);
-
-	@Mapping(target = "id", ignore = true)
-	@Mapping(source = "studentId", target = "id.studentId")
-	@Mapping(source = "studentId", target = "student.id")
-	StudentTask toEntity(StudentTaskDTO studentTaskDTO);
 }
