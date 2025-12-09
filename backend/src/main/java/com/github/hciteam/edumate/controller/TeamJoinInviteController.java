@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.hciteam.edumate.dto.TeamJoinInviteDTO;
 import com.github.hciteam.edumate.model.TeamJoinStatus;
 import com.github.hciteam.edumate.service.TeamJoinInviteService;
+import com.github.hciteam.edumate.validation.ValidationGroups;
 
 @RestController
 @RequestMapping("/api/team-join-invites")
@@ -38,7 +40,7 @@ public class TeamJoinInviteController {
 	@PostMapping
 	@PreAuthorize("@authorizationService.isTeamLeader(#inviteDTO.team.id)")
 	public ResponseEntity<TeamJoinInviteDTO> createInvite(
-			@RequestBody TeamJoinInviteDTO inviteDTO) {
+			@Validated(ValidationGroups.Create.class) @RequestBody TeamJoinInviteDTO inviteDTO) {
 		TeamJoinInviteDTO createdInvite = inviteService.createInvite(inviteDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -70,7 +72,7 @@ public class TeamJoinInviteController {
 	}
 
 	@DeleteMapping("/{inviteId}")
-	@PreAuthorize("@authorizationService.isInviteSender(#inviteId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isInviteSender(#inviteId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<Void> deleteInvite(@PathVariable Long inviteId) {
 		inviteService.deleteInvite(inviteId);
 

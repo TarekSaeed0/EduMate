@@ -2,26 +2,20 @@ package com.github.hciteam.edumate.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import com.github.hciteam.edumate.model.CourseOffering;
 import com.github.hciteam.edumate.model.TeamGroup;
-import com.github.hciteam.edumate.exception.CourseOfferingNotFoundException;
 import com.github.hciteam.edumate.exception.TeamGroupNotFoundException;
 import com.github.hciteam.edumate.mapper.TeamGroupMapper;
 import com.github.hciteam.edumate.dto.TeamGroupDTO;
-import com.github.hciteam.edumate.repository.CourseOfferingRepository;
 import com.github.hciteam.edumate.repository.TeamGroupRepository;
 
 @Service
 public class TeamGroupService {
 	private final TeamGroupRepository groupRepository;
-	private final CourseOfferingRepository offeringRepository;
 	private final TeamGroupMapper groupMapper;
 
 	public TeamGroupService(TeamGroupRepository groupRepository,
-			CourseOfferingRepository offeringRepository,
 			TeamGroupMapper groupMapper) {
 		this.groupRepository = groupRepository;
-		this.offeringRepository = offeringRepository;
 		this.groupMapper = groupMapper;
 	}
 
@@ -31,14 +25,7 @@ public class TeamGroupService {
 	}
 
 	public TeamGroupDTO createGroup(TeamGroupDTO groupDTO) {
-		CourseOffering offering =
-				offeringRepository.findById(groupDTO.getOffering().getId())
-						.orElseThrow(() -> new CourseOfferingNotFoundException());
-
-		TeamGroup group =
-				TeamGroup.builder().offering(offering).name(groupDTO.getName())
-						.minimumMemberCount(groupDTO.getMinimumMemberCount())
-						.maximumMemberCount(groupDTO.getMaximumMemberCount()).build();
+		TeamGroup group = groupMapper.toEntity(groupDTO);
 
 		return groupMapper.toDTO(groupRepository.save(group));
 	}
@@ -51,9 +38,7 @@ public class TeamGroupService {
 
 	public TeamGroupDTO updateGroup(Long groupId, TeamGroupDTO groupDTO) {
 		TeamGroup group = groupRepository.findById(groupId).map(existingGroup -> {
-			existingGroup.setName(groupDTO.getName());
-			existingGroup.setMinimumMemberCount(groupDTO.getMinimumMemberCount());
-			existingGroup.setMaximumMemberCount(groupDTO.getMaximumMemberCount());
+			groupMapper.updateEntityFromDTO(groupDTO, existingGroup);
 			return existingGroup;
 		}).orElseThrow(() -> new TeamGroupNotFoundException());
 

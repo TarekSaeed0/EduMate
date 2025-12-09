@@ -64,8 +64,8 @@ public class DataInitializer implements CommandLineRunner {
 			}
 		});
 
-		if (!userRepository.existsByEmail("admin@admin.com")) {
-			userService.createUser(new UserDTO(null, "admin@admin.com", "123456",
+		if (!userRepository.existsByEmail("admin@gmail.com")) {
+			userService.createUser(new UserDTO(null, "admin@gmail.com", "123456",
 					Set.of("ADMINISTRATOR"), null));
 		}
 

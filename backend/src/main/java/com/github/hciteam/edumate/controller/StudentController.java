@@ -24,13 +24,13 @@ public class StudentController {
 	}
 
 	@GetMapping("/{studentId}")
-	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<StudentDTO> getStudent(@PathVariable Long studentId) {
 		return ResponseEntity.ok(studentService.getStudent(studentId));
 	}
 
 	@GetMapping("/{studentId}/tasks")
-	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<List<StudentTaskDTO>> getStudentTasks(
 			@PathVariable Long studentId, @RequestParam(required = false) Long taskId,
 			@RequestParam(required = false) Long semesterId,
@@ -41,14 +41,14 @@ public class StudentController {
 	}
 
 	@GetMapping("/{studentId}/tasks/{taskId}")
-	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<StudentTaskDTO> getStudentTask(
 			@PathVariable Long studentId, @PathVariable Long taskId) {
 		return ResponseEntity.ok(studentService.getStudentTask(studentId, taskId));
 	}
 
 	@PostMapping("/{studentId}/tasks/{taskId}/submit")
-	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<StudentTaskDTO> submitStudentTask(
 			@PathVariable Long studentId, @PathVariable Long taskId) {
 		return ResponseEntity
@@ -56,7 +56,7 @@ public class StudentController {
 	}
 
 	@PostMapping("/{studentId}/tasks/{taskId}/unsubmit")
-	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<StudentTaskDTO> unsubmitStudentTask(
 			@PathVariable Long studentId, @PathVariable Long taskId) {
 		return ResponseEntity

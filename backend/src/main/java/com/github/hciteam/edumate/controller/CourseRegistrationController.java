@@ -31,7 +31,7 @@ public class CourseRegistrationController {
 	}
 
 	@GetMapping
-	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<List<CourseRegistrationDTO>> getRegistrations(
 			@RequestParam(required = false) Long offeringId,
 			@RequestParam(required = false) Long semesterId,
@@ -43,7 +43,7 @@ public class CourseRegistrationController {
 	}
 
 	@PostMapping
-	@PreAuthorize("@authorizationService.isStudentSelf(#registrationDTO.studentId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isStudentSelf(#registrationDTO.studentId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CourseRegistrationDTO> createRegistration(
 			@Validated(ValidationGroups.Create.class) @RequestBody CourseRegistrationDTO registrationDTO) {
 		CourseRegistrationDTO createdRegistration =
@@ -57,7 +57,7 @@ public class CourseRegistrationController {
 	}
 
 	@GetMapping("/{registrationId}")
-	@PreAuthorize("@authorizationService.isRegistrationOwner(#registrationId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isRegistrationOwner(#registrationId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CourseRegistrationDTO> getRegistration(
 			@PathVariable Long registrationId) {
 		return ResponseEntity
@@ -65,7 +65,7 @@ public class CourseRegistrationController {
 	}
 
 	@PutMapping("/{registrationId}")
-	@PreAuthorize("@authorizationService.isRegistrationOwner(#registrationId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isRegistrationOwner(#registrationId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<CourseRegistrationDTO> updateRegistration(
 			@PathVariable Long registrationId,
 			@Validated(ValidationGroups.Update.class) @RequestBody CourseRegistrationDTO registrationDTO) {
@@ -74,7 +74,7 @@ public class CourseRegistrationController {
 	}
 
 	@DeleteMapping("/{registrationId}")
-	@PreAuthorize("@authorizationService.isRegistrationOwner(#registrationId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isRegistrationOwner(#registrationId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<Void> deleteRegistration(
 			@PathVariable Long registrationId) {
 		registrationService.deleteRegistration(registrationId);

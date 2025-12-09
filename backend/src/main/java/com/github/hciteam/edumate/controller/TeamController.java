@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.hciteam.edumate.dto.TeamDTO;
 import com.github.hciteam.edumate.model.TeamStatus;
 import com.github.hciteam.edumate.service.TeamService;
+import com.github.hciteam.edumate.validation.ValidationGroups;
 
 @RestController
 @RequestMapping("/api/teams")
@@ -37,8 +39,9 @@ public class TeamController {
 	}
 
 	@PostMapping
-	@PreAuthorize("@authorizationService.isStudentSelf(#teamDTO.leader.id) or hasRole('COORDINATOR') or hasRole('ADMIN')")
-	public ResponseEntity<TeamDTO> createTeam(@RequestBody TeamDTO teamDTO) {
+	@PreAuthorize("@authorizationService.isStudentSelf(#teamDTO.leader.id) or hasRole('COORDINATOR') or hasRole('ADMINISTRATOR')")
+	public ResponseEntity<TeamDTO> createTeam(
+			@Validated(ValidationGroups.Create.class) @RequestBody TeamDTO teamDTO) {
 		TeamDTO createdTeam = teamService.createTeam(teamDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -53,7 +56,7 @@ public class TeamController {
 	}
 
 	@DeleteMapping("/{teamId}")
-	@PreAuthorize("@authorizationService.isTeamLeader(#teamId) or hasRole('COORDINATOR') or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isTeamLeader(#teamId) or hasRole('COORDINATOR') or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<Void> deleteTeam(@PathVariable Long teamId) {
 		teamService.deleteTeam(teamId);
 

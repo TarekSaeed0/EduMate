@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.hciteam.edumate.dto.TeamJoinRequestDTO;
 import com.github.hciteam.edumate.model.TeamJoinStatus;
 import com.github.hciteam.edumate.service.TeamJoinRequestService;
+import com.github.hciteam.edumate.validation.ValidationGroups;
 
 @RestController
 @RequestMapping("/api/team-join-requests")
@@ -38,7 +40,7 @@ public class TeamJoinRequestController {
 	@PostMapping
 	@PreAuthorize("@authorizationService.isStudentSelf(#requestDTO.studentId)")
 	public ResponseEntity<TeamJoinRequestDTO> createRequest(
-			@RequestBody TeamJoinRequestDTO requestDTO) {
+			@Validated(ValidationGroups.Create.class) @RequestBody TeamJoinRequestDTO requestDTO) {
 		TeamJoinRequestDTO createdRequest =
 				requestService.createRequest(requestDTO);
 
@@ -71,7 +73,7 @@ public class TeamJoinRequestController {
 	}
 
 	@DeleteMapping("/{requestId}")
-	@PreAuthorize("@authorizationService.isRequestSender(#requestId) or hasRole('ADMIN')")
+	@PreAuthorize("@authorizationService.isRequestSender(#requestId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<Void> deleteRequest(@PathVariable Long requestId) {
 		requestService.deleteRequest(requestId);
 
