@@ -73,13 +73,17 @@ export class StudentService {
       .pipe(map(StudentService.studentTaskMapper));
   }
 
-  updateStudentTask(
-    studentId: number,
-    taskId: number,
-    studentTask: Omit<StudentTask, 'id'>,
-  ): Observable<StudentTask> {
+  submitStudentTask(studentId: number, taskId: number): Observable<StudentTask> {
     return this.http
-      .put<StudentTask>(`${this.baseUrl}/${studentId}/tasks/${taskId}`, studentTask, {
+      .post<StudentTask>(`${this.baseUrl}/${studentId}/tasks/${taskId}/submit`, null, {
+        withCredentials: true,
+      })
+      .pipe(map(StudentService.studentTaskMapper));
+  }
+
+  unsubmitStudentTask(studentId: number, taskId: number): Observable<StudentTask> {
+    return this.http
+      .post<StudentTask>(`${this.baseUrl}/${studentId}/tasks/${taskId}/unsubmit`, null, {
         withCredentials: true,
       })
       .pipe(map(StudentService.studentTaskMapper));

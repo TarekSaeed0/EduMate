@@ -4,33 +4,22 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.dto.CourseRegistrationDTO;
-import com.github.hciteam.edumate.exception.StudentNotFoundException;
-import com.github.hciteam.edumate.model.CourseOffering;
 import com.github.hciteam.edumate.model.CourseRegistration;
 import com.github.hciteam.edumate.model.CourseRegistrationStatus;
-import com.github.hciteam.edumate.model.Student;
-import com.github.hciteam.edumate.exception.CourseOfferingNotFoundException;
 import com.github.hciteam.edumate.exception.CourseRegistrationAlreadyExistsException;
 import com.github.hciteam.edumate.exception.CourseRegistrationNotFoundException;
 import com.github.hciteam.edumate.mapper.CourseRegistrationMapper;
-import com.github.hciteam.edumate.repository.CourseOfferingRepository;
 import com.github.hciteam.edumate.repository.CourseRegistrationRepository;
-import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.specification.CourseRegistrationSpecifications;
 
 @Service
 public class CourseRegistrationService {
-	private final CourseOfferingRepository offeringRepository;
-	private final StudentRepository studentRepository;
 	private final CourseRegistrationRepository registrationRepository;
 	private final CourseRegistrationMapper registrationMapper;
 
-	public CourseRegistrationService(CourseOfferingRepository offeringRepository,
-			StudentRepository studentRepository,
+	public CourseRegistrationService(
 			CourseRegistrationRepository registrationRepository,
 			CourseRegistrationMapper registrationMapper) {
-		this.offeringRepository = offeringRepository;
-		this.studentRepository = studentRepository;
 		this.registrationRepository = registrationRepository;
 		this.registrationMapper = registrationMapper;
 	}

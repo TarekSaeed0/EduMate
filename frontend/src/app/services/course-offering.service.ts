@@ -52,15 +52,6 @@ export class CourseOfferingService {
     });
   }
 
-  updateOffering(
-    offeringId: number,
-    offering: Omit<CourseOffering, 'id'>,
-  ): Observable<CourseOffering> {
-    return this.http.put<CourseOffering>(`${this.baseUrl}/${offeringId}`, offering, {
-      withCredentials: true,
-    });
-  }
-
   deleteOffering(offeringId: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${offeringId}`, {
       withCredentials: true,

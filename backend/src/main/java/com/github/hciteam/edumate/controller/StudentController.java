@@ -7,16 +7,12 @@ import com.github.hciteam.edumate.dto.StudentDTO;
 import com.github.hciteam.edumate.dto.StudentTaskDTO;
 import com.github.hciteam.edumate.model.StudentTaskStatus;
 import com.github.hciteam.edumate.service.StudentService;
-import com.github.hciteam.edumate.validation.ValidationGroups;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.PostMapping;
 
 @RestController
 @RequestMapping("/api/students")
@@ -51,7 +47,7 @@ public class StudentController {
 		return ResponseEntity.ok(studentService.getStudentTask(studentId, taskId));
 	}
 
-	@PutMapping("/{studentId}/tasks/{taskId}/submit")
+	@PostMapping("/{studentId}/tasks/{taskId}/submit")
 	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
 	public ResponseEntity<StudentTaskDTO> submitStudentTask(
 			@PathVariable Long studentId, @PathVariable Long taskId) {
@@ -59,7 +55,7 @@ public class StudentController {
 				.ok(studentService.submitStudentTask(studentId, taskId));
 	}
 
-	@PutMapping("/{studentId}/tasks/{taskId}/unsubmit")
+	@PostMapping("/{studentId}/tasks/{taskId}/unsubmit")
 	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
 	public ResponseEntity<StudentTaskDTO> unsubmitStudentTask(
 			@PathVariable Long studentId, @PathVariable Long taskId) {

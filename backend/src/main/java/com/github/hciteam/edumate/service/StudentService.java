@@ -5,9 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.StudentTask;
-import com.github.hciteam.edumate.exception.CourseRegistrationNotFoundException;
 import com.github.hciteam.edumate.exception.StudentNotFoundException;
+import com.github.hciteam.edumate.exception.StudentTaskAlreadySubmittedException;
 import com.github.hciteam.edumate.exception.StudentTaskNotFoundException;
+import com.github.hciteam.edumate.exception.StudentTaskNotSubmittedException;
 import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.mapper.StudentMapper;
 import com.github.hciteam.edumate.mapper.StudentTaskMapper;
@@ -96,6 +97,11 @@ public class StudentService {
 
 		StudentTask studentTask = studentTaskRepository.findById(studentTaskId)
 				.map(existingStudentTask -> {
+					if (existingStudentTask.getSubmittedAt() != null) {
+						throw new StudentTaskAlreadySubmittedException(
+								"Cannot submit a student task that is already submitted");
+					}
+
 					existingStudentTask.setSubmittedAt(LocalDateTime.now());
 					return existingStudentTask;
 				}).orElseThrow(() -> new StudentTaskNotFoundException());
@@ -112,6 +118,11 @@ public class StudentService {
 
 		StudentTask studentTask = studentTaskRepository.findById(studentTaskId)
 				.map(existingStudentTask -> {
+					if (existingStudentTask.getSubmittedAt() == null) {
+						throw new StudentTaskNotSubmittedException(
+								"Cannot unsubmit a student task that is not submitted");
+					}
+
 					existingStudentTask.setSubmittedAt(null);
 					return existingStudentTask;
 				}).orElseThrow(() -> new StudentTaskNotFoundException());

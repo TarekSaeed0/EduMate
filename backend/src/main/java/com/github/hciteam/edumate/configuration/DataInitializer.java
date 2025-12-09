@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Set;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import com.github.hciteam.edumate.dto.UserDTO;
 import com.github.hciteam.edumate.model.Course;
 import com.github.hciteam.edumate.model.FAQ;
 import com.github.hciteam.edumate.model.FAQCategory;
@@ -18,9 +19,11 @@ import com.github.hciteam.edumate.repository.CourseRepository;
 import com.github.hciteam.edumate.repository.FAQCategoryRepository;
 import com.github.hciteam.edumate.repository.FAQRepository;
 import com.github.hciteam.edumate.repository.UserRoleRepository;
+import com.github.hciteam.edumate.service.UserService;
 import com.github.hciteam.edumate.repository.CourseOfferingRepository;
 import com.github.hciteam.edumate.repository.SemesterRepository;
 import com.github.hciteam.edumate.repository.TaskRepository;
+import com.github.hciteam.edumate.repository.UserRepository;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
@@ -31,13 +34,15 @@ public class DataInitializer implements CommandLineRunner {
 	private final TaskRepository taskRepository;
 	private final FAQCategoryRepository faqCategoryRepository;
 	private final FAQRepository faqRepository;
+	private final UserRepository userRepository;
+	private final UserService userService;
 
 	public DataInitializer(UserRoleRepository roleRepository,
 			CourseRepository courseRepository, SemesterRepository semesterRepository,
 			CourseOfferingRepository offeringRepository,
 			TaskRepository taskRepository,
-			FAQCategoryRepository faqCategoryRepository,
-			FAQRepository faqRepository) {
+			FAQCategoryRepository faqCategoryRepository, FAQRepository faqRepository,
+			UserRepository userRepository, UserService userService) {
 		this.roleRepository = roleRepository;
 		this.courseRepository = courseRepository;
 		this.semesterRepository = semesterRepository;
@@ -45,6 +50,8 @@ public class DataInitializer implements CommandLineRunner {
 		this.taskRepository = taskRepository;
 		this.faqCategoryRepository = faqCategoryRepository;
 		this.faqRepository = faqRepository;
+		this.userRepository = userRepository;
+		this.userService = userService;
 	}
 
 	@Override
@@ -56,6 +63,11 @@ public class DataInitializer implements CommandLineRunner {
 				roleRepository.save(role);
 			}
 		});
+
+		if (!userRepository.existsByEmail("admin@admin.com")) {
+			userService.createUser(new UserDTO(null, "admin@admin.com", "123456",
+					Set.of("ADMINISTRATOR"), null));
+		}
 
 		Course[] courses = {
 				Course.builder().code("CSE 282").name("Human Computer Interaction")

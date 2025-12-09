@@ -42,7 +42,7 @@ export class TaskService {
       .pipe(map(TaskService.taskMapper));
   }
 
-  updateTask(id: number, task: Omit<Task, 'id'>): Observable<Task> {
+  updateTask(id: number, task: Task): Observable<Task> {
     return this.http
       .put<Task>(`${this.baseUrl}/${id}`, task, { withCredentials: true })
       .pipe(map(TaskService.taskMapper));
