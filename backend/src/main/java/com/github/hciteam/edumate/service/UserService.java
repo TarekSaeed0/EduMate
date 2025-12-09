@@ -1,12 +1,10 @@
 package com.github.hciteam.edumate.service;
 
 import java.util.List;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.github.hciteam.edumate.model.Student;
 import com.github.hciteam.edumate.model.User;
 import com.github.hciteam.edumate.dto.UserDTO;
-import com.github.hciteam.edumate.dto.UserRequestDTO;
 import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.UserRepository;
 import com.github.hciteam.edumate.exception.UserAlreadyExistsException;
@@ -19,44 +17,46 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final StudentRepository studentRepository;
 	private final UserMapper userMapper;
+	private final PasswordEncoder passwordEncoder;
 
 	public UserService(UserRepository userRepository,
-			StudentRepository studentRepository, UserMapper userMapper) {
+			StudentRepository studentRepository, UserMapper userMapper,
+			PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.studentRepository = studentRepository;
 		this.userMapper = userMapper;
-	}
-
-	public UserDTO me(Authentication authentication) {
-		User user = (User) authentication.getPrincipal();
-		return userMapper.toDTO(user);
+		this.passwordEncoder = passwordEncoder;
 	}
 
 	public List<UserDTO> getUsers() {
 		return userRepository.findAll().stream().map(userMapper::toDTO).toList();
 	}
 
-	public UserDTO createUser(UserRequestDTO userDTO) {
+	public UserDTO createUser(UserDTO userDTO) {
 		if (userRepository.existsByEmail(userDTO.getEmail())) {
 			throw new UserAlreadyExistsException(userDTO.getEmail());
 		}
 
 		User user = userMapper.toEntity(userDTO);
 
-		if (user.getStudent() != null) {
-			if (studentRepository.existsById(user.getStudent().getId())) {
-				throw new StudentAlreadyExistsException();
-			}
+		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-			user.getStudent().setUser(user);
+		if (user.getStudent() != null
+				&& studentRepository.existsById(user.getStudent().getId())) {
+			throw new StudentAlreadyExistsException();
 		}
 
 		return userMapper.toDTO(userRepository.save(user));
 	}
 
-	public UserDTO updateUser(Long userId, UserRequestDTO userDTO) {
+	public UserDTO updateUser(Long userId, UserDTO userDTO) {
 		return userRepository.findById(userId).map(existingUser -> {
-			userMapper.updateUserFromDTO(userDTO, existingUser);
+			userMapper.updateEntityFromDTO(userDTO, existingUser);
+
+			if (userDTO.getPassword() != null) {
+				existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+			}
+
 			return userMapper.toDTO(userRepository.save(existingUser));
 		}).orElseThrow(() -> new UserNotFoundException());
 	}

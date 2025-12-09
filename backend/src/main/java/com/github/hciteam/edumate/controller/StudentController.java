@@ -7,9 +7,11 @@ import com.github.hciteam.edumate.dto.StudentDTO;
 import com.github.hciteam.edumate.dto.StudentTaskDTO;
 import com.github.hciteam.edumate.model.StudentTaskStatus;
 import com.github.hciteam.edumate.service.StudentService;
+import com.github.hciteam.edumate.validation.ValidationGroups;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -53,7 +55,7 @@ public class StudentController {
 	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMIN')")
 	public ResponseEntity<StudentTaskDTO> updateStudentTask(
 			@PathVariable Long studentId, @PathVariable Long taskId,
-			@RequestBody StudentTaskDTO studentTaskDTO) {
+			@Validated(ValidationGroups.Update.class) @RequestBody StudentTaskDTO studentTaskDTO) {
 		return ResponseEntity.ok(
 				studentService.updateStudentTask(studentId, taskId, studentTaskDTO));
 	}

@@ -31,9 +31,7 @@ public class SemesterService {
 			throw new SemesterAlreadyExistsException();
 		}
 
-		Semester semester = Semester.builder().term(semesterDTO.getTerm())
-				.year(semesterDTO.getYear()).startDate(semesterDTO.getStartDate())
-				.endDate(semesterDTO.getEndDate()).build();
+		Semester semester = semesterMapper.toEntity(semesterDTO);
 
 		return semesterMapper.toDTO(semesterRepository.save(semester));
 	}
@@ -46,8 +44,7 @@ public class SemesterService {
 	public SemesterDTO updateSemester(Long semesterId, SemesterDTO semesterDTO) {
 		Semester semester =
 				semesterRepository.findById(semesterId).map(existingSemester -> {
-					existingSemester.setStartDate(semesterDTO.getStartDate());
-					existingSemester.setEndDate(semesterDTO.getEndDate());
+					semesterMapper.updateEntityFromDTO(semesterDTO, existingSemester);
 					return existingSemester;
 				}).orElseThrow(() -> new SemesterNotFoundException());
 

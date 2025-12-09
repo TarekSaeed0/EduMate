@@ -72,20 +72,14 @@ public class CourseRegistrationService {
 
 	public CourseRegistrationDTO createRegistration(
 			CourseRegistrationDTO registrationDTO) {
-		Student student = studentRepository.findById(registrationDTO.getStudentId())
-				.orElseThrow(() -> new StudentNotFoundException());
-		CourseOffering offering =
-				offeringRepository.findById(registrationDTO.getOffering().getId())
-						.orElseThrow(() -> new CourseOfferingNotFoundException());
-
 		if (registrationRepository.existsByOfferingIdAndStudentId(
-				registrationDTO.getOffering().getId(), student.getId())) {
+				registrationDTO.getOffering().getId(),
+				registrationDTO.getStudentId())) {
 			throw new CourseRegistrationAlreadyExistsException();
 		}
 
 		CourseRegistration registration =
-				CourseRegistration.builder().offering(offering).student(student)
-						.status(registrationDTO.getStatus()).build();
+				registrationMapper.toEntity(registrationDTO);
 
 		return registrationMapper.toDTO(registrationRepository.save(registration));
 	}
@@ -100,7 +94,8 @@ public class CourseRegistrationService {
 			CourseRegistrationDTO registrationDTO) {
 		CourseRegistration registration = registrationRepository
 				.findById(registrationId).map(existingSudentCourse -> {
-					existingSudentCourse.setStatus(registrationDTO.getStatus());
+					registrationMapper.updateEntityFromDTO(registrationDTO,
+							existingSudentCourse);
 					return existingSudentCourse;
 				}).orElseThrow(() -> new CourseRegistrationNotFoundException());
 

@@ -3,6 +3,7 @@ package com.github.hciteam.edumate.controller;
 import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.hciteam.edumate.dto.CourseDTO;
 import com.github.hciteam.edumate.service.CourseService;
+import com.github.hciteam.edumate.validation.ValidationGroups;
 
 @RestController
 @RequestMapping("/api/courses")
@@ -31,7 +33,7 @@ public class CourseController {
 
 	@PostMapping
 	public ResponseEntity<CourseDTO> createCourse(
-			@RequestBody CourseDTO courseDTO) {
+			@Validated(ValidationGroups.Create.class) @RequestBody CourseDTO courseDTO) {
 		CourseDTO createdCourse = courseService.createCourse(courseDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -47,7 +49,7 @@ public class CourseController {
 
 	@PutMapping("/{courseId}")
 	public ResponseEntity<CourseDTO> updateCourse(@PathVariable Long courseId,
-			@RequestBody CourseDTO courseDTO) {
+			@Validated(ValidationGroups.Update.class) @RequestBody CourseDTO courseDTO) {
 		return ResponseEntity.ok(courseService.updateCourse(courseId, courseDTO));
 	}
 

@@ -4,13 +4,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.hciteam.edumate.dto.UserDTO;
-import com.github.hciteam.edumate.dto.UserRequestDTO;
 import com.github.hciteam.edumate.service.UserService;
 import com.github.hciteam.edumate.validation.ValidationGroups;
 import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,11 +27,6 @@ public class UserController {
 		this.userService = userService;
 	}
 
-	@GetMapping("/me")
-	public ResponseEntity<UserDTO> me(Authentication authentication) {
-		return ResponseEntity.ok(userService.me(authentication));
-	}
-
 	@GetMapping
 	public ResponseEntity<List<UserDTO>> getUsers() {
 		return ResponseEntity.ok(userService.getUsers());
@@ -41,7 +34,7 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<UserDTO> createUser(
-			@Validated(ValidationGroups.Create.class) @RequestBody UserRequestDTO userDTO) {
+			@Validated(ValidationGroups.Create.class) @RequestBody UserDTO userDTO) {
 		UserDTO createdUser = userService.createUser(userDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -57,7 +50,7 @@ public class UserController {
 
 	@PutMapping("/{userId}")
 	public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId,
-			@Validated(ValidationGroups.Create.class) @RequestBody UserRequestDTO userDTO) {
+			@Validated(ValidationGroups.Update.class) @RequestBody UserDTO userDTO) {
 		return ResponseEntity.ok(userService.updateUser(userId, userDTO));
 	}
 

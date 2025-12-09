@@ -1,6 +1,8 @@
 package com.github.hciteam.edumate.service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.CourseOffering;
 import com.github.hciteam.edumate.model.StudentTask;
@@ -38,30 +40,23 @@ public class TaskService {
 
 	@Transactional
 	public TaskDTO createTask(TaskDTO taskDTO) {
-		CourseOffering offering =
-				offeringRepository.findById(taskDTO.getOffering().getId())
-						.orElseThrow(() -> new CourseOfferingNotFoundException());
+		Task task = taskMapper.toEntity(taskDTO);
 
-		Task task = Task.builder().offering(offering).title(taskDTO.getTitle())
-				.requirements(taskDTO.getRequirements())
-				.submissionUrl(taskDTO.getSubmissionUrl()).dueDate(taskDTO.getDueDate())
-				.notes(taskDTO.getNotes()).build();
+		Task persistedTask = taskRepository.save(task);
 
-		Task createdTask = taskRepository.save(task);
-
-		List<StudentTask> studentTasks = offering.getRegistrations().stream()
-				.filter(registration -> registration
-						.getStatus() == CourseRegistrationStatus.REGISTERED)
-				.map(registration -> StudentTask.builder()
-						.id(new StudentTaskKey(registration.getStudent().getId(),
-								createdTask.getId()))
-						.student(registration.getStudent()).task(task).build())
-				.toList();
+		Set<StudentTask> studentTasks =
+				persistedTask.getOffering().getRegistrations().stream()
+						.filter(registration -> registration
+								.getStatus() == CourseRegistrationStatus.REGISTERED)
+						.map(registration -> StudentTask.builder()
+								.id(new StudentTaskKey(registration.getStudent().getId(),
+										persistedTask.getId()))
+								.student(registration.getStudent()).task(persistedTask).build())
+						.collect(Collectors.toSet());
 
 		studentTaskRepository.saveAll(studentTasks);
 
-
-		return taskMapper.toDTO(createdTask);
+		return taskMapper.toDTO(persistedTask);
 	}
 
 	public TaskDTO getTask(Long taskId) {
@@ -69,22 +64,36 @@ public class TaskService {
 				.orElseThrow(() -> new TaskNotFoundException());
 	}
 
+	@Transactional
 	public TaskDTO updateTask(Long taskId, TaskDTO taskDTO) {
 		Task task = taskRepository.findById(taskId).map(existingTask -> {
-			CourseOffering offering =
-					offeringRepository.findById(taskDTO.getOffering().getId())
-							.orElseThrow(() -> new CourseOfferingNotFoundException());
+			boolean offeringChanged = !existingTask.getOffering().getId()
+					.equals(taskDTO.getOffering().getId());
 
-			existingTask.setOffering(offering);
-			existingTask.setTitle(taskDTO.getTitle());
-			existingTask.setRequirements(taskDTO.getRequirements());
-			existingTask.setSubmissionUrl(taskDTO.getSubmissionUrl());
-			existingTask.setDueDate(taskDTO.getDueDate());
-			existingTask.setNotes(taskDTO.getNotes());
-			return existingTask;
+			taskMapper.updateEntityFromDTO(taskDTO, existingTask);
+
+			Task persistedTask = taskRepository.save(existingTask);
+
+			if (offeringChanged) {
+				studentTaskRepository.deleteAll(persistedTask.getStudentTasks());
+
+				Set<StudentTask> studentTasks = persistedTask.getOffering()
+						.getRegistrations().stream()
+						.filter(registration -> registration
+								.getStatus() == CourseRegistrationStatus.REGISTERED)
+						.map(registration -> StudentTask.builder()
+								.id(new StudentTaskKey(registration.getStudent().getId(),
+										persistedTask.getId()))
+								.student(registration.getStudent()).task(persistedTask).build())
+						.collect(Collectors.toSet());
+
+				studentTaskRepository.saveAll(studentTasks);
+			}
+
+			return persistedTask;
 		}).orElseThrow(() -> new TaskNotFoundException());
 
-		return taskMapper.toDTO(taskRepository.save(task));
+		return taskMapper.toDTO(task);
 	}
 
 	public void deleteTask(Long taskId) {

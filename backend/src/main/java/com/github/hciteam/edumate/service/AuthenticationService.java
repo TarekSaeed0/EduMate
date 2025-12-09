@@ -120,7 +120,7 @@ public class AuthenticationService {
 		return userMapper.toDTO(createdUser);
 	}
 
-	public void signin(SigninRequest signinRequest, HttpServletRequest request,
+	public UserDTO signin(SigninRequest signinRequest, HttpServletRequest request,
 			HttpServletResponse response) {
 		UsernamePasswordAuthenticationToken token =
 				new UsernamePasswordAuthenticationToken(signinRequest.getEmail(),
@@ -132,6 +132,8 @@ public class AuthenticationService {
 		context.setAuthentication(authentication);
 		securityContextHolderStrategy.setContext(context);
 		securityContextRepository.saveContext(context, request, response);
+
+		return userMapper.toDTO((User) authentication.getPrincipal());
 	}
 
 	public UserDTO me(Authentication authentication) {

@@ -52,18 +52,12 @@ public class CourseOfferingService {
 	}
 
 	public CourseOfferingDTO createOffering(CourseOfferingDTO offeringDTO) {
-		Semester semester = semesterRepository.findById(offeringDTO.getSemesterId())
-				.orElseThrow(() -> new SemesterNotFoundException());
-		Course course = courseRepository.findById(offeringDTO.getCourse().getId())
-				.orElseThrow(() -> new CourseNotFoundException());
-
-		if (offeringRepository.existsBySemesterIdAndCourseId(semester.getId(),
-				course.getId())) {
+		if (offeringRepository.existsBySemesterIdAndCourseId(
+				offeringDTO.getSemesterId(), offeringDTO.getCourse().getId())) {
 			throw new CourseAlreadyExistsException();
 		}
 
-		CourseOffering offering =
-				CourseOffering.builder().semester(semester).course(course).build();
+		CourseOffering offering = offeringMapper.toEntity(offeringDTO);
 
 		return offeringMapper.toDTO(offeringRepository.save(offering));
 	}
@@ -71,16 +65,6 @@ public class CourseOfferingService {
 	public CourseOfferingDTO getOffering(Long offeringId) {
 		return offeringRepository.findById(offeringId).map(offeringMapper::toDTO)
 				.orElseThrow(() -> new SemesterNotFoundException());
-	}
-
-	public CourseOfferingDTO updateOffering(Long offeringId,
-			CourseOfferingDTO offeringDTO) {
-		CourseOffering offering =
-				offeringRepository.findById(offeringId).map(existingOffering -> {
-					return existingOffering;
-				}).orElseThrow(() -> new SemesterNotFoundException());
-
-		return offeringMapper.toDTO(offeringRepository.save(offering));
 	}
 
 	public void deleteOffering(Long offeringId) {

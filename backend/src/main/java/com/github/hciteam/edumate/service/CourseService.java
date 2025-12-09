@@ -30,8 +30,7 @@ public class CourseService {
 			throw new CourseAlreadyExistsException();
 		}
 
-		Course course = Course.builder().code(courseDTO.getCode())
-				.name(courseDTO.getName()).credits(courseDTO.getCredits()).build();
+		Course course = courseMapper.toEntity(courseDTO);
 
 		return courseMapper.toDTO(courseRepository.save(course));
 	}
@@ -44,9 +43,7 @@ public class CourseService {
 
 	public CourseDTO updateCourse(Long courseId, CourseDTO courseDTO) {
 		Course course = courseRepository.findById(courseId).map(existingCourse -> {
-			existingCourse.setCode(courseDTO.getCode());
-			existingCourse.setName(courseDTO.getName());
-			existingCourse.setCredits(courseDTO.getCredits());
+			courseMapper.updateEntityFromDTO(courseDTO, existingCourse);
 			return existingCourse;
 		}).orElseThrow(() -> new CourseNotFoundException());
 

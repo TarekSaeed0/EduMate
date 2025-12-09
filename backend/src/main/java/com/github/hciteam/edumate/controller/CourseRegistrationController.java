@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.hciteam.edumate.dto.CourseRegistrationDTO;
 import com.github.hciteam.edumate.model.CourseRegistrationStatus;
 import com.github.hciteam.edumate.service.CourseRegistrationService;
+import com.github.hciteam.edumate.validation.ValidationGroups;
 
 @RestController
 @RequestMapping("/api/registrations")
@@ -43,7 +45,7 @@ public class CourseRegistrationController {
 	@PostMapping
 	@PreAuthorize("@authorizationService.isStudentSelf(#registrationDTO.studentId) or hasRole('ADMIN')")
 	public ResponseEntity<CourseRegistrationDTO> createRegistration(
-			@RequestBody CourseRegistrationDTO registrationDTO) {
+			@Validated(ValidationGroups.Create.class) @RequestBody CourseRegistrationDTO registrationDTO) {
 		CourseRegistrationDTO createdRegistration =
 				registrationService.createRegistration(registrationDTO);
 
@@ -66,7 +68,7 @@ public class CourseRegistrationController {
 	@PreAuthorize("@authorizationService.isRegistrationOwner(#registrationId) or hasRole('ADMIN')")
 	public ResponseEntity<CourseRegistrationDTO> updateRegistration(
 			@PathVariable Long registrationId,
-			@RequestBody CourseRegistrationDTO registrationDTO) {
+			@Validated(ValidationGroups.Update.class) @RequestBody CourseRegistrationDTO registrationDTO) {
 		return ResponseEntity.ok(registrationService
 				.updateRegistration(registrationId, registrationDTO));
 	}

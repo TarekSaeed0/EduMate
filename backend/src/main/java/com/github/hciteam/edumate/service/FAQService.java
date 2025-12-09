@@ -60,7 +60,7 @@ public class FAQService {
 
 	public FAQDTO updateFAQ(Long faqId, FAQDTO faqDTO) {
 		FAQ faq = faqRepository.findById(faqId).map(existingFAQ -> {
-			faqMapper.updateFAQFromDTO(faqDTO, existingFAQ);
+			faqMapper.updateEntityFromDTO(faqDTO, existingFAQ);
 			return existingFAQ;
 		}).orElseThrow(() -> new FAQNotFoundException());
 

@@ -1,6 +1,7 @@
 package com.github.hciteam.edumate.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import com.github.hciteam.edumate.model.FAQ;
 import com.github.hciteam.edumate.dto.FAQDTO;
@@ -9,7 +10,9 @@ import com.github.hciteam.edumate.dto.FAQDTO;
 public interface FAQMapper {
 	FAQDTO toDTO(FAQ faq);
 
+	@Mapping(target = "id", ignore = true)
 	FAQ toEntity(FAQDTO faqDTO);
 
-	void updateFAQFromDTO(FAQDTO faqDTO, @MappingTarget FAQ faq);
+	@Mapping(target = "id", ignore = true)
+	void updateEntityFromDTO(FAQDTO faqDTO, @MappingTarget FAQ faq);
 }

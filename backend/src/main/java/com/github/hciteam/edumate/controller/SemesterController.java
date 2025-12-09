@@ -3,6 +3,7 @@ package com.github.hciteam.edumate.controller;
 import java.net.URI;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.hciteam.edumate.dto.SemesterDTO;
 import com.github.hciteam.edumate.service.SemesterService;
+import com.github.hciteam.edumate.validation.ValidationGroups;
 
 @RestController
 @RequestMapping("/api/semesters")
@@ -31,7 +33,7 @@ public class SemesterController {
 
 	@PostMapping
 	public ResponseEntity<SemesterDTO> createSemester(
-			@RequestBody SemesterDTO semesterDTO) {
+			@Validated(ValidationGroups.Create.class) @RequestBody SemesterDTO semesterDTO) {
 		SemesterDTO createdSemester = semesterService.createSemester(semesterDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -48,7 +50,8 @@ public class SemesterController {
 
 	@PutMapping("/{semesterId}")
 	public ResponseEntity<SemesterDTO> updateSemester(
-			@PathVariable Long semesterId, @RequestBody SemesterDTO semesterDTO) {
+			@Validated(ValidationGroups.Update.class) @PathVariable Long semesterId,
+			@RequestBody SemesterDTO semesterDTO) {
 		return ResponseEntity
 				.ok(semesterService.updateSemester(semesterId, semesterDTO));
 	}

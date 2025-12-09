@@ -2,16 +2,45 @@ package com.github.hciteam.edumate.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.github.hciteam.edumate.model.Course;
 import com.github.hciteam.edumate.model.CourseOffering;
+import com.github.hciteam.edumate.model.Semester;
+import com.github.hciteam.edumate.repository.CourseRepository;
+import com.github.hciteam.edumate.repository.SemesterRepository;
+import com.github.hciteam.edumate.dto.CourseDTO;
 import com.github.hciteam.edumate.dto.CourseOfferingDTO;
+import com.github.hciteam.edumate.exception.CourseNotFoundException;
+import com.github.hciteam.edumate.exception.SemesterNotFoundException;
 
 @Mapper(componentModel = "spring", uses = {CourseMapper.class})
-public interface CourseOfferingMapper {
-	@Mapping(source = "semester.id", target = "semesterId")
-	CourseOfferingDTO toDTO(CourseOffering offering);
+public abstract class CourseOfferingMapper {
+	@Autowired
+	protected SemesterRepository semesterRepository;
+	@Autowired
+	protected CourseRepository courseRepository;
 
-	@Mapping(source = "semesterId", target = "semester.id")
+	@Mapping(source = "semester.id", target = "semesterId")
+	public abstract CourseOfferingDTO toDTO(CourseOffering offering);
+
+	@Mapping(target = "id", ignore = true)
+	@Mapping(source = "semesterId", target = "semester",
+			qualifiedByName = "mapSemester")
+	@Mapping(source = "course", target = "course", qualifiedByName = "mapCourse")
 	@Mapping(target = "registrations", ignore = true)
 	@Mapping(target = "tasks", ignore = true)
-	CourseOffering toEntity(CourseOfferingDTO offeringDTO);
+	public abstract CourseOffering toEntity(CourseOfferingDTO offeringDTO);
+
+	@Named("mapSemester")
+	protected Semester mapSemester(Long semesterId) {
+		return semesterRepository.findById(semesterId)
+				.orElseThrow(() -> new SemesterNotFoundException());
+	}
+
+	@Named("mapCourse")
+	protected Course mapCourse(CourseDTO courseDTO) {
+		return courseRepository.findById(courseDTO.getId())
+				.orElseThrow(() -> new CourseNotFoundException());
+	}
 }
