@@ -7,7 +7,6 @@ import com.github.hciteam.edumate.model.FAQCategory;
 import jakarta.persistence.criteria.Join;
 
 public class FAQSpecifications {
-
 	public static Specification<FAQ> questionContains(String keyword) {
 		return (root, query, criteriaBuilder) -> criteriaBuilder.like(
 				criteriaBuilder.lower(root.get("question")),

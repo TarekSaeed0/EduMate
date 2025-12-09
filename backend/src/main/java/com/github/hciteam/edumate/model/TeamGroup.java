@@ -2,6 +2,7 @@ package com.github.hciteam.edumate.model;
 
 import java.util.Set;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,36 +18,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "course_offerings",
-		uniqueConstraints = {
-				@UniqueConstraint(columnNames = {"semester_id", "course_id"})})
+@Table(name = "team_groups")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseOffering {
+public class TeamGroup {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "semester_id", nullable = false)
-	private Semester semester;
+	@JoinColumn(name = "offering_id", nullable = false)
+	private CourseOffering offering;
 
-	@ManyToOne
-	@JoinColumn(name = "course_id", nullable = false)
-	private Course course;
+	@Column(nullable = false)
+	private String name;
 
-	@OneToMany(mappedBy = "offering", cascade = CascadeType.ALL,
+	@Column(nullable = false)
+	private Integer minimumMemberCount;
+
+	@Column(nullable = false)
+	private Integer maximumMemberCount;
+
+	@OneToMany(mappedBy = "group", cascade = CascadeType.ALL,
 			orphanRemoval = true)
-	private Set<CourseRegistration> registrations;
-
-	@OneToMany(mappedBy = "offering", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private Set<Task> tasks;
-
-	@OneToMany(mappedBy = "offering", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private Set<TeamGroup> teamGroups;
+	private Set<Team> teams;
 }

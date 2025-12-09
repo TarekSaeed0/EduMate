@@ -30,6 +30,7 @@ public abstract class CourseOfferingMapper {
 	@Mapping(source = "course", target = "course", qualifiedByName = "mapCourse")
 	@Mapping(target = "registrations", ignore = true)
 	@Mapping(target = "tasks", ignore = true)
+	@Mapping(target = "teamGroups", ignore = true)
 	public abstract CourseOffering toEntity(CourseOfferingDTO offeringDTO);
 
 	@Named("mapSemester")
