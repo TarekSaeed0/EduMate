@@ -47,9 +47,32 @@ public class FAQService {
 				.toList();
 	}
 
-	public FAQDTO getFAQ(Long id) {
-		return faqRepository.findById(id).map(faqMapper::toDTO)
+	public FAQDTO createFAQ(FAQDTO faqDTO) {
+		FAQ faq = faqMapper.toEntity(faqDTO);
+
+		return faqMapper.toDTO(faqRepository.save(faq));
+	}
+
+	public FAQDTO getFAQ(Long faqId) {
+		return faqRepository.findById(faqId).map(faqMapper::toDTO)
 				.orElseThrow(() -> new FAQNotFoundException());
+	}
+
+	public FAQDTO updateFAQ(Long faqId, FAQDTO faqDTO) {
+		FAQ faq = faqRepository.findById(faqId).map(existingFAQ -> {
+			faqMapper.updateFAQFromDTO(faqDTO, existingFAQ);
+			return existingFAQ;
+		}).orElseThrow(() -> new FAQNotFoundException());
+
+		return faqMapper.toDTO(faqRepository.save(faq));
+	}
+
+	public void deleteFAQ(Long faqId) {
+		if (!faqRepository.existsById(faqId)) {
+			throw new FAQNotFoundException();
+		}
+
+		faqRepository.deleteById(faqId);
 	}
 
 	public List<String> getCategories() {
