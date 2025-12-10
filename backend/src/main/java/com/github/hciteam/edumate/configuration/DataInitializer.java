@@ -3,6 +3,8 @@ package com.github.hciteam.edumate.configuration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,7 @@ import com.github.hciteam.edumate.repository.FAQCategoryRepository;
 import com.github.hciteam.edumate.repository.FAQRepository;
 import com.github.hciteam.edumate.repository.UserRoleRepository;
 import com.github.hciteam.edumate.service.UserService;
+import jakarta.transaction.Transactional;
 import com.github.hciteam.edumate.repository.CourseOfferingRepository;
 import com.github.hciteam.edumate.repository.SemesterRepository;
 import com.github.hciteam.edumate.repository.TaskRepository;
@@ -55,6 +58,7 @@ public class DataInitializer implements CommandLineRunner {
 	}
 
 	@Override
+	@Transactional
 	public void run(String... args) throws Exception {
 		String[] roleNames = {"STUDENT", "COORDINATOR", "ADMINISTRATOR"};
 		Arrays.stream(roleNames).forEach(roleName -> {
@@ -158,89 +162,76 @@ public class DataInitializer implements CommandLineRunner {
 					.notes("This should be submitted through microsoft teams.").build());
 		}
 
-		FAQCategory generalInformationCategory =
-				FAQCategory.builder().name("General Information").build();
-		FAQCategory contactAndSupportCategory =
-				FAQCategory.builder().name("Contact and Support").build();
-		FAQCategory campusFacilitiesCategory =
-				FAQCategory.builder().name("Campus Facilities").build();
-		FAQCategory admissionsCategory =
-				FAQCategory.builder().name("Admissions").build();
-		FAQCategory departmentsAndProgramsCategory =
-				FAQCategory.builder().name("Departments and Programs").build();
-		FAQCategory courseRegistrationCategory =
-				FAQCategory.builder().name("Course Registration").build();
-		FAQCategory studentServicesCategory =
-				FAQCategory.builder().name("Student Services").build();
+		String[] categoryNames =
+				{"General Information", "Contact and Support", "Campus Facilities",
+						"Admissions", "Course Registration", "Student Services"};
 
-		FAQCategory[] categories = {generalInformationCategory,
-				contactAndSupportCategory, campusFacilitiesCategory, admissionsCategory,
-				departmentsAndProgramsCategory, courseRegistrationCategory,
-				studentServicesCategory};
-
-		for (FAQCategory category : categories) {
-			if (!faqCategoryRepository.existsByName(category.getName())) {
-				faqCategoryRepository.save(category);
-			}
+		Map<String, FAQCategory> categories = new HashMap<>();
+		for (String categoryName : categoryNames) {
+			FAQCategory category = faqCategoryRepository.findByName(categoryName)
+					.orElseGet(() -> faqCategoryRepository
+							.save(FAQCategory.builder().name(categoryName).build()));
+			categories.put(category.getName(), category);
 		}
 
 		FAQ[] faqs = {FAQ.builder()
 				.question("What are the working hours of the faculty offices?")
 				.answer(
 						"The faculty offices are open from 8:00 AM to 3:00 PM, Sunday to Thursday. Lecture times may vary by department.")
-				.categories(
-						Set.of(generalInformationCategory, contactAndSupportCategory))
+				.categories(Set.of(categories.get("General Information"),
+						categories.get("Contact and Support")))
 				.build(),
 				FAQ.builder().question("Where is the main faculty building located?")
 						.answer(
 								"The main faculty building is located near the central campus entrance, adjacent to the library.")
-						.categories(
-								Set.of(generalInformationCategory, campusFacilitiesCategory))
+						.categories(Set.of(categories.get("General Information"),
+								categories.get("Campus Facilities")))
 						.build(),
 				FAQ.builder().question("How can I contact the faculty office?").answer(
 						"You can contact the faculty office via email, phone, or in person during working hours.")
-						.categories(
-								Set.of(generalInformationCategory, contactAndSupportCategory))
+						.categories(Set.of(categories.get("General Information"),
+								categories.get("Contact and Support")))
 						.build(),
 				FAQ.builder().question("How do I apply to the Faculty of Engineering?")
 						.answer(
 								"You can apply online via the university portal. Ensure all required documents are submitted before the deadlines.")
-						.categories(Set.of(admissionsCategory)).build(),
+						.categories(Set.of(categories.get("Admissions"))).build(),
 				FAQ.builder().question("Are there any entrance exams?").answer(
 						"Yes, some departments require an entrance exam or placement test depending on the program.")
-						.categories(Set.of(admissionsCategory)).build(),
+						.categories(Set.of(categories.get("Admissions"))).build(),
 				FAQ.builder()
 						.question(
 								"What departments are available in the Faculty of Engineering?")
 						.answer(
 								"Departments include Electrical, Mechanical, Civil, Computer, and Chemical Engineering.")
-						.categories(Set.of(courseRegistrationCategory)).build(),
+						.categories(Set.of(categories.get("Course Registration"))).build(),
 				FAQ.builder()
 						.question("Which programs are offered at the undergraduate level?")
 						.answer(
 								"Each department offers a BSc program with specialized tracks and elective courses.")
-						.categories(Set.of(courseRegistrationCategory, admissionsCategory))
+						.categories(Set.of(categories.get("Course Registration"),
+								categories.get("Admissions")))
 						.build(),
 				FAQ.builder().question("How can I register for courses each semester?")
 						.answer(
 								"Course registration is completed through the university portal. Consult your academic advisor for guidance.")
-						.categories(
-								Set.of(courseRegistrationCategory, studentServicesCategory))
+						.categories(Set.of(categories.get("Course Registration"),
+								categories.get("Student Services")))
 						.build(),
 				FAQ.builder().question("Can I change courses after registration?")
 						.answer(
 								"Yes, changes are allowed within the first two weeks of the semester.")
-						.categories(Set.of(courseRegistrationCategory)).build(),
+						.categories(Set.of(categories.get("Course Registration"))).build(),
 				FAQ.builder().question("Who can I contact for academic problems?")
 						.answer(
 								"Contact your academic advisor or department office for guidance.")
-						.categories(
-								Set.of(contactAndSupportCategory, studentServicesCategory))
+						.categories(Set.of(categories.get("Contact and Support"),
+								categories.get("Student Services")))
 						.build(),
 				FAQ.builder().question("Is Wi-Fi available on campus?").answer(
 						"Yes, the entire campus has secure Wi-Fi access for students and faculty.")
-						.categories(
-								Set.of(campusFacilitiesCategory, generalInformationCategory))
+						.categories(Set.of(categories.get("Campus Facilities"),
+								categories.get("General Information")))
 						.build()};
 
 		for (FAQ faq : faqs) {
@@ -249,5 +240,8 @@ public class DataInitializer implements CommandLineRunner {
 				faqRepository.save(faq);
 			}
 		}
+
+		faqCategoryRepository
+				.deleteAll(faqCategoryRepository.findUnusedCategories());
 	}
 }

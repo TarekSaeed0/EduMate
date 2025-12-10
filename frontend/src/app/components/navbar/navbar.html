@@ -16,7 +16,7 @@
   </div>
 
   <div class="nav-right">
-    <!--@if(student.isSignedIn)-->
+    <!--@if(student.isAuthenticated)-->
     <select class="profile-button" (change)="onProfileSelect($event)">
       <option value="" hidden selected>Profile</option>
       <option value="main">Your Account</option>

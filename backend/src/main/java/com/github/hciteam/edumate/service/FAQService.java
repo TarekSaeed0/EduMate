@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.data.jpa.domain.Specification;
 import com.github.hciteam.edumate.specification.FAQSpecifications;
+import jakarta.transaction.Transactional;
 import com.github.hciteam.edumate.repository.FAQCategoryRepository;
 import com.github.hciteam.edumate.repository.FAQRepository;
 import com.github.hciteam.edumate.model.FAQ;
@@ -47,6 +48,7 @@ public class FAQService {
 				.toList();
 	}
 
+	@Transactional
 	public FAQDTO createFAQ(FAQDTO faqDTO) {
 		FAQ faq = faqMapper.toEntity(faqDTO);
 
@@ -58,6 +60,7 @@ public class FAQService {
 				.orElseThrow(() -> new FAQNotFoundException());
 	}
 
+	@Transactional
 	public FAQDTO updateFAQ(Long faqId, FAQDTO faqDTO) {
 		FAQ faq = faqRepository.findById(faqId).map(existingFAQ -> {
 			faqMapper.updateEntityFromDTO(faqDTO, existingFAQ);
@@ -73,6 +76,9 @@ public class FAQService {
 		}
 
 		faqRepository.deleteById(faqId);
+
+		faqCategoryRepository
+				.deleteAll(faqCategoryRepository.findUnusedCategories());
 	}
 
 	public List<String> getCategories() {
