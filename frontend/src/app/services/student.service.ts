@@ -20,7 +20,7 @@ export interface StudentTask {
   submittedAt: Date | null;
 }
 
-interface StudentTaskFilter {
+export interface StudentTaskFilter {
   taskId?: number;
   semesterId?: number;
   courseId?: number;

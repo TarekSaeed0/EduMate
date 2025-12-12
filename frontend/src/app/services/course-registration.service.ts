@@ -11,7 +11,7 @@ export interface CourseRegistration {
   status: CourseRegistrationStatus;
 }
 
-interface CourseRegistrationFilter {
+export interface CourseRegistrationFilter {
   offeringId?: number;
   semesterId?: number;
   courseId?: number;

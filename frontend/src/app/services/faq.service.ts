@@ -8,7 +8,7 @@ export interface FAQ {
   categories: string[];
 }
 
-interface FAQFilter {
+export interface FAQFilter {
   question?: string;
   answer?: string;
   categories?: string[];

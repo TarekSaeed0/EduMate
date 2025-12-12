@@ -9,7 +9,7 @@ export interface CourseOffering {
   course: Course;
 }
 
-interface CourseOfferingFilter {
+export interface CourseOfferingFilter {
   semesterId?: number;
   courseId?: number;
 }
