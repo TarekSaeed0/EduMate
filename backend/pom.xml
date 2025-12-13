@@ -12,8 +12,8 @@
 	<artifactId>edumate</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>edumate</name>
-	<description>Demo project for Spring Boot</description>
-	<url></url>
+	<description>An educational website designed to support university students in their academic journey</description>
+	<url>https://github.com/TarekSaeed0/EduMate</url>
 	<licenses>
 		<license></license>
 	</licenses>
