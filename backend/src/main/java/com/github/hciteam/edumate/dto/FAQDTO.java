@@ -14,11 +14,14 @@ import lombok.NoArgsConstructor;
 public class FAQDTO {
 	@Null(groups = {ValidationGroups.Create.class})
 	private Long id;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private String question;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private String answer;
+
 	private Set<String> categories;
 }

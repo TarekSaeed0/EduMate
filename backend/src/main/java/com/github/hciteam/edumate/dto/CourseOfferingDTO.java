@@ -13,8 +13,10 @@ import lombok.NoArgsConstructor;
 public class CourseOfferingDTO {
 	@Null(groups = {ValidationGroups.Create.class})
 	private Long id;
+
 	@NotNull(groups = {ValidationGroups.Create.class})
 	private Long semesterId;
+
 	@NotNull(groups = {ValidationGroups.Create.class})
 	private CourseDTO course;
 }

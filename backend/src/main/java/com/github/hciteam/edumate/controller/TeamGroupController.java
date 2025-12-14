@@ -54,7 +54,7 @@ public class TeamGroupController {
 	}
 
 	@DeleteMapping("/{groupId}")
-	public ResponseEntity<Void> deleteTeamGroup(@PathVariable Long groupId) {
+	public ResponseEntity<Void> deleteGroup(@PathVariable Long groupId) {
 		groupService.deleteGroup(groupId);
 
 		return ResponseEntity.noContent().build();

@@ -15,15 +15,19 @@ import lombok.NoArgsConstructor;
 public class SemesterDTO {
 	@Null(groups = {ValidationGroups.Create.class})
 	private Long id;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private Term term;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private Integer year;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private LocalDate startDate;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private LocalDate endDate;

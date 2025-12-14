@@ -14,12 +14,15 @@ import lombok.NoArgsConstructor;
 public class TeamDTO {
 	@Null(groups = {ValidationGroups.Create.class})
 	private Long id;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private TeamGroupDTO group;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private StudentDTO leader;
+
 	@Null(groups = {ValidationGroups.Create.class})
 	private List<StudentDTO> members;
 }

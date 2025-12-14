@@ -14,12 +14,15 @@ import lombok.NoArgsConstructor;
 public class TeamJoinRequestDTO {
 	@Null(groups = {ValidationGroups.Create.class})
 	private Long id;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private TeamDTO team;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private StudentDTO student;
+
 	@Null(groups = {ValidationGroups.Create.class})
 	private TeamJoinStatus status;
 }

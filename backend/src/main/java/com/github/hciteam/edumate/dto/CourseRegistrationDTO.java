@@ -14,12 +14,15 @@ import lombok.NoArgsConstructor;
 public class CourseRegistrationDTO {
 	@Null(groups = {ValidationGroups.Create.class})
 	private Long id;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private CourseOfferingDTO offering;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private Long studentId;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private CourseRegistrationStatus status;

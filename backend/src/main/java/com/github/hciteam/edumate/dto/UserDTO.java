@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 public class UserDTO {
 	@Null(groups = {ValidationGroups.Create.class})
 	private Long id;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	@Email

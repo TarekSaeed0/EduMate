@@ -15,15 +15,19 @@ public class StudentDTO {
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private Long id;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private String name;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private Gender gender;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private String email;
+
 	@Null(groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private Long userId;
 }
