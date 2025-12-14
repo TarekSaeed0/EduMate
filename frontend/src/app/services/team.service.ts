@@ -1,16 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { CourseOffering } from './course-offering.service';
 import { Student } from './student.service';
 import { Observable } from 'rxjs';
-
-export interface TeamGroup {
-  id: number;
-  offering: CourseOffering;
-  name: string;
-  minimumMemberCount: number;
-  maximumMemberCount: number;
-}
+import { TeamGroup } from './team-group.service';
 
 export interface Team {
   id: number;
@@ -29,32 +21,6 @@ export interface TeamFilter {
 }
 
 export type TeamJoinStatus = 'PENDING' | 'ACCEPTED' | 'REJECTED';
-
-export interface TeamJoinInvite {
-  id: number;
-  team: Team;
-  student: Student;
-  status: TeamJoinStatus;
-}
-
-export interface TeamJoinInviteFilter {
-  teamId?: number;
-  studentId?: number;
-  status?: TeamJoinStatus;
-}
-
-export interface TeamJoinRequest {
-  id: number;
-  team: Team;
-  student: Student;
-  status: TeamJoinStatus;
-}
-
-export interface TeamJoinRequestFilter {
-  teamId?: number;
-  studentId?: number;
-  status?: TeamJoinStatus;
-}
 
 @Injectable({
   providedIn: 'root',
