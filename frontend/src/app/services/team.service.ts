@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { CourseOffering } from './course-offering.service';
 import { Student } from './student.service';
+import { Observable } from 'rxjs';
 
 export interface TeamGroup {
   id: number;
@@ -61,4 +62,32 @@ export interface TeamJoinRequestFilter {
 export class TeamService {
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/api/teams';
+
+  getTeams(filter?: TeamFilter): Observable<Team[]> {
+    let params = new HttpParams();
+
+    if (filter) {
+      Object.entries(filter).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          params = params.append(key, value.join(','));
+        } else if (value !== undefined) {
+          params = params.append(key, value);
+        }
+      });
+    }
+
+    return this.http.get<Team[]>(`${this.baseUrl}`, { withCredentials: true, params });
+  }
+
+  createTeam(team: Omit<Team, 'id'>): Observable<Team> {
+    return this.http.post<Team>(`${this.baseUrl}`, team, { withCredentials: true });
+  }
+
+  getTeam(id: number): Observable<Team> {
+    return this.http.get<Team>(`${this.baseUrl}/${id}`, { withCredentials: true });
+  }
+
+  deleteTeam(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
+  }
 }

@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { CourseOffering } from './course-offering.service';
 
 export interface Task {
   id: number;
-  offeringId: number;
+  offering: CourseOffering;
   title: string;
   requirements: string | null;
   submissionUrl: string | null;
