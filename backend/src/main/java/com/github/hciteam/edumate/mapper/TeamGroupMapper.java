@@ -34,7 +34,7 @@ public abstract class TeamGroupMapper {
 
 	@Named("mapOffering")
 	protected CourseOffering mapOffering(CourseOfferingDTO offeringDTO) {
-		return offeringRepository.findById(offeringDTO.getId())
-				.orElseThrow(() -> new CourseOfferingNotFoundException());
+		return offeringRepository.findById(offeringDTO.getId()).orElseThrow(
+				() -> new CourseOfferingNotFoundException(offeringDTO.getId()));
 	}
 }

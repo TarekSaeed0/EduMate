@@ -36,12 +36,12 @@ public abstract class CourseOfferingMapper {
 	@Named("mapSemester")
 	protected Semester mapSemester(Long semesterId) {
 		return semesterRepository.findById(semesterId)
-				.orElseThrow(() -> new SemesterNotFoundException());
+				.orElseThrow(() -> new SemesterNotFoundException(semesterId));
 	}
 
 	@Named("mapCourse")
 	protected Course mapCourse(CourseDTO courseDTO) {
 		return courseRepository.findById(courseDTO.getId())
-				.orElseThrow(() -> new CourseNotFoundException());
+				.orElseThrow(() -> new CourseNotFoundException(courseDTO.getId()));
 	}
 }

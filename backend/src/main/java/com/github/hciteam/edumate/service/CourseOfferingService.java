@@ -4,7 +4,6 @@ import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.dto.CourseOfferingDTO;
-import com.github.hciteam.edumate.exception.SemesterNotFoundException;
 import com.github.hciteam.edumate.model.CourseOffering;
 import com.github.hciteam.edumate.exception.CourseOfferingNotFoundException;
 import com.github.hciteam.edumate.exception.CourseAlreadyExistsException;
@@ -53,12 +52,12 @@ public class CourseOfferingService {
 
 	public CourseOfferingDTO getOffering(Long offeringId) {
 		return offeringRepository.findById(offeringId).map(offeringMapper::toDTO)
-				.orElseThrow(() -> new SemesterNotFoundException());
+				.orElseThrow(() -> new CourseOfferingNotFoundException(offeringId));
 	}
 
 	public void deleteOffering(Long offeringId) {
 		if (!offeringRepository.existsById(offeringId)) {
-			throw new CourseOfferingNotFoundException();
+			throw new CourseOfferingNotFoundException(offeringId);
 		}
 
 		offeringRepository.deleteById(offeringId);

@@ -1,17 +1,13 @@
 package com.github.hciteam.edumate.model;
 
-import org.hibernate.annotations.Any;
-import org.hibernate.annotations.AnyDiscriminator;
-import org.hibernate.annotations.AnyDiscriminatorValue;
-import org.hibernate.annotations.AnyKeyJavaClass;
+import java.time.LocalDateTime;
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,12 +26,22 @@ public class Announcement {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Any
-	@AnyDiscriminator(DiscriminatorType.STRING)
-	@AnyDiscriminatorValue(discriminator = "Course", entity = Course.class)
-	@AnyDiscriminatorValue(discriminator = "Semester", entity = Semester.class)
-	@AnyKeyJavaClass(Long.class)
-	@Column(name = "scope_type")
-	@JoinColumn(name = "scope_id")
-	private Object scope;
+	@Column(nullable = false)
+	private String scopeType;
+
+	@Column(nullable = false)
+	private Long scopeId;
+
+	@Transient
+	private AnnouncementScope scope;
+
+	@Column(nullable = false)
+	private String title;
+
+	@Column(nullable = false)
+	private String content;
+
+	@Column(nullable = false)
+	@Builder.Default
+	private LocalDateTime createdAt = LocalDateTime.now();
 }

@@ -22,7 +22,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Course {
+public class Course implements AnnouncementScope {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -39,4 +39,9 @@ public class Course {
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private Set<CourseOffering> offerings;
+
+	@Override
+	public String getType() {
+		return "Course";
+	}
 }

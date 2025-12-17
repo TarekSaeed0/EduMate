@@ -75,8 +75,8 @@ public class CourseRegistrationService {
 
 	public CourseRegistrationDTO getRegistration(Long registrationId) {
 		return registrationRepository.findById(registrationId)
-				.map(registrationMapper::toDTO)
-				.orElseThrow(() -> new CourseRegistrationNotFoundException());
+				.map(registrationMapper::toDTO).orElseThrow(
+						() -> new CourseRegistrationNotFoundException(registrationId));
 	}
 
 	public CourseRegistrationDTO updateRegistration(Long registrationId,
@@ -86,14 +86,15 @@ public class CourseRegistrationService {
 					registrationMapper.updateEntityFromDTO(registrationDTO,
 							existingSudentCourse);
 					return existingSudentCourse;
-				}).orElseThrow(() -> new CourseRegistrationNotFoundException());
+				}).orElseThrow(
+						() -> new CourseRegistrationNotFoundException(registrationId));
 
 		return registrationMapper.toDTO(registrationRepository.save(registration));
 	}
 
 	public void deleteRegistration(Long registrationId) {
 		if (!registrationRepository.existsById(registrationId)) {
-			throw new CourseRegistrationNotFoundException();
+			throw new CourseRegistrationNotFoundException(registrationId);
 		}
 
 		registrationRepository.deleteById(registrationId);

@@ -1,6 +1,9 @@
 package com.github.hciteam.edumate.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,4 +35,8 @@ public class Session {
 	@ManyToOne
 	@JoinColumn(name = "slot_id", nullable = false)
 	private TimeSlot slot;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private SessionType type;
 }

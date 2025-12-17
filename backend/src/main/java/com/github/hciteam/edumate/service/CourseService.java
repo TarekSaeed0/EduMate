@@ -38,21 +38,21 @@ public class CourseService {
 	public CourseDTO getCourse(Long courseId) {
 		return courseRepository.findById(courseId)
 				.map(course -> courseMapper.toDTO(course))
-				.orElseThrow(() -> new CourseNotFoundException());
+				.orElseThrow(() -> new CourseNotFoundException(courseId));
 	}
 
 	public CourseDTO updateCourse(Long courseId, CourseDTO courseDTO) {
 		Course course = courseRepository.findById(courseId).map(existingCourse -> {
 			courseMapper.updateEntityFromDTO(courseDTO, existingCourse);
 			return existingCourse;
-		}).orElseThrow(() -> new CourseNotFoundException());
+		}).orElseThrow(() -> new CourseNotFoundException(courseId));
 
 		return courseMapper.toDTO(courseRepository.save(course));
 	}
 
 	public void deleteCourse(Long courseId) {
 		if (!courseRepository.existsById(courseId)) {
-			throw new CourseNotFoundException();
+			throw new CourseNotFoundException(courseId);
 		}
 
 		courseRepository.deleteById(courseId);

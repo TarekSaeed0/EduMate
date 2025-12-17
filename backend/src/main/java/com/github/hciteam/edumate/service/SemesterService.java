@@ -38,7 +38,7 @@ public class SemesterService {
 
 	public SemesterDTO getSemester(Long semesterId) {
 		return semesterRepository.findById(semesterId).map(semesterMapper::toDTO)
-				.orElseThrow(() -> new SemesterNotFoundException());
+				.orElseThrow(() -> new SemesterNotFoundException(semesterId));
 	}
 
 	public SemesterDTO updateSemester(Long semesterId, SemesterDTO semesterDTO) {
@@ -46,14 +46,14 @@ public class SemesterService {
 				semesterRepository.findById(semesterId).map(existingSemester -> {
 					semesterMapper.updateEntityFromDTO(semesterDTO, existingSemester);
 					return existingSemester;
-				}).orElseThrow(() -> new SemesterNotFoundException());
+				}).orElseThrow(() -> new SemesterNotFoundException(semesterId));
 
 		return semesterMapper.toDTO(semesterRepository.save(semester));
 	}
 
 	public void deleteSemester(Long semesterId) {
 		if (!semesterRepository.existsById(semesterId)) {
-			throw new SemesterNotFoundException();
+			throw new SemesterNotFoundException(semesterId);
 		}
 
 		semesterRepository.deleteById(semesterId);

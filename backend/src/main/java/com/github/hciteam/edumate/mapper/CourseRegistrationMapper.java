@@ -42,8 +42,8 @@ public abstract class CourseRegistrationMapper {
 
 	@Named("mapOffering")
 	protected CourseOffering mapOffering(CourseOfferingDTO offeringDTO) {
-		return offeringRepository.findById(offeringDTO.getId())
-				.orElseThrow(() -> new CourseOfferingNotFoundException());
+		return offeringRepository.findById(offeringDTO.getId()).orElseThrow(
+				() -> new CourseOfferingNotFoundException(offeringDTO.getId()));
 	}
 
 	@Named("mapStudent")
