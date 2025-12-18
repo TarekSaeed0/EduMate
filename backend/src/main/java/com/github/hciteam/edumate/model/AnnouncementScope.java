@@ -1,7 +1,7 @@
 package com.github.hciteam.edumate.model;
 
 public interface AnnouncementScope {
-	String getType();
+	String getScopeType();
 
-	Long getId();
+	Long getScopeId();
 }

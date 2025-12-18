@@ -4,7 +4,7 @@ import java.util.Optional;
 import com.github.hciteam.edumate.model.AnnouncementScope;
 
 public interface AnnouncementScopeRepository {
-	String getType();
+	String getScopeType();
 
 	Optional<AnnouncementScope> findScopeById(Long id);
 

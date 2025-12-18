@@ -11,8 +11,9 @@ public interface CourseRepository
 
 	boolean existsByCode(String code);
 
-	default String getType() {
-		return "Course";
+	@Override
+	default String getScopeType() {
+		return "COURSE";
 	}
 
 	default Optional<AnnouncementScope> findScopeById(Long id) {

@@ -41,7 +41,12 @@ public class Course implements AnnouncementScope {
 	private Set<CourseOffering> offerings;
 
 	@Override
-	public String getType() {
-		return "Course";
+	public String getScopeType() {
+		return "COURSE";
+	}
+
+	@Override
+	public Long getScopeId() {
+		return this.id;
 	}
 }
