@@ -57,8 +57,12 @@ public class SecurityConfiguration {
 						.requestMatchers("/api/faqs/**").hasRole("ADMINISTRATOR")
 						.requestMatchers(HttpMethod.GET, "/api/team-groups/**").permitAll()
 						.requestMatchers("/api/team-groups/**")
-						.hasAnyRole("COORDINATOR", "ADMINISTRATOR").anyRequest()
-						.authenticated())
+						.hasAnyRole("COORDINATOR", "ADMINISTRATOR")
+						.requestMatchers(HttpMethod.GET, "/api/time-periods/**").permitAll()
+						.requestMatchers("/api/time-periods/**").hasRole("ADMINISTRATOR")
+						.requestMatchers(HttpMethod.GET, "/api/time-slots/**").permitAll()
+						.requestMatchers("/api/time-slots/**").hasRole("ADMINISTRATOR")
+						.anyRequest().authenticated())
 				.headers(headers -> headers
 						.frameOptions(frameOptions -> frameOptions.sameOrigin()))
 				.sessionManagement(session -> session

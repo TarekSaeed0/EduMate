@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.github.hciteam.edumate.model.Session;
 
 public interface SessionRepository extends JpaRepository<Session, Long> {
-	List<Session> findByOfferingIdIn(List<Long> offeringIds);
+	List<Session> findByOfferingRegistrationsStudentId(Long studentId);
 }

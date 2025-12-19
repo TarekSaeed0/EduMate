@@ -15,12 +15,12 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TimeTableDTO {
+public class TimetableDTO {
 	private List<WeekDay> weekDays;
 	private List<TimePeriodDTO> periods;
 	private List<List<SessionDTO>> sessions;
 
-	public static TimeTableDTO fromSessions(List<SessionDTO> sessions) {
+	public static TimetableDTO fromSessions(List<SessionDTO> sessions) {
 		List<WeekDay> weekDays = List.of(WeekDay.values());
 
 		List<TimePeriodDTO> periods =
@@ -40,7 +40,7 @@ public class TimeTableDTO {
 							.toList();
 				}).toList();
 
-		return TimeTableDTO.builder().weekDays(weekDays).periods(periods)
+		return TimetableDTO.builder().weekDays(weekDays).periods(periods)
 				.sessions(sessionsByWeekDayAndPeriod).build();
 	}
 }

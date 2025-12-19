@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.github.hciteam.edumate.dto.StudentDTO;
 import com.github.hciteam.edumate.dto.StudentTaskDTO;
+import com.github.hciteam.edumate.dto.TimetableDTO;
 import com.github.hciteam.edumate.model.StudentTaskStatus;
 import com.github.hciteam.edumate.service.StudentService;
 import java.util.List;
@@ -61,5 +62,11 @@ public class StudentController {
 			@PathVariable Long studentId, @PathVariable Long taskId) {
 		return ResponseEntity
 				.ok(studentService.unsubmitStudentTask(studentId, taskId));
+	}
+
+	@GetMapping("/{studentId}/timetable")
+	public ResponseEntity<TimetableDTO> getStudentTimetable(
+			@PathVariable Long studentId) {
+		return ResponseEntity.ok(studentService.getStudentTimetable(studentId));
 	}
 }

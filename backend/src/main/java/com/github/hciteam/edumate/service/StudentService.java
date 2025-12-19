@@ -10,11 +10,15 @@ import com.github.hciteam.edumate.exception.StudentTaskAlreadySubmittedException
 import com.github.hciteam.edumate.exception.StudentTaskNotFoundException;
 import com.github.hciteam.edumate.exception.StudentTaskNotSubmittedException;
 import com.github.hciteam.edumate.key.StudentTaskKey;
+import com.github.hciteam.edumate.mapper.SessionMapper;
 import com.github.hciteam.edumate.mapper.StudentMapper;
 import com.github.hciteam.edumate.mapper.StudentTaskMapper;
+import com.github.hciteam.edumate.dto.SessionDTO;
 import com.github.hciteam.edumate.dto.StudentDTO;
 import com.github.hciteam.edumate.dto.StudentTaskDTO;
+import com.github.hciteam.edumate.dto.TimetableDTO;
 import com.github.hciteam.edumate.model.StudentTaskStatus;
+import com.github.hciteam.edumate.repository.SessionRepository;
 import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.StudentTaskRepository;
 import com.github.hciteam.edumate.specification.StudentTaskSpecifications;
@@ -23,16 +27,21 @@ import com.github.hciteam.edumate.specification.StudentTaskSpecifications;
 public class StudentService {
 	private final StudentRepository studentRepository;
 	private final StudentTaskRepository studentTaskRepository;
+	private final SessionRepository sessionRepository;
 	private final StudentMapper studentMapper;
 	private final StudentTaskMapper studentTaskMapper;
+	private final SessionMapper sessionMapper;
 
 	public StudentService(StudentRepository studentRepository,
-			StudentTaskRepository studentTaskRepository, StudentMapper studentMapper,
-			StudentTaskMapper studentTaskMapper) {
+			StudentTaskRepository studentTaskRepository,
+			SessionRepository sessionRepository, StudentMapper studentMapper,
+			StudentTaskMapper studentTaskMapper, SessionMapper sessionMapper) {
 		this.studentRepository = studentRepository;
 		this.studentTaskRepository = studentTaskRepository;
+		this.sessionRepository = sessionRepository;
 		this.studentMapper = studentMapper;
 		this.studentTaskMapper = studentTaskMapper;
+		this.sessionMapper = sessionMapper;
 	}
 
 	public StudentDTO getStudent(Long studentId) {
@@ -128,5 +137,13 @@ public class StudentService {
 				}).orElseThrow(() -> new StudentTaskNotFoundException());
 
 		return studentTaskMapper.toDTO(studentTaskRepository.save(studentTask));
+	}
+
+	public TimetableDTO getStudentTimetable(Long studentId) {
+		List<SessionDTO> sessions =
+				sessionRepository.findByOfferingRegistrationsStudentId(studentId)
+						.stream().map(sessionMapper::toDTO).toList();
+
+		return TimetableDTO.fromSessions(sessions);
 	}
 }
