@@ -1,6 +1,6 @@
 package com.github.hciteam.edumate.model;
 
-public enum SessionType {
+public enum CourseSessionType {
 	LECTURE, TUTORIAL, LAB
 }
 

@@ -3,7 +3,7 @@ import { Gender } from './authentication.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Task, TaskService } from './task.service';
-import { Session } from './session.service';
+import { CourseSession } from './course-session.service';
 import { TimePeriod } from './time-period.service';
 import { WeekDay } from './time-slot.service';
 
@@ -33,7 +33,7 @@ export interface StudentTaskFilter {
 export interface Timetable {
   weekDays: WeekDay[];
   periods: TimePeriod[];
-  sessions: Session[][];
+  sessions: CourseSession[][][];
 }
 
 @Injectable({

@@ -1,6 +1,6 @@
 package com.github.hciteam.edumate.dto;
 
-import com.github.hciteam.edumate.model.SessionType;
+import com.github.hciteam.edumate.model.CourseSessionType;
 import com.github.hciteam.edumate.validation.ValidationGroups;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SessionDTO {
+public class CourseSessionDTO {
 	@Null(groups = {ValidationGroups.Create.class})
 	private Long id;
 
@@ -25,5 +25,5 @@ public class SessionDTO {
 
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
-	private SessionType type;
+	private CourseSessionType type;
 }

@@ -17,13 +17,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "time_slots")
+@Table(name = "course_sessions")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Session {
+public class CourseSession {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -38,5 +38,5 @@ public class Session {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private SessionType type;
+	private CourseSessionType type;
 }

@@ -1,7 +1,6 @@
 <app-navbar />
 
 <div class="tasks-section">
-
   <div class="search-bar">
     <div class="task-type" id="all-tasks" (click)="toggleStatus(null)">All</div>
     <div class="task-type" id="upcoming-tasks" (click)="toggleStatus('UPCOMING')">Upcoming</div>
@@ -10,11 +9,12 @@
   </div>
 
   <div class="tasks-container">
-
     @for (studentTask of studentTasks(); track studentTask.task.id) {
-
-      <div class="task-item" [class.expanded]="isExpanded(studentTask)" (click)="toggleTask(studentTask, $event)">
-      
+      <div
+        class="task-item"
+        [class.expanded]="isExpanded(studentTask)"
+        (click)="toggleTask(studentTask, $event)"
+      >
         <!-- Always visible -->
         <div class="row">
           <span class="label">Title:</span>
@@ -40,7 +40,7 @@
           </div>
           <div class="row">
             <span class="label">Offering ID:</span>
-            <span class="value">{{ studentTask.task.offeringId }}</span>
+            <span class="value">{{ studentTask.task.offering.id }}</span>
           </div>
           <div class="row">
             <span class="label">Requirements:</span>
@@ -51,7 +51,9 @@
             @if (studentTask.task.submissionUrl == null) {
               N/A
             } @else {
-              <a href="{{ studentTask.task.submissionUrl }}" target="_blank">{{ studentTask.task.submissionUrl }}</a>
+              <a href="{{ studentTask.task.submissionUrl }}" target="_blank">{{
+                studentTask.task.submissionUrl
+              }}</a>
             }
           </div>
           <div class="row">
@@ -71,13 +73,9 @@
             }
           </div>
         </div>
-
       </div>
-
     } @empty {
       <p>No tasks assigned.</p>
     }
-
   </div>
-
 </div>

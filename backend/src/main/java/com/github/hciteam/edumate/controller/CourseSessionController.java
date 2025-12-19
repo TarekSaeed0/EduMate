@@ -13,28 +13,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import com.github.hciteam.edumate.dto.SessionDTO;
-import com.github.hciteam.edumate.service.SessionService;
+import com.github.hciteam.edumate.dto.CourseSessionDTO;
+import com.github.hciteam.edumate.service.CourseSessionService;
 import com.github.hciteam.edumate.validation.ValidationGroups;
 
 @RestController
 @RequestMapping("/api/sessions")
-public class SessionController {
-	private final SessionService sessionService;
+public class CourseSessionController {
+	private final CourseSessionService sessionService;
 
-	public SessionController(SessionService sessionService) {
+	public CourseSessionController(CourseSessionService sessionService) {
 		this.sessionService = sessionService;
 	}
 
 	@GetMapping
-	public ResponseEntity<List<SessionDTO>> getSessions() {
+	public ResponseEntity<List<CourseSessionDTO>> getSessions() {
 		return ResponseEntity.ok(sessionService.getSessions());
 	}
 
 	@PostMapping
-	public ResponseEntity<SessionDTO> createSession(
-			@Validated(ValidationGroups.Create.class) @RequestBody SessionDTO sessionDTO) {
-		SessionDTO createdSession = sessionService.createSession(sessionDTO);
+	public ResponseEntity<CourseSessionDTO> createSession(
+			@Validated(ValidationGroups.Create.class) @RequestBody CourseSessionDTO sessionDTO) {
+		CourseSessionDTO createdSession = sessionService.createSession(sessionDTO);
 
 		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{sessionId}").buildAndExpand(createdSession.getId()).toUri();
@@ -43,13 +43,15 @@ public class SessionController {
 	}
 
 	@GetMapping("/{sessionId}")
-	public ResponseEntity<SessionDTO> getSession(@PathVariable Long sessionId) {
+	public ResponseEntity<CourseSessionDTO> getSession(
+			@PathVariable Long sessionId) {
 		return ResponseEntity.ok(sessionService.getSession(sessionId));
 	}
 
 	@PutMapping("/{sessionId}")
-	public ResponseEntity<SessionDTO> updateSession(@PathVariable Long sessionId,
-			@Validated(ValidationGroups.Update.class) @RequestBody SessionDTO sessionDTO) {
+	public ResponseEntity<CourseSessionDTO> updateSession(
+			@PathVariable Long sessionId,
+			@Validated(ValidationGroups.Update.class) @RequestBody CourseSessionDTO sessionDTO) {
 		return ResponseEntity
 				.ok(sessionService.updateSession(sessionId, sessionDTO));
 	}
