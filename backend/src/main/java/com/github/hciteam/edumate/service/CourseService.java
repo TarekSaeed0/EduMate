@@ -21,8 +21,8 @@ public class CourseService {
 	}
 
 	public List<CourseDTO> getCourses() {
-		return courseRepository.findAll().stream()
-				.map(course -> courseMapper.toDTO(course)).toList();
+		return courseRepository.findAll().stream().map(courseMapper::toDTO)
+				.toList();
 	}
 
 	public CourseDTO createCourse(CourseDTO courseDTO) {
@@ -30,8 +30,7 @@ public class CourseService {
 			throw new CourseAlreadyExistsException();
 		}
 
-		Course course = new Course(null, courseDTO.getCode(), courseDTO.getName(),
-				courseDTO.getCredits(), null);
+		Course course = courseMapper.toEntity(courseDTO);
 
 		return courseMapper.toDTO(courseRepository.save(course));
 	}
@@ -39,23 +38,21 @@ public class CourseService {
 	public CourseDTO getCourse(Long courseId) {
 		return courseRepository.findById(courseId)
 				.map(course -> courseMapper.toDTO(course))
-				.orElseThrow(() -> new CourseNotFoundException());
+				.orElseThrow(() -> new CourseNotFoundException(courseId));
 	}
 
 	public CourseDTO updateCourse(Long courseId, CourseDTO courseDTO) {
 		Course course = courseRepository.findById(courseId).map(existingCourse -> {
-			existingCourse.setCode(courseDTO.getCode());
-			existingCourse.setName(courseDTO.getName());
-			existingCourse.setCredits(courseDTO.getCredits());
+			courseMapper.updateEntityFromDTO(courseDTO, existingCourse);
 			return existingCourse;
-		}).orElseThrow(() -> new CourseNotFoundException());
+		}).orElseThrow(() -> new CourseNotFoundException(courseId));
 
 		return courseMapper.toDTO(courseRepository.save(course));
 	}
 
 	public void deleteCourse(Long courseId) {
 		if (!courseRepository.existsById(courseId)) {
-			throw new CourseNotFoundException();
+			throw new CourseNotFoundException(courseId);
 		}
 
 		courseRepository.deleteById(courseId);

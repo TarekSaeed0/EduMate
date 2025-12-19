@@ -21,8 +21,8 @@ public class SemesterService {
 	}
 
 	public List<SemesterDTO> getSemesters() {
-		return semesterRepository.findAll().stream()
-				.map(semester -> semesterMapper.toDTO(semester)).toList();
+		return semesterRepository.findAll().stream().map(semesterMapper::toDTO)
+				.toList();
 	}
 
 	public SemesterDTO createSemester(SemesterDTO semesterDTO) {
@@ -31,33 +31,29 @@ public class SemesterService {
 			throw new SemesterAlreadyExistsException();
 		}
 
-		Semester semester =
-				new Semester(null, semesterDTO.getTerm(), semesterDTO.getYear(),
-						semesterDTO.getStartDate(), semesterDTO.getEndDate(), null);
+		Semester semester = semesterMapper.toEntity(semesterDTO);
 
 		return semesterMapper.toDTO(semesterRepository.save(semester));
 	}
 
 	public SemesterDTO getSemester(Long semesterId) {
-		return semesterRepository.findById(semesterId)
-				.map(semester -> semesterMapper.toDTO(semester))
-				.orElseThrow(() -> new SemesterNotFoundException());
+		return semesterRepository.findById(semesterId).map(semesterMapper::toDTO)
+				.orElseThrow(() -> new SemesterNotFoundException(semesterId));
 	}
 
 	public SemesterDTO updateSemester(Long semesterId, SemesterDTO semesterDTO) {
 		Semester semester =
 				semesterRepository.findById(semesterId).map(existingSemester -> {
-					existingSemester.setStartDate(semesterDTO.getStartDate());
-					existingSemester.setEndDate(semesterDTO.getEndDate());
+					semesterMapper.updateEntityFromDTO(semesterDTO, existingSemester);
 					return existingSemester;
-				}).orElseThrow(() -> new SemesterNotFoundException());
+				}).orElseThrow(() -> new SemesterNotFoundException(semesterId));
 
 		return semesterMapper.toDTO(semesterRepository.save(semester));
 	}
 
 	public void deleteSemester(Long semesterId) {
 		if (!semesterRepository.existsById(semesterId)) {
-			throw new SemesterNotFoundException();
+			throw new SemesterNotFoundException(semesterId);
 		}
 
 		semesterRepository.deleteById(semesterId);

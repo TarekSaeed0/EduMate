@@ -1,18 +1,18 @@
 package com.github.hciteam.edumate.mapper;
 
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.mapstruct.Mapper;
-import com.github.hciteam.edumate.model.FAQCategory;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import com.github.hciteam.edumate.model.FAQ;
 import com.github.hciteam.edumate.dto.FAQDTO;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {FAQCategoryMapper.class})
 public interface FAQMapper {
 	FAQDTO toDTO(FAQ faq);
 
-	default Set<String> mapCategoriesToStrings(Set<FAQCategory> categories) {
-		return categories.stream().map(FAQCategory::getName)
-				.collect(Collectors.toSet());
-	}
+	@Mapping(target = "id", ignore = true)
+	FAQ toEntity(FAQDTO faqDTO);
+
+	@Mapping(target = "id", ignore = true)
+	void updateEntityFromDTO(FAQDTO faqDTO, @MappingTarget FAQ faq);
 }

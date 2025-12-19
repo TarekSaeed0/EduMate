@@ -11,7 +11,7 @@ export interface CourseRegistration {
   status: CourseRegistrationStatus;
 }
 
-interface CourseRegistrationFilter {
+export interface CourseRegistrationFilter {
   offeringId?: number;
   semesterId?: number;
   courseId?: number;
@@ -59,7 +59,7 @@ export class CourseRegistrationService {
 
   updateRegistration(
     registrationId: number,
-    registration: Omit<CourseRegistration, 'id'>,
+    registration: CourseRegistration,
   ): Observable<CourseRegistration> {
     return this.http.put<CourseRegistration>(`${this.baseUrl}/${registrationId}`, registration, {
       withCredentials: true,

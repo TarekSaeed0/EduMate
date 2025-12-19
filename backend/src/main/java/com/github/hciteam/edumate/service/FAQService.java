@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.data.jpa.domain.Specification;
 import com.github.hciteam.edumate.specification.FAQSpecifications;
+import jakarta.transaction.Transactional;
 import com.github.hciteam.edumate.repository.FAQCategoryRepository;
 import com.github.hciteam.edumate.repository.FAQRepository;
 import com.github.hciteam.edumate.model.FAQ;
@@ -43,13 +44,41 @@ public class FAQService {
 					.and(FAQSpecifications.hasAllCategoriesNames(categories));
 		}
 
-		return faqRepository.findAll(specification).stream()
-				.map(faq -> faqMapper.toDTO(faq)).toList();
+		return faqRepository.findAll(specification).stream().map(faqMapper::toDTO)
+				.toList();
 	}
 
-	public FAQDTO getFAQ(Long id) {
-		return faqRepository.findById(id).map(faq -> faqMapper.toDTO(faq))
+	@Transactional
+	public FAQDTO createFAQ(FAQDTO faqDTO) {
+		FAQ faq = faqMapper.toEntity(faqDTO);
+
+		return faqMapper.toDTO(faqRepository.save(faq));
+	}
+
+	public FAQDTO getFAQ(Long faqId) {
+		return faqRepository.findById(faqId).map(faqMapper::toDTO)
 				.orElseThrow(() -> new FAQNotFoundException());
+	}
+
+	@Transactional
+	public FAQDTO updateFAQ(Long faqId, FAQDTO faqDTO) {
+		FAQ faq = faqRepository.findById(faqId).map(existingFAQ -> {
+			faqMapper.updateEntityFromDTO(faqDTO, existingFAQ);
+			return existingFAQ;
+		}).orElseThrow(() -> new FAQNotFoundException());
+
+		return faqMapper.toDTO(faqRepository.save(faq));
+	}
+
+	public void deleteFAQ(Long faqId) {
+		if (!faqRepository.existsById(faqId)) {
+			throw new FAQNotFoundException();
+		}
+
+		faqRepository.deleteById(faqId);
+
+		faqCategoryRepository
+				.deleteAll(faqCategoryRepository.findUnusedCategories());
 	}
 
 	public List<String> getCategories() {

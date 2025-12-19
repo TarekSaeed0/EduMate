@@ -8,7 +8,7 @@ export interface FAQ {
   categories: string[];
 }
 
-interface FAQFilter {
+export interface FAQFilter {
   question?: string;
   answer?: string;
   categories?: string[];
@@ -40,8 +40,16 @@ export class FAQService {
     });
   }
 
-  getFAQ(id: number): Observable<FAQ> {
-    return this.http.get<FAQ>(`${this.baseUrl}/${id}`, { withCredentials: true });
+  createFaq(faq: Omit<FAQ, 'id'>): Observable<FAQ> {
+    return this.http.post<FAQ>(`${this.baseUrl}`, faq, { withCredentials: true });
+  }
+
+  getFAQ(faqId: number): Observable<FAQ> {
+    return this.http.get<FAQ>(`${this.baseUrl}/${faqId}`, { withCredentials: true });
+  }
+
+  updateFAQ(faqId: number, faq: FAQ): Observable<FAQ> {
+    return this.http.put<FAQ>(`${this.baseUrl}/${faqId}`, faq, { withCredentials: true });
   }
 
   getCategories(): Observable<string[]> {

@@ -9,7 +9,7 @@ export interface CourseOffering {
   course: Course;
 }
 
-interface CourseOfferingFilter {
+export interface CourseOfferingFilter {
   semesterId?: number;
   courseId?: number;
 }
@@ -48,15 +48,6 @@ export class CourseOfferingService {
 
   getOffering(offeringId: number): Observable<CourseOffering> {
     return this.http.get<CourseOffering>(`${this.baseUrl}/${offeringId}`, {
-      withCredentials: true,
-    });
-  }
-
-  updateOffering(
-    offeringId: number,
-    offering: Omit<CourseOffering, 'id'>,
-  ): Observable<CourseOffering> {
-    return this.http.put<CourseOffering>(`${this.baseUrl}/${offeringId}`, offering, {
       withCredentials: true,
     });
   }

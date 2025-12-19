@@ -1,17 +1,24 @@
 package com.github.hciteam.edumate.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.StudentTask;
-import com.github.hciteam.edumate.exception.CourseRegistrationNotFoundException;
 import com.github.hciteam.edumate.exception.StudentNotFoundException;
+import com.github.hciteam.edumate.exception.StudentTaskAlreadySubmittedException;
+import com.github.hciteam.edumate.exception.StudentTaskNotFoundException;
+import com.github.hciteam.edumate.exception.StudentTaskNotSubmittedException;
 import com.github.hciteam.edumate.key.StudentTaskKey;
+import com.github.hciteam.edumate.mapper.CourseSessionMapper;
 import com.github.hciteam.edumate.mapper.StudentMapper;
 import com.github.hciteam.edumate.mapper.StudentTaskMapper;
+import com.github.hciteam.edumate.dto.CourseSessionDTO;
 import com.github.hciteam.edumate.dto.StudentDTO;
 import com.github.hciteam.edumate.dto.StudentTaskDTO;
+import com.github.hciteam.edumate.dto.TimetableDTO;
 import com.github.hciteam.edumate.model.StudentTaskStatus;
+import com.github.hciteam.edumate.repository.CourseSessionRepository;
 import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.StudentTaskRepository;
 import com.github.hciteam.edumate.specification.StudentTaskSpecifications;
@@ -20,21 +27,25 @@ import com.github.hciteam.edumate.specification.StudentTaskSpecifications;
 public class StudentService {
 	private final StudentRepository studentRepository;
 	private final StudentTaskRepository studentTaskRepository;
+	private final CourseSessionRepository sessionRepository;
 	private final StudentMapper studentMapper;
 	private final StudentTaskMapper studentTaskMapper;
+	private final CourseSessionMapper sessionMapper;
 
 	public StudentService(StudentRepository studentRepository,
-			StudentTaskRepository studentTaskRepository, StudentMapper studentMapper,
-			StudentTaskMapper studentTaskMapper) {
+			StudentTaskRepository studentTaskRepository,
+			CourseSessionRepository sessionRepository, StudentMapper studentMapper,
+			StudentTaskMapper studentTaskMapper, CourseSessionMapper sessionMapper) {
 		this.studentRepository = studentRepository;
 		this.studentTaskRepository = studentTaskRepository;
+		this.sessionRepository = sessionRepository;
 		this.studentMapper = studentMapper;
 		this.studentTaskMapper = studentTaskMapper;
+		this.sessionMapper = sessionMapper;
 	}
 
 	public StudentDTO getStudent(Long studentId) {
-		return studentRepository.findById(studentId)
-				.map(student -> studentMapper.toDTO(student))
+		return studentRepository.findById(studentId).map(studentMapper::toDTO)
 				.orElseThrow(() -> new StudentNotFoundException());
 	}
 
@@ -71,7 +82,7 @@ public class StudentService {
 		}
 
 		return studentTaskRepository.findAll(specification).stream()
-				.map(task -> studentTaskMapper.toDTO(task)).toList();
+				.map(studentTaskMapper::toDTO).toList();
 	}
 
 	public StudentTaskDTO getStudentTask(Long studentId, Long taskId) {
@@ -82,12 +93,11 @@ public class StudentService {
 		StudentTaskKey studentTaskId = new StudentTaskKey(studentId, taskId);
 
 		return studentTaskRepository.findById(studentTaskId)
-				.map(studentTask -> studentTaskMapper.toDTO(studentTask))
-				.orElseThrow(() -> new CourseRegistrationNotFoundException());
+				.map(studentTaskMapper::toDTO)
+				.orElseThrow(() -> new StudentTaskNotFoundException());
 	}
 
-	public StudentTaskDTO updateStudentTask(Long studentId, Long taskId,
-			StudentTaskDTO studentTaskDTO) {
+	public StudentTaskDTO submitStudentTask(Long studentId, Long taskId) {
 		if (!studentRepository.existsById(studentId)) {
 			throw new StudentNotFoundException();
 		}
@@ -96,10 +106,44 @@ public class StudentService {
 
 		StudentTask studentTask = studentTaskRepository.findById(studentTaskId)
 				.map(existingStudentTask -> {
-					existingStudentTask.setSubmittedAt(studentTaskDTO.getSubmittedAt());
+					if (existingStudentTask.getSubmittedAt() != null) {
+						throw new StudentTaskAlreadySubmittedException(
+								"Cannot submit a student task that is already submitted");
+					}
+
+					existingStudentTask.setSubmittedAt(LocalDateTime.now());
 					return existingStudentTask;
-				}).orElseThrow(() -> new CourseRegistrationNotFoundException());
+				}).orElseThrow(() -> new StudentTaskNotFoundException());
 
 		return studentTaskMapper.toDTO(studentTaskRepository.save(studentTask));
+	}
+
+	public StudentTaskDTO unsubmitStudentTask(Long studentId, Long taskId) {
+		if (!studentRepository.existsById(studentId)) {
+			throw new StudentNotFoundException();
+		}
+
+		StudentTaskKey studentTaskId = new StudentTaskKey(studentId, taskId);
+
+		StudentTask studentTask = studentTaskRepository.findById(studentTaskId)
+				.map(existingStudentTask -> {
+					if (existingStudentTask.getSubmittedAt() == null) {
+						throw new StudentTaskNotSubmittedException(
+								"Cannot unsubmit a student task that is not submitted");
+					}
+
+					existingStudentTask.setSubmittedAt(null);
+					return existingStudentTask;
+				}).orElseThrow(() -> new StudentTaskNotFoundException());
+
+		return studentTaskMapper.toDTO(studentTaskRepository.save(studentTask));
+	}
+
+	public TimetableDTO getStudentTimetable(Long studentId) {
+		List<CourseSessionDTO> sessions =
+				sessionRepository.findByOfferingRegistrationsStudentId(studentId)
+						.stream().map(sessionMapper::toDTO).toList();
+
+		return TimetableDTO.fromSessions(sessions);
 	}
 }

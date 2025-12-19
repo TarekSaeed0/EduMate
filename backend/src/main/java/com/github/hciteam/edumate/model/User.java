@@ -1,7 +1,6 @@
 package com.github.hciteam.edumate.model;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -45,8 +44,7 @@ public class User implements UserDetails {
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
-	@Builder.Default
-	private Set<UserRole> roles = new HashSet<>();
+	private Set<UserRole> roles;
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Student student;
@@ -54,7 +52,8 @@ public class User implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return roles.stream()
-				.map(role -> new SimpleGrantedAuthority(role.getName())).toList();
+				.map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
+				.toList();
 	}
 
 	@Override

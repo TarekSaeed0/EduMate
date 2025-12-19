@@ -28,7 +28,7 @@ export class CourseService {
     return this.http.get<Course>(`${this.baseUrl}/${courseId}`, { withCredentials: true });
   }
 
-  updateCourse(courseId: number, course: Omit<Course, 'id'>): Observable<Course> {
+  updateCourse(courseId: number, course: Course): Observable<Course> {
     return this.http.put<Course>(`${this.baseUrl}/${courseId}`, course, { withCredentials: true });
   }
 

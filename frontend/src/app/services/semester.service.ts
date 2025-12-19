@@ -37,19 +37,19 @@ export class SemesterService {
       .pipe(map(SemesterService.semesterMapper));
   }
 
-  getSemester(id: number): Observable<Semester> {
+  getSemester(semesterId: number): Observable<Semester> {
     return this.http
-      .get<Semester>(`${this.baseUrl}/${id}`, { withCredentials: true })
+      .get<Semester>(`${this.baseUrl}/${semesterId}`, { withCredentials: true })
       .pipe(map(SemesterService.semesterMapper));
   }
 
-  updateSemester(id: number, semester: Omit<Semester, 'id'>): Observable<Semester> {
+  updateSemester(semesterId: number, semester: Semester): Observable<Semester> {
     return this.http
-      .put<Semester>(`${this.baseUrl}/${id}`, semester, { withCredentials: true })
+      .put<Semester>(`${this.baseUrl}/${semesterId}`, semester, { withCredentials: true })
       .pipe(map(SemesterService.semesterMapper));
   }
 
-  deleteSemester(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
+  deleteSemester(semesterId: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${semesterId}`, { withCredentials: true });
   }
 }

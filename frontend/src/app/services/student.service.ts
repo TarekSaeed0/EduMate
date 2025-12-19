@@ -3,6 +3,9 @@ import { Gender } from './authentication.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Task, TaskService } from './task.service';
+import { CourseSession } from './course-session.service';
+import { TimePeriod } from './time-period.service';
+import { WeekDay } from './time-slot.service';
 
 export interface Student {
   id: number;
@@ -20,11 +23,17 @@ export interface StudentTask {
   submittedAt: Date | null;
 }
 
-interface StudentTaskFilter {
+export interface StudentTaskFilter {
   taskId?: number;
   semesterId?: number;
   courseId?: number;
   status?: StudentTaskStatus;
+}
+
+export interface Timetable {
+  weekDays: WeekDay[];
+  periods: TimePeriod[];
+  sessions: CourseSession[][][];
 }
 
 @Injectable({
@@ -73,15 +82,25 @@ export class StudentService {
       .pipe(map(StudentService.studentTaskMapper));
   }
 
-  updateStudentTask(
-    studentId: number,
-    taskId: number,
-    studentTask: Omit<StudentTask, 'id'>,
-  ): Observable<StudentTask> {
+  submitStudentTask(studentId: number, taskId: number): Observable<StudentTask> {
     return this.http
-      .put<StudentTask>(`${this.baseUrl}/${studentId}/tasks/${taskId}`, studentTask, {
+      .post<StudentTask>(`${this.baseUrl}/${studentId}/tasks/${taskId}/submit`, null, {
         withCredentials: true,
       })
       .pipe(map(StudentService.studentTaskMapper));
+  }
+
+  unsubmitStudentTask(studentId: number, taskId: number): Observable<StudentTask> {
+    return this.http
+      .post<StudentTask>(`${this.baseUrl}/${studentId}/tasks/${taskId}/unsubmit`, null, {
+        withCredentials: true,
+      })
+      .pipe(map(StudentService.studentTaskMapper));
+  }
+
+  getStudentTimetable(studentId: number): Observable<Timetable> {
+    return this.http.get<Timetable>(`${this.baseUrl}/${studentId}/timetable`, {
+      withCredentials: true,
+    });
   }
 }

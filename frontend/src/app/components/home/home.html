@@ -1,10 +1,8 @@
-@if (authenticationService.isSignedIn()) {
+@if (authenticationService.isAuthenticated()) {
   <div class="dashboard-container">
-
     <app-navbar></app-navbar>
 
     <div class="dashboard-content">
-
       <aside class="profile-card">
         <div class="card-header"></div>
         <div class="avatar-container">
@@ -77,9 +75,7 @@
 } @else {
   <div class="landing-container">
     <header class="landing-header">
-      <div class="logo">
-        <span class="edu">Edu</span><span class="mate">Mate</span>
-      </div>
+      <div class="logo"><span class="edu">Edu</span><span class="mate">Mate</span></div>
       <nav class="landing-nav">
         <a href="#">Home</a>
         <a href="#features">Features</a>
@@ -93,11 +89,12 @@
     <section class="hero-section">
       <div class="hero-content-centered">
         <span class="pill">WELCOME TO EDUMATE</span>
-        <h1>Find Focus.<br>Learn <span class="accent">&</span> Inspire.</h1>
-        <p>Your ultimate companion for tracking tasks, managing teams, and acing your academic journey.</p>
-        <a routerLink="/signup" class="cta-button">
-          GET STARTED →
-        </a>
+        <h1>Find Focus.<br />Learn <span class="accent">&</span> Inspire.</h1>
+        <p>
+          Your ultimate companion for tracking tasks, managing teams, and acing your academic
+          journey.
+        </p>
+        <a routerLink="/signup" class="cta-button"> GET STARTED → </a>
       </div>
     </section>
     <section id="features" class="landing-features">

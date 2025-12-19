@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
+import { CourseOffering } from './course-offering.service';
 
 export interface Task {
   id: number;
-  offeringId: number;
+  offering: CourseOffering;
   title: string;
   requirements: string | null;
   submissionUrl: string | null;
@@ -42,7 +43,7 @@ export class TaskService {
       .pipe(map(TaskService.taskMapper));
   }
 
-  updateTask(id: number, task: Omit<Task, 'id'>): Observable<Task> {
+  updateTask(id: number, task: Task): Observable<Task> {
     return this.http
       .put<Task>(`${this.baseUrl}/${id}`, task, { withCredentials: true })
       .pipe(map(TaskService.taskMapper));

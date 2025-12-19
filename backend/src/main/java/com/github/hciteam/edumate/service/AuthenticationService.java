@@ -32,6 +32,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import com.github.hciteam.edumate.exception.UserAlreadyExistsException;
+import com.github.hciteam.edumate.exception.UserRoleNotFoundException;
 import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.mapper.UserMapper;
 import com.github.hciteam.edumate.exception.StudentAlreadyExistsException;
@@ -72,11 +73,11 @@ public class AuthenticationService {
 	@Transactional
 	public UserDTO signup(SignupRequest signupRequest) {
 		if (userRepository.existsByEmail(signupRequest.getEmail())) {
-			throw new UserAlreadyExistsException();
+			throw new UserAlreadyExistsException(signupRequest.getEmail());
 		}
 
 		UserRole studentRole = roleRepository.findByName("STUDENT")
-				.orElseThrow(() -> new RuntimeException("STUDENT Role not found"));
+				.orElseThrow(() -> new UserRoleNotFoundException());
 
 		Set<UserRole> roles = new HashSet<>();
 		roles.add(studentRole);
@@ -119,7 +120,7 @@ public class AuthenticationService {
 		return userMapper.toDTO(createdUser);
 	}
 
-	public void signin(SigninRequest signinRequest, HttpServletRequest request,
+	public UserDTO signin(SigninRequest signinRequest, HttpServletRequest request,
 			HttpServletResponse response) {
 		UsernamePasswordAuthenticationToken token =
 				new UsernamePasswordAuthenticationToken(signinRequest.getEmail(),
@@ -131,6 +132,8 @@ public class AuthenticationService {
 		context.setAuthentication(authentication);
 		securityContextHolderStrategy.setContext(context);
 		securityContextRepository.saveContext(context, request, response);
+
+		return userMapper.toDTO((User) authentication.getPrincipal());
 	}
 
 	public UserDTO me(Authentication authentication) {

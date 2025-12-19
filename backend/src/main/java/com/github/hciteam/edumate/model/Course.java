@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,9 +19,10 @@ import lombok.Setter;
 @Table(name = "courses")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Course {
+public class Course implements AnnouncementScope {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -37,4 +39,14 @@ public class Course {
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private Set<CourseOffering> offerings;
+
+	@Override
+	public String getScopeType() {
+		return "COURSE";
+	}
+
+	@Override
+	public Long getScopeId() {
+		return this.id;
+	}
 }
