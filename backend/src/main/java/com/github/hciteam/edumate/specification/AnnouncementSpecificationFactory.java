@@ -6,5 +6,5 @@ import com.github.hciteam.edumate.model.Announcement;
 public interface AnnouncementSpecificationFactory {
 	String getScopeType();
 
-	Specification<Announcement> ofUser(Long userId);
+	Specification<Announcement> ofStudent(Long studentId);
 }

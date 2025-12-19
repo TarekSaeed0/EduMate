@@ -18,7 +18,7 @@ class CourseAnnouncementSpecificationFactory
 	}
 
 	@Override
-	public Specification<Announcement> ofUser(Long userId) {
+	public Specification<Announcement> ofStudent(Long studentId) {
 		return (root, query, criteriaBuilder) -> {
 			Subquery<Long> subquery = query.subquery(Long.class);
 			Root<Course> courses = subquery.from(Course.class);
@@ -29,7 +29,7 @@ class CourseAnnouncementSpecificationFactory
 			Join<CourseRegistration, Student> student = registrations.join("student");
 
 			subquery.select(courses.get("id"))
-					.where(criteriaBuilder.equal(student.get("user").get("id"), userId));
+					.where(criteriaBuilder.equal(student.get("id"), studentId));
 
 			return criteriaBuilder.and(
 					criteriaBuilder.equal(root.get("scopeType"), getScopeType()),
