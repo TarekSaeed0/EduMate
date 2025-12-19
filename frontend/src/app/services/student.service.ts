@@ -3,6 +3,9 @@ import { Gender } from './authentication.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Task, TaskService } from './task.service';
+import { Session } from './session.service';
+import { TimePeriod } from './time-period.service';
+import { WeekDay } from './time-slot.service';
 
 export interface Student {
   id: number;
@@ -25,6 +28,12 @@ export interface StudentTaskFilter {
   semesterId?: number;
   courseId?: number;
   status?: StudentTaskStatus;
+}
+
+export interface Timetable {
+  weekDays: WeekDay[];
+  periods: TimePeriod[];
+  sessions: Session[][];
 }
 
 @Injectable({
@@ -87,5 +96,11 @@ export class StudentService {
         withCredentials: true,
       })
       .pipe(map(StudentService.studentTaskMapper));
+  }
+
+  getStudentTimetable(studentId: number): Observable<Timetable> {
+    return this.http.get<Timetable>(`${this.baseUrl}/${studentId}/timetable`, {
+      withCredentials: true,
+    });
   }
 }
