@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
@@ -9,6 +9,10 @@ export interface Announcement {
   title: string;
   content: string;
   createdAt: Date;
+}
+
+export interface AnnouncementFilter {
+  studentId?: number;
 }
 
 @Injectable({
@@ -23,9 +27,21 @@ export class AnnouncementService {
     createdAt: new Date(announcement.createdAt),
   });
 
-  getAnnouncements(): Observable<Announcement[]> {
+  getAnnouncements(filter?: AnnouncementFilter): Observable<Announcement[]> {
+    let params = new HttpParams();
+
+    if (filter) {
+      Object.entries(filter).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          params = params.append(key, value.join(','));
+        } else if (value !== undefined) {
+          params = params.append(key, value);
+        }
+      });
+    }
+
     return this.http
-      .get<Announcement[]>(`${this.baseUrl}`, { withCredentials: true })
+      .get<Announcement[]>(`${this.baseUrl}`, { withCredentials: true, params })
       .pipe(map((announcements) => announcements.map(AnnouncementService.announcementMapper)));
   }
 

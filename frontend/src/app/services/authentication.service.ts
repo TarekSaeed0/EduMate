@@ -50,6 +50,10 @@ export class AuthenticationService {
 
   isAuthenticated = computed(() => this.user() !== null);
 
+  hasRole(role: string): boolean {
+    return this.user()?.roles.includes(role) ?? false;
+  }
+
   signup(request: SignupRequest): Observable<Object> {
     return this.http.post(`${this.baseUrl}/signup`, request);
   }
