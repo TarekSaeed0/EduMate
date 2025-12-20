@@ -1,0 +1,106 @@
+<app-navbar></app-navbar>
+
+<div class="page-content-wrapper">
+  <main class="main-content-layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-header bg-accent">
+        Team Creator
+      </div>
+
+      <div class="sidebar-section">
+        <a routerLink="/team-creator" class="back-link">
+          ← Back to Courses
+        </a>
+
+        <div class="selected-course-info">
+          <span class="label">Selected Course:</span>
+          <h2 class="course-code">{{ courseInfo.code }}</h2>
+          <p class="course-name">{{ courseInfo.name }}</p>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <section class="sidebar-section active-teams">
+        <h3 class="section-title">Your Active Teams</h3>
+        <div class="team-card-mini">
+          <div class="team-icon">✓</div>
+          <div class="team-info">
+            <p class="team-name">Group Alpha</p>
+            <p class="team-course">HCI Project</p>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <section class="content-area">
+
+      <div class="header-row">
+        <div>
+          <h1 class="page-title">Find a Team</h1>
+          <p class="page-subtitle">Join an existing group or start your own.</p>
+        </div>
+        <button class="create-btn">+ Create New Team</button>
+      </div>
+
+      <div class="info-bar">
+        <div class="info-item">
+          <span class="info-label">MAX MEMBERS:</span>
+          <span class="info-value">{{ courseInfo.maxMembers }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">DEADLINE:</span>
+          <span class="info-value danger-text">{{ courseInfo.deadline }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">TOTAL TEAMS:</span>
+          <span class="info-value">{{ courseInfo.totalTeams }}</span>
+        </div>
+      </div>
+
+      <div class="team-list-container">
+
+        <div *ngFor="let team of teams" class="team-row" [class.team-full]="team.status === 'Full'">
+          <div class="color-strip"
+               [class.strip-green]="team.colorTheme === 'green'"
+               [class.strip-orange]="team.colorTheme === 'orange'"
+               [class.strip-red]="team.colorTheme === 'red'">
+          </div>
+
+          <div class="row-content">
+            <div class="text-group">
+              <h3 class="row-team-name">{{ team.name }}</h3>
+              <span class="row-spots"
+                    [class.text-green]="team.colorTheme === 'green'"
+                    [class.text-orange]="team.colorTheme === 'orange'"
+                    [class.text-red]="team.colorTheme === 'red'">
+                {{ team.spotsLabel }}
+              </span>
+            </div>
+
+            <div class="avatar-group">
+              <div *ngFor="let member of team.members" class="avatar-circle"
+                   [class.bg-green-light]="member.color === 'green-light'"
+                   [class.bg-blue-light]="member.color === 'blue-light'"
+                   [class.bg-orange-light]="member.color === 'orange-light'"
+                   [class.bg-purple-light]="member.color === 'purple-light'"
+                   [class.bg-pink-light]="member.color === 'pink-light'"
+                   [class.bg-gray]="member.color === 'gray'">
+                {{ member.initials }}
+              </div>
+              <span class="member-names-text">{{ team.memberNames }}</span>
+            </div>
+
+            <div class="action-area">
+              <button *ngIf="team.status === 'Open'" class="join-btn" (click)="handleJoin(team.name)">Join Team</button>
+              <button *ngIf="team.status === 'Full'" class="full-btn" disabled>Full</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+  </main>
+</div>

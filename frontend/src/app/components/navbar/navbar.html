@@ -16,6 +16,7 @@
   </div>
 
   <div class="nav-right">
+    <!--@if(student.isSignedIn)-->
     <div class="profile-photo"></div>
 
     <div class="dropdown" [class.open]="dropdownOpen">
@@ -24,6 +25,8 @@
         <span class="arrow"></span>
       </div>
 
+      <!--@else
+    <button id="sign-in"></button>-->
       <div class="dropdown-menu">
         <div class="dropdown-item" (click)="onProfileSelect('main')">Your Account</div>
         <div class="dropdown-item" (click)="onProfileSelect('switch')">Switch Account</div>
@@ -81,7 +84,5 @@
     <li><a href="">Add Announcement</a></li>
   </ul>
 </div>
-<<<<<<< HEAD
 
 <span class="background"></span>
-======= >>>>>>> feat/backend-users
