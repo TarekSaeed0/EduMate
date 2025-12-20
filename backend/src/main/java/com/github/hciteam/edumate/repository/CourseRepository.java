@@ -16,10 +16,12 @@ public interface CourseRepository
 		return "COURSE";
 	}
 
+	@Override
 	default Optional<AnnouncementScope> findScopeById(Long id) {
 		return findById(id).map(scope -> (AnnouncementScope) scope);
 	}
 
+	@Override
 	default boolean existsScopeById(Long id) {
 		return existsById(id);
 	}
