@@ -1,80 +1,97 @@
 <app-navbar></app-navbar>
 
-<div class="page-container">
-  <div class="header-area">
-    <div class="title-text">
+<div class="page-wrapper">
+  <header class="page-header">
+    <div class="header-content">
       <h1>Announcements</h1>
-      <p>Stay updated with the latest campus and course news.</p>
+      <p>Stay informed with the latest updates from your campus and courses.</p>
     </div>
-    <button class="btn-create" (click)="toggleModal()">+ NEW POST</button>
-  </div>
+    <button class="add-post-btn" (click)="toggleModal()">+ NEW POST</button>
+  </header>
 
-  <div class="content-layout">
-    <aside class="sidebar-filters">
-      <h3>Filters</h3>
-      <div class="filter-group">
-        <button class="filter-btn active">All Announcements</button>
-        <button class="filter-btn">Course Specific</button>
-        <button class="filter-btn">Global News</button>
+  <div class="grid-layout">
+    <aside class="sidebar-nav">
+      <h3>FILTERS</h3>
+      <div class="filter-actions">
+        <button
+          (click)="setFilter('ALL')"
+          [class.active]="activeFilter === 'ALL'">
+          All Announcements
+        </button>
+        <button
+          (click)="setFilter('COURSE')"
+          [class.active]="activeFilter === 'COURSE'">
+          Course Specific
+        </button>
+      </div>
+
+      <div class="course-picker-container" *ngIf="activeFilter === 'COURSE'">
+        <label>Select Course</label>
+        <select [(ngModel)]="selectedCourseId" class="styled-select">
+          <option [ngValue]="null" disabled>-- Choose Course --</option>
+          <option *ngFor="let c of courses" [ngValue]="c.id">
+            {{ c.code }}: {{ c.name }}
+          </option>
+        </select>
       </div>
     </aside>
 
-    <main class="feed-area">
-      <div class="empty-state" *ngIf="announcements.length === 0">
-        <p>No announcements found.</p>
+    <main class="feed-container">
+      <div class="empty-feed" *ngIf="filteredAnnouncements.length === 0">
+        <p>No announcements found for this selection.</p>
       </div>
 
-      <div class="announcement-card" *ngFor="let post of announcements">
-        <div class="card-meta">
-          <span class="scope-badge" [ngClass]="post.scopeType.toLowerCase()">
+      <div class="post-card" *ngFor="let post of filteredAnnouncements">
+        <div class="post-header">
+          <span class="type-badge" [ngClass]="post.scopeType.toLowerCase()">
             {{ post.scopeType }} #{{ post.scopeId }}
           </span>
-          <button class="btn-delete" (click)="deletePost(post.id)">Delete</button>
+          <button class="delete-btn" (click)="deletePost(post.id)">Delete</button>
         </div>
-        <h2 class="card-title">{{ post.title }}</h2>
-        <span class="card-date">{{ post.createdAt | date:'medium' }}</span>
-        <p class="card-body">{{ post.content }}</p>
+        <h2 class="post-title">{{ post.title }}</h2>
+        <p class="post-date">{{ post.createdAt | date:'mediumDate' }} at {{ post.createdAt | date:'shortTime' }}</p>
+        <p class="post-text">{{ post.content }}</p>
       </div>
     </main>
   </div>
 </div>
 
 <div class="modal-overlay" *ngIf="showModal">
-  <div class="modal-content">
+  <div class="modal-box">
     <div class="modal-header">
       <h2>Create New Post</h2>
-      <button class="close-btn" (click)="toggleModal()">&times;</button>
+      <button class="modal-close" (click)="toggleModal()">&times;</button>
     </div>
 
-    <div class="form-body">
-      <div class="input-wrapper">
-        <label>Announcement Title</label>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Title</label>
         <input type="text" [(ngModel)]="newPost.title" placeholder="Enter title...">
       </div>
 
-      <div class="input-row">
-        <div class="input-wrapper">
+      <div class="form-row">
+        <div class="form-group">
           <label>Scope Type</label>
           <select [(ngModel)]="newPost.scopeType">
             <option value="COURSE">Course</option>
             <option value="GLOBAL">Global</option>
           </select>
         </div>
-        <div class="input-wrapper">
+        <div class="form-group">
           <label>Scope ID</label>
-          <input type="number" [(ngModel)]="newPost.scopeId">
+          <input type="number" [(ngModel)]="newPost.scopeId" placeholder="e.g., 101">
         </div>
       </div>
 
-      <div class="input-wrapper">
-        <label>Message Content</label>
-        <textarea [(ngModel)]="newPost.content" rows="5" placeholder="Write your message..."></textarea>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea [(ngModel)]="newPost.content" rows="5" placeholder="Write your announcement..."></textarea>
       </div>
     </div>
 
     <div class="modal-footer">
-      <button class="btn-secondary" (click)="toggleModal()">Cancel</button>
-      <button class="btn-primary" (click)="submitPost()">Publish Post</button>
+      <button class="cancel-link" (click)="toggleModal()">Discard</button>
+      <button class="publish-btn" (click)="submitPost()">Publish Announcement</button>
     </div>
   </div>
 </div>
