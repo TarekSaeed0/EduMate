@@ -2,11 +2,12 @@ import { Component, computed, inject } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from '@angular/router';
 import { Navbar } from '../navbar/navbar';
+import { CommonModule } from '@angular/common'; // Required for @if and other logic
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [Navbar],
+  imports: [Navbar, CommonModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
 })
@@ -20,7 +21,12 @@ export class Home {
       : 'Hello!',
   );
 
+  // Standard router navigation used throughout the app
   navigateTo(path: string) {
     this.router.navigate([path]);
+  }
+
+  signout() {
+    this.authenticationService.signout().subscribe();
   }
 }

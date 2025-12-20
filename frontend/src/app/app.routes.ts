@@ -8,6 +8,7 @@ import { Main } from './components/main/main';
 import { TeamCreator } from './components/student/team-creator/team-creator';
 import { TeamsListComponent } from './components/student/teams-list/teams-list';
 import { AnnouncementsComponent } from './components/student/announcements/announcements';
+import { MaterialsComponent } from './components/student/materials/materials';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,4 +21,5 @@ export const routes: Routes = [
   { path: 'student/teams-list', component: TeamsListComponent, title: 'Teams List' },
   { path: 'main', component: Main, title: 'Main page' },
   { path: 'student/announcements', component: AnnouncementsComponent, title: 'Announcements' },
+  { path: 'student/materials', component: MaterialsComponent, title: 'Course Materials' },
 ];
