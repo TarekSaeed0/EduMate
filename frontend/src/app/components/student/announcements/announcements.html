@@ -1,0 +1,80 @@
+<app-navbar></app-navbar>
+
+<div class="page-container">
+  <div class="header-area">
+    <div class="title-text">
+      <h1>Announcements</h1>
+      <p>Stay updated with the latest campus and course news.</p>
+    </div>
+    <button class="btn-create" (click)="toggleModal()">+ NEW POST</button>
+  </div>
+
+  <div class="content-layout">
+    <aside class="sidebar-filters">
+      <h3>Filters</h3>
+      <div class="filter-group">
+        <button class="filter-btn active">All Announcements</button>
+        <button class="filter-btn">Course Specific</button>
+        <button class="filter-btn">Global News</button>
+      </div>
+    </aside>
+
+    <main class="feed-area">
+      <div class="empty-state" *ngIf="announcements.length === 0">
+        <p>No announcements found.</p>
+      </div>
+
+      <div class="announcement-card" *ngFor="let post of announcements">
+        <div class="card-meta">
+          <span class="scope-badge" [ngClass]="post.scopeType.toLowerCase()">
+            {{ post.scopeType }} #{{ post.scopeId }}
+          </span>
+          <button class="btn-delete" (click)="deletePost(post.id)">Delete</button>
+        </div>
+        <h2 class="card-title">{{ post.title }}</h2>
+        <span class="card-date">{{ post.createdAt | date:'medium' }}</span>
+        <p class="card-body">{{ post.content }}</p>
+      </div>
+    </main>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Create New Post</h2>
+      <button class="close-btn" (click)="toggleModal()">&times;</button>
+    </div>
+
+    <div class="form-body">
+      <div class="input-wrapper">
+        <label>Announcement Title</label>
+        <input type="text" [(ngModel)]="newPost.title" placeholder="Enter title...">
+      </div>
+
+      <div class="input-row">
+        <div class="input-wrapper">
+          <label>Scope Type</label>
+          <select [(ngModel)]="newPost.scopeType">
+            <option value="COURSE">Course</option>
+            <option value="GLOBAL">Global</option>
+          </select>
+        </div>
+        <div class="input-wrapper">
+          <label>Scope ID</label>
+          <input type="number" [(ngModel)]="newPost.scopeId">
+        </div>
+      </div>
+
+      <div class="input-wrapper">
+        <label>Message Content</label>
+        <textarea [(ngModel)]="newPost.content" rows="5" placeholder="Write your message..."></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="toggleModal()">Cancel</button>
+      <button class="btn-primary" (click)="submitPost()">Publish Post</button>
+    </div>
+  </div>
+</div>

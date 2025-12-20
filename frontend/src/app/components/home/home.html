@@ -1,13 +1,10 @@
 @if (authenticationService.isAuthenticated()) {
   <div class="dashboard-container">
     <app-navbar></app-navbar>
-
     <div class="dashboard-content">
       <aside class="profile-card">
         <div class="card-header"></div>
-        <div class="avatar-container">
-          <div class="avatar">🧑🏻‍🎓</div>
-        </div>
+        <div class="avatar-container"><div class="avatar">🧑🏻‍🎓</div></div>
         <div class="user-details">
           <h2>{{ greeting() }}</h2>
           @if (authenticationService.user()?.student) {
@@ -16,14 +13,8 @@
           }
         </div>
         <div class="stats-list">
-          <div class="stat-item">
-            <label>ACADEMIC YEAR</label>
-            <span>2024 / 2025</span>
-          </div>
-          <div class="stat-item">
-            <label>SEMESTER</label>
-            <span>Spring Term</span>
-          </div>
+          <div class="stat-item"><label>ACADEMIC YEAR</label><span>2024 / 2025</span></div>
+          <div class="stat-item"><label>SEMESTER</label><span>Spring Term</span></div>
         </div>
       </aside>
 
@@ -33,109 +24,43 @@
           <p>Everything you need, right here.</p>
         </div>
         <div class="features-grid">
-          <a href="" class="feature-card blue-card">
+          <div (click)="navigateTo('home')" class="feature-card blue-card" style="cursor: pointer;">
             <div class="icon-box">📅</div>
             <h3>Time Table</h3>
             <p>View your daily classes.</p>
-          </a>
-          <a routerLink="/student/tasks" class="feature-card teal-card">
+          </div>
+          <div (click)="navigateTo('student/tasks')" class="feature-card teal-card" style="cursor: pointer;">
             <div class="icon-box">✓</div>
             <h3>Task Tracker</h3>
             <p>Manage assignments.</p>
-          </a>
-          <a href="" class="feature-card orange-card">
+          </div>
+          <div (click)="navigateTo('student/announcements')" class="feature-card orange-card" style="cursor: pointer;">
             <div class="icon-box">!</div>
             <h3>Announcements</h3>
             <p>Check recent news.</p>
-          </a>
-          <a routerLink="/student/team-creator" class="feature-card purple-card">
+          </div>
+          <div (click)="navigateTo('student/team-creator')" class="feature-card purple-card" style="cursor: pointer;">
             <div class="icon-box">👥</div>
             <h3>Team Creator</h3>
             <p>Collaborate on projects.</p>
-          </a>
-          <a href="" class="feature-card green-card">
+          </div>
+          <div (click)="navigateTo('home')" class="feature-card green-card" style="cursor: pointer;">
             <div class="icon-box">📚</div>
             <h3>Material Sources</h3>
             <p>Access study files.</p>
-          </a>
-          <a href="" class="feature-card pink-card">
+          </div>
+          <div (click)="navigateTo('home')" class="feature-card pink-card" style="cursor: pointer;">
             <div class="icon-box">📍</div>
             <h3>Campus Map</h3>
             <p>Find your way.</p>
-          </a>
-          <a routerLink="/student/faq" class="feature-card lime-card">
+          </div>
+          <div (click)="navigateTo('student/faq')" class="feature-card lime-card" style="cursor: pointer;">
             <div class="icon-box">❓</div>
             <h3>FAQ</h3>
             <p>Get help instantly.</p>
-          </a>
+          </div>
         </div>
       </main>
     </div>
-  </div>
-} @else {
-  <div class="landing-container">
-    <header class="landing-header">
-      <div class="logo"><span class="edu">Edu</span><span class="mate">Mate</span></div>
-      <nav class="landing-nav">
-        <a href="#">Home</a>
-        <a href="#features">Features</a>
-        <a href="#">Contact</a>
-      </nav>
-      <div class="auth-buttons">
-        <a routerLink="/signin" class="btn-ghost">Sign In</a>
-        <a routerLink="/signup" class="btn-primary">Sign Up</a>
-      </div>
-    </header>
-    <section class="hero-section">
-      <div class="hero-content-centered">
-        <span class="pill">WELCOME TO EDUMATE</span>
-        <h1>Find Focus.<br />Learn <span class="accent">&</span> Inspire.</h1>
-        <p>
-          Your ultimate companion for tracking tasks, managing teams, and acing your academic
-          journey.
-        </p>
-        <a routerLink="/signup" class="cta-button"> GET STARTED → </a>
-      </div>
-    </section>
-    <section id="features" class="landing-features">
-      <h2>Explore Features</h2>
-      <div class="features-grid">
-        <div class="feature-card blue-card">
-          <div class="icon-box">📅</div>
-          <h3>Time Table</h3>
-          <p>Track your classes and daily schedule.</p>
-        </div>
-        <div class="feature-card teal-card">
-          <div class="icon-box">✓</div>
-          <h3>Task Tracker</h3>
-          <p>Organize assignments and stay productive.</p>
-        </div>
-        <div class="feature-card orange-card">
-          <div class="icon-box">!</div>
-          <h3>Announcements</h3>
-          <p>Never miss important updates.</p>
-        </div>
-        <div class="feature-card purple-card">
-          <div class="icon-box">👥</div>
-          <h3>Team Creator</h3>
-          <p>Create groups and collaborate smoothly.</p>
-        </div>
-        <div class="feature-card green-card">
-          <div class="icon-box">📚</div>
-          <h3>Material Sources</h3>
-          <p>Access your study materials quickly.</p>
-        </div>
-        <div class="feature-card pink-card">
-          <div class="icon-box">📍</div>
-          <h3>Campus Map</h3>
-          <p>Navigate the campus effortlessly.</p>
-        </div>
-        <div class="feature-card lime-card">
-          <div class="icon-box">❓</div>
-          <h3>FAQ</h3>
-          <p>Find instant answers to common questions.</p>
-        </div>
-      </div>
-    </section>
   </div>
 }

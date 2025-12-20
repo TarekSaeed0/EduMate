@@ -13,7 +13,6 @@ export class Navbar {
   sidebar = viewChild.required<ElementRef<HTMLDivElement>>('sidebar');
   overlay = viewChild.required<ElementRef<HTMLSpanElement>>('overlay');
 
-  // 1. Inject the Authentication Service and Router
   private authenticationService = inject(AuthenticationService);
   private router = inject(Router);
 
@@ -29,7 +28,6 @@ export class Navbar {
   @HostListener('document:click', ['$event'])
   hideSidebar(event: Event) {
     const target = event.target as HTMLElement;
-
     if (!this.sidebar()?.nativeElement.contains(target) && !target.closest('.main-menu')) {
       this.sidebar()?.nativeElement.classList.remove('active');
       this.overlay()?.nativeElement.classList.remove('active');
@@ -38,24 +36,21 @@ export class Navbar {
   }
 
   dropdownOpen = false;
+  toggleDropdown() { this.dropdownOpen = !this.dropdownOpen; }
 
-  toggleDropdown() {
-    this.dropdownOpen = !this.dropdownOpen;
+  navigateTo(path: string) {
+    this.router.navigate([path]);
+    this.sidebar()?.nativeElement.classList.remove('active');
+    this.overlay()?.nativeElement.classList.remove('active');
   }
 
   onProfileSelect(option: string) {
-    console.log("Selected:", option);
     this.dropdownOpen = false;
-
-    if (option === "main") {
-      window.location.href = "main";
-    }
-    else if (option === "switch") {
-      // your code here
-    }
+    if (option === "main") { this.router.navigate(['main']); }
     else if (option === "logout") {
-      // logout logic
+      this.authenticationService.signout().subscribe(() => {
+        this.router.navigate(['home']);
+      });
     }
   }
-
 }
