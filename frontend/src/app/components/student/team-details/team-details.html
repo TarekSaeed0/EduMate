@@ -1,0 +1,59 @@
+<app-navbar></app-navbar>
+
+<div class="details-wrapper">
+  <div class="header-nav">
+    <button (click)="location.back()" class="back-btn">← Back</button>
+  </div>
+
+  <div class="details-grid" *ngIf="team && !loading">
+
+    <div class="main-card">
+      <div class="badge">Team #{{ team?.id }}</div>
+      <h1>{{ team?.group?.name }}</h1>
+      <p class="course-sub">{{ team?.group?.offering?.course?.name }}</p>
+
+      <div class="members-section">
+        <h3>Team Members</h3>
+
+        <div class="member-row">
+          <span class="role-tag leader-tag">Leader</span>
+          <span class="name">{{ team?.leader?.name }}</span>
+          <span class="email">{{ team?.leader?.email }}</span>
+        </div>
+
+        <div class="member-row" *ngFor="let member of team?.members">
+          <span class="role-tag member-tag">Member</span>
+          <span class="name">{{ member.name }}</span>
+          <span class="email">{{ member.email }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-panel" *ngIf="isLeader">
+      <div class="management-card">
+        <h3>Join Requests</h3>
+        <p class="hint">Pending students for this team:</p>
+
+        <div class="request-list">
+          <div class="request-item" *ngFor="let req of requests">
+            <div class="req-user">
+              <strong>{{ req.student.name }}</strong>
+              <span>{{ req.student.email }}</span>
+            </div>
+            <div class="req-buttons">
+              <button class="btn-acc" (click)="acceptJoinRequest(req.id)">Accept</button>
+              <button class="btn-rej" (click)="rejectJoinRequest(req.id)">Reject</button>
+            </div>
+          </div>
+
+          <div class="no-reqs" *ngIf="requests.length === 0">
+            No pending requests.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="loader" *ngIf="loading">Loading team info...</div>
+</div>

@@ -1,7 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { forkJoin, of, delay, retry } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Navbar } from '../../navbar/navbar';
-import { Router } from '@angular/router'; // 1. Import Router
+import { TeamGroupService, TeamGroup } from '../../../services/team-group.service';
+import { TeamService, Team } from '../../../services/team.service';
+import { AuthenticationService } from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-team-creator',
@@ -10,67 +15,88 @@ import { Router } from '@angular/router'; // 1. Import Router
   templateUrl: './team-creator.html',
   styleUrls: ['./team-creator.css']
 })
-export class TeamCreator {
-
-  // 2. Inject Router
+export class TeamCreator implements OnInit {
   private router = inject(Router);
+  private teamGroupService = inject(TeamGroupService);
+  private teamService = inject(TeamService);
+  private authService = inject(AuthenticationService);
 
-  showModal: boolean = false;
+  groups: TeamGroup[] = [];
+  userTeams: Map<number, Team> = new Map();
+  loading = true;
 
-  closeModal() {
-    this.showModal = false;
+  ngOnInit(): void {
+    this.checkAuthAndLoad();
   }
-  openModal() {
-    this.showModal = true;
-  }
 
-  // Dummy data structure mirroring the SVG cards
-  courses = [
-    {
-      code: 'CS304',
-      name: 'Human Computer Interaction',
-      status: 'No Team',
-      deadline: 'Nov 20th',
-      team: null,
-      action: 'Find / Create Team',
-      color: 'blue'
-    },
-    {
-      code: 'CS201',
-      name: 'Database Systems',
-      status: 'Joined',
-      deadline: 'Team: "SQL Masters"',
-      team: 'SQL Masters',
-      action: 'View Team',
-      color: 'green'
-    },
-    {
-      code: 'MATH302',
-      name: 'Advanced Calculus',
-      status: 'Closed',
-      deadline: 'Deadline Passed',
-      team: null,
-      action: 'Unavailable',
-      color: 'red'
-    },
-    {
-      code: 'PHY101',
-      name: 'General Physics',
-      status: 'No Team',
-      deadline: 'Dec 1st',
-      team: null,
-      action: 'Find / Create Team',
-      color: 'orange'
+  private checkAuthAndLoad(attempts = 0): void {
+    const user = this.authService.user();
+
+    // If user isn't ready yet, try again 3 times with a small delay
+    if (!user || !user.student) {
+      if (attempts < 3) {
+        setTimeout(() => this.checkAuthAndLoad(attempts + 1), 200);
+      } else {
+        console.warn("Auth state failed to initialize after 3 attempts.");
+        this.loading = false;
+      }
+      return;
     }
-  ];
 
-  handleCourseAction(courseCode: string, action: string) {
-    if (action === 'Find / Create Team') {
-      // 3. NAVIGATE to the new Team List page
-      this.router.navigate(['/student/teams-list']);
+    this.loadData(user.student.id);
+  }
+
+  loadData(studentId: number): void {
+    this.loading = true;
+    this.teamGroupService.getGroups().subscribe({
+      next: (groups) => {
+        this.groups = groups;
+        if (groups.length === 0) {
+          this.loading = false;
+          return;
+        }
+
+        const teamChecks = groups.map(g =>
+          this.teamService.getTeams({ groupId: g.id, memberId: studentId }).pipe(
+            catchError(err => {
+              // This is where your 500 error is caught
+              console.error(`Backend error (500) for Group ${g.id}: Check your Spring Boot Controller logic.`);
+              return of([]);
+            })
+          )
+        );
+
+        forkJoin(teamChecks).subscribe({
+          next: (results) => {
+            results.forEach((teams, index) => {
+              if (teams && teams.length > 0) {
+                this.userTeams.set(this.groups[index].id, teams[0]);
+              }
+            });
+            this.loading = false;
+          },
+          error: () => this.loading = false
+        });
+      },
+      error: () => this.loading = false
+    });
+  }
+
+  getStatus(groupId: number): string {
+    return this.userTeams.has(groupId) ? 'Joined' : 'No Team';
+  }
+
+  handleCourseAction(groupId: number) {
+    if (this.userTeams.has(groupId)) {
+      const teamId = this.userTeams.get(groupId)?.id;
+      this.router.navigate(['/student/team-details', teamId]);
     } else {
-      // Placeholder for other actions (View Team, Unavailable)
-      alert(`Action "${action}" triggered for course ${courseCode}`);
+      this.router.navigate(['/student/teams-list'], { queryParams: { groupId } });
     }
+  }
+
+  getCardColor(id: number): string {
+    const colors = ['blue', 'green', 'orange', 'red'];
+    return colors[id % colors.length];
   }
 }

@@ -7,6 +7,7 @@
       <button [class.active]="activeTab === 'tasks'" (click)="activeTab = 'tasks'">📋 Task Assignment</button>
       <button [class.active]="activeTab === 'enrollment'" (click)="activeTab = 'enrollment'">🎓 Student Enrollment</button>
       <button [class.active]="activeTab === 'announcements'" (click)="activeTab = 'announcements'">📢 Announcements</button>
+      <button [class.active]="activeTab === 'teamGroups'" (click)="activeTab = 'teamGroups'">👥 Team Setup</button>
     </nav>
   </aside>
 
@@ -153,6 +154,40 @@
         </button>
       </div>
     </div>
+    <div *ngIf="activeTab === 'teamGroups'">
+      <div class="action-card">
+        <h3>Create Course Team Group</h3>
+        <p style="color: #64748b; margin-bottom: 20px;">Set up the rules for student teams in a specific course.</p>
 
+        <div class="form-grid">
+          <div class="input-group">
+            <label>Target Class Instance</label>
+            <select [(ngModel)]="newTeamGroup.offering.id">
+              <option [ngValue]="null">-- Select Class --</option>
+              <option *ngFor="let off of offeringsList" [value]="off.id">
+                {{off.course.name}} (ID: {{off.id}})
+              </option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Group Activity Name</label>
+            <input type="text" [(ngModel)]="newTeamGroup.name" placeholder="e.g. Final Project Teams">
+          </div>
+
+          <div class="input-group">
+            <label>Min Members</label>
+            <input type="number" [(ngModel)]="newTeamGroup.minimumMemberCount">
+          </div>
+
+          <div class="input-group">
+            <label>Max Members</label>
+            <input type="number" [(ngModel)]="newTeamGroup.maximumMemberCount">
+          </div>
+        </div>
+
+        <button class="btn-submit" (click)="saveTeamGroup()">Initialize Team Creation</button>
+      </div>
+    </div>
   </main>
 </div>

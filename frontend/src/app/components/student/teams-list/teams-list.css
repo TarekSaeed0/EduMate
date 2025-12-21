@@ -1,24 +1,31 @@
-/* Layout Wrapper */
+/* Layout Wrapper: Ensure it stretches full width and height */
 .page-content-wrapper {
+  width: 100%;
   min-height: calc(100vh - 80px);
   background-color: var(--bg-main);
-  font-family: inherit;
+  box-sizing: border-box;
 }
 
+/* Main Layout: Flexbox container for Sidebar + Content */
 .main-content-layout {
   display: flex;
+  width: 100%;
+  max-width: 1400px; /* Optional: centers the view on large screens */
+  margin: 0 auto;
   gap: 40px;
-  padding: 40px 0 40px 60px;
+  padding: 40px;
+  box-sizing: border-box;
+  align-items: flex-start; /* Prevents sidebar from stretching */
 }
 
-/* SIDEBAR STYLES (Reused & Adapted) */
+/* Sidebar Styles: Fixed width to prevent collapsing */
 .sidebar {
-  width: 300px;
-  min-height: 700px;
+  flex: 0 0 300px;
   background-color: var(--bg-white);
   border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
 }
 
 .sidebar-header {
@@ -30,111 +37,172 @@
   background-color: var(--feat-purple-text);
 }
 
-.sidebar-section { padding: 20px; }
-.divider { border: none; border-top: 1px solid var(--border-color); margin: 0 20px; }
+.sidebar-section {
+  padding: 20px;
+}
 
-/* Back Link & Selected Course */
 .back-link {
   display: block;
   color: var(--text-grey);
   font-weight: 700;
   font-size: 14px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
 }
-.back-link:hover { text-decoration: underline; color: var(--primary); }
 
-.label { font-size: 14px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 5px; }
-.course-code { color: var(--primary); font-size: 18px; margin: 0 0 5px 0; }
-.course-name { color: var(--text-grey); font-size: 14px; margin: 0; }
-
-/* Mini Team Card (Sidebar) */
-.team-card-mini {
-  display: flex; align-items: center; background-color: #F9F9F9;
-  border-radius: 8px; padding: 10px 15px; margin-top: 10px;
+.selected-course-info .label {
+  font-size: 12px;
+  color: var(--text-light);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-.team-icon {
-  width: 30px; height: 30px; border-radius: 50%; background-color: var(--secondary-light);
-  color: var(--secondary); font-size: 14px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-weight: 700;
+
+.course-code {
+  color: var(--primary);
+  font-size: 22px;
+  margin: 5px 0;
+  text-transform: uppercase;
 }
-.team-name { font-size: 14px; font-weight: 700; color: var(--text-dark); margin: 0; }
-.team-course { font-size: 12px; color: var(--text-grey); margin: 0; }
 
+.course-name {
+  color: var(--text-grey);
+  font-size: 14px;
+}
 
-/* RIGHT CONTENT AREA */
-.content-area { flex-grow: 1; padding-right: 60px; }
+.divider {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 10px 20px;
+}
 
-.header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; }
-.page-title { font-size: 32px; font-weight: 700; color: var(--text-dark); margin: 0 0 5px 0; }
-.page-subtitle { font-size: 16px; color: var(--text-grey); margin: 0; }
+/* Right Content Area: Fill remaining space */
+.content-area {
+  flex: 1;
+  min-width: 0; /* Important: prevents overflow from pushing the sidebar */
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.page-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-dark);
+}
 
 .create-btn {
-  background-color: var(--primary); color: white; border: none; border-radius: 12px;
-  padding: 12px 24px; font-weight: 700; cursor: pointer;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-weight: 700;
+  cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 102, 204, 0.3);
 }
 
-/* Info Bar */
+/* Info Bar for Group Limits */
 .info-bar {
-  display: flex; gap: 60px; padding: 20px 30px;
-  background-color: var(--bg-white); border: 1px solid var(--border-color);
-  border-radius: 12px; margin-bottom: 40px; align-items: center;
+  display: flex;
+  gap: 50px;
+  padding: 20px 30px;
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  margin-bottom: 40px;
 }
-.info-label { color: var(--text-grey); font-weight: 700; font-size: 14px; margin-right: 10px; }
-.info-value { color: var(--text-dark); font-weight: 400; font-size: 16px; }
-.danger-text { color: var(--danger); }
 
-/* TEAM LIST ROWS */
-.team-list-container { display: flex; flex-direction: column; gap: 20px; }
+.info-label {
+  color: var(--text-grey);
+  font-weight: 700;
+  font-size: 13px;
+  margin-right: 10px;
+}
+
+.info-value {
+  color: var(--text-dark);
+  font-weight: 700;
+}
+
+/* Team Rows */
+.team-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
 .team-row {
-  display: flex; height: 100px;
-  background-color: var(--bg-white); border: 1px solid var(--border-color);
-  border-radius: 16px; overflow: hidden;
+  display: flex;
+  height: 90px;
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.2s;
 }
 
-.color-strip { width: 10px; height: 100%; }
+.team-row:hover {
+  transform: translateX(5px);
+}
+
+.color-strip { width: 8px; height: 100%; }
 .strip-green { background-color: var(--secondary); }
 .strip-orange { background-color: var(--accent); }
-.strip-red { background-color: #BDBDBD; }
+.strip-red { background-color: var(--text-light); }
 
-.row-content { flex-grow: 1; display: flex; align-items: center; padding: 0 30px; justify-content: space-between; }
+.row-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 0 25px;
+  justify-content: space-between;
+}
 
-.text-group { width: 200px; }
-.row-team-name { margin: 0 0 5px 0; font-size: 18px; color: var(--text-dark); }
+.row-team-name { font-size: 18px; margin: 0; }
 .row-spots { font-size: 14px; font-weight: 700; }
 
 .text-green { color: var(--secondary); }
 .text-orange { color: var(--accent); }
 .text-red { color: var(--danger); }
 
-/* Avatar Group */
-.avatar-group { display: flex; align-items: center; gap: 10px; flex-grow: 1; }
+/* Avatar Grouping */
+.avatar-group { display: flex; align-items: center; gap: 8px; }
 .avatar-circle {
-  width: 30px; height: 30px; border-radius: 50%; border: 2px solid white;
+  width: 32px; height: 32px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 700;
+  font-size: 11px; font-weight: 700; border: 2px solid white;
 }
-.member-names-text { margin-left: 15px; color: var(--text-grey); font-size: 14px; }
 
-/* Avatar Colors */
-.bg-green-light { background-color: var(--secondary-light); color: var(--secondary); }
-.bg-blue-light { background-color: #E3F2FD; color: #1565C0; }
-.bg-orange-light { background-color: var(--accent-light); color: #E65100; }
-.bg-purple-light { background-color: #F3E5F5; color: #9C27B0; }
-.bg-pink-light { background-color: #FFEBEE; color: #E91E63; }
-.bg-gray { background-color: #EEEEEE; }
+.bg-blue-light { background-color: var(--primary-light); color: var(--primary); }
+.bg-purple-light { background-color: var(--feat-purple-bg); color: var(--feat-purple-text); }
 
-/* Buttons */
+/* Action Buttons */
 .join-btn {
-  background-color: var(--primary); color: white; border: none;
-  border-radius: 8px; width: 120px; height: 40px; font-weight: 700; cursor: pointer;
-}
-.full-btn {
-  background-color: var(--border-color); color: var(--text-light); border: none;
-  border-radius: 8px; width: 120px; height: 40px; font-weight: 700; cursor: default;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  width: 110px;
+  height: 38px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-/* Full Team styling override */
-.team-full { background-color: #F9F9F9; }
-.team-full .row-team-name { color: var(--text-light); }
+.full-btn {
+  background-color: var(--border-color);
+  color: var(--text-light);
+  border: none;
+  border-radius: 8px;
+  width: 110px;
+  height: 38px;
+  font-weight: 700;
+  cursor: not-allowed;
+}
