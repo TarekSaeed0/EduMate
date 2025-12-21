@@ -1,9 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { AnnouncementService } from '../../../services/announcement.service';
-import { CourseService } from '../../../services/course.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Navbar } from '../../navbar/navbar';
+import { AnnouncementService } from '../../../services/announcement.service';
+import { CourseService } from '../../../services/course.service';
 
 export interface AnnouncementDTO {
   id?: number;
@@ -27,10 +27,10 @@ export class AnnouncementsComponent implements OnInit {
 
   announcements: AnnouncementDTO[] = [];
   courses: any[] = [];
-
-  // Filter and Modal States
   activeFilter: 'ALL' | 'COURSE' = 'ALL';
   selectedCourseId: number | null = null;
+
+  // This controls the visibility of the popup
   showModal: boolean = false;
 
   newPost: AnnouncementDTO = {
@@ -46,26 +46,11 @@ export class AnnouncementsComponent implements OnInit {
   }
 
   loadAnnouncements(): void {
-    this.announcementService.getAnnouncements().subscribe({
-      next: (data) => this.announcements = data,
-      error: (err) => console.error('Error loading announcements', err)
-    });
+    this.announcementService.getAnnouncements().subscribe(data => this.announcements = data);
   }
 
   loadCourses(): void {
-    this.courseService.getCourses().subscribe({
-      next: (data) => this.courses = data,
-      error: (err) => console.error('Error loading courses', err)
-    });
-  }
-
-  get filteredAnnouncements(): AnnouncementDTO[] {
-    if (this.activeFilter === 'ALL') {
-      return this.announcements;
-    }
-    return this.announcements.filter(a =>
-      a.scopeType === 'COURSE' && a.scopeId === this.selectedCourseId
-    );
+    this.courseService.getCourses().subscribe(data => this.courses = data);
   }
 
   setFilter(filter: 'ALL' | 'COURSE') {
@@ -73,23 +58,28 @@ export class AnnouncementsComponent implements OnInit {
     if (filter === 'ALL') this.selectedCourseId = null;
   }
 
+  get filteredAnnouncements(): AnnouncementDTO[] {
+    if (this.activeFilter === 'ALL') return this.announcements;
+    return this.announcements.filter(a => a.scopeType === 'COURSE' && a.scopeId === this.selectedCourseId);
+  }
+
+  // Method triggered by the + NEW POST button
   toggleModal(): void {
     this.showModal = !this.showModal;
   }
 
   submitPost(): void {
-    const payload = this.newPost as any;
-    this.announcementService.createAnnouncement(payload).subscribe({
+    this.announcementService.createAnnouncement(this.newPost as any).subscribe({
       next: () => {
         this.loadAnnouncements();
-        this.toggleModal();
+        this.toggleModal(); // Close modal on success
         this.newPost = { title: '', content: '', scopeType: 'COURSE', scopeId: 0 };
       }
     });
   }
 
   deletePost(id?: number): void {
-    if (id && confirm('Delete this announcement?')) {
+    if (id && confirm('Delete this post?')) {
       this.announcementService.deleteAnnouncement(id).subscribe(() => this.loadAnnouncements());
     }
   }
