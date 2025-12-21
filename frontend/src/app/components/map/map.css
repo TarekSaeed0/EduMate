@@ -1,0 +1,23 @@
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap; /* allows stacking on small screens */
+}
+
+.map-img {
+    max-width: 1400px;   /* adjust size if needed */
+    width: 100%;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.map-img img {
+    width: 100%;
+    height: auto;
+    display: block;
+}

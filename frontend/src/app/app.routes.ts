@@ -9,6 +9,7 @@ import { AnnouncementsComponent } from './components/student/announcements/annou
 import { MaterialsComponent } from './components/student/materials/materials';
 import { TimetableComponent } from './components/student/timetable/timetable';
 import {AdminDashboard} from './components/admin-dashboard/admin-dashboard';
+import { Map } from './components/map/map';
 
 
 export const routes: Routes = [
@@ -23,4 +24,5 @@ export const routes: Routes = [
   { path: 'student/materials', component: MaterialsComponent, title: 'Materials' },
   { path: 'student/timetable', component: TimetableComponent, title: 'Time Table' },
   { path: 'admin/dashboard', component: AdminDashboard },
+  { path: 'map', component: Map, title: 'map' },
 ];
