@@ -60,19 +60,18 @@
             </div>
 
             <div class="action-area">
+
               <button
                 *ngIf="team.leader.id === authService.user()?.student?.id"
                 class="full-btn"
-                disabled
+                style="cursor: pointer; background-color: var(--primary); color: white;"
+                (click)="viewTeamDetails(team.id)"
               >
-                Your Team
+                Manage Team
               </button>
 
               <button
-                *ngIf="
-                  team.leader.id !== authService.user()?.student?.id &&
-                  pendingRequestTeamIds.has(team.id)
-                "
+                *ngIf="team.leader.id !== authService.user()?.student?.id && pendingRequestTeamIds.has(team.id)"
                 class="full-btn"
                 style="background-color: #fef3c7; color: #d97706"
                 disabled
@@ -81,10 +80,7 @@
               </button>
 
               <button
-                *ngIf="
-                  team.leader.id !== authService.user()?.student?.id &&
-                  !pendingRequestTeamIds.has(team.id)
-                "
+                *ngIf="team.leader.id !== authService.user()?.student?.id && !pendingRequestTeamIds.has(team.id)"
                 class="join-btn"
                 (click)="handleRequestJoin(team)"
               >

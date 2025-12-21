@@ -47,22 +47,13 @@ export class TeamCreator implements OnInit {
   }
 
   loadData(studentId: number): void {
-    this.loading = true;
     this.teamGroupService.getGroups().subscribe({
       next: (groups) => {
         this.groups = groups;
-        if (groups.length === 0) {
-          this.loading = false;
-          return;
-        }
 
         const teamChecks = groups.map(g =>
           this.teamService.getTeams({ groupId: g.id, memberId: studentId }).pipe(
-            catchError(err => {
-              // This is where your 500 error is caught
-              console.error(`Backend error (500) for Group ${g.id}: Check your Spring Boot Controller logic.`);
-              return of([]);
-            })
+            catchError(() => of([]))
           )
         );
 
@@ -77,8 +68,7 @@ export class TeamCreator implements OnInit {
           },
           error: () => this.loading = false
         });
-      },
-      error: () => this.loading = false
+      }
     });
   }
 

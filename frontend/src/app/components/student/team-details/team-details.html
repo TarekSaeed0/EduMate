@@ -26,13 +26,11 @@
 
     <div class="side-panel" *ngIf="isLeader">
       <div class="management-card">
-        <h3>Join Requests</h3>
-        <p class="hint">Pending approval for your team:</p>
-
+        <h3>Pending Join Requests</h3>
         <div class="request-list">
           <div class="request-item" *ngFor="let req of requests">
             <div class="req-user">
-              <strong>Student ID: {{ req.student.id }}</strong>
+              <strong>{{ req.student.name || 'Student ID: ' + req.student.id }}</strong>
               <span>Wants to join your team</span>
             </div>
             <div class="req-buttons">
@@ -42,7 +40,7 @@
           </div>
 
           <div class="no-reqs" *ngIf="requests.length === 0">
-            No pending requests at the moment.
+            No pending requests to show.
           </div>
         </div>
       </div>

@@ -33,3 +33,23 @@ h1 { font-size: 2rem; color: #1e293b; margin: 0; }
 .btn-acc { flex: 1; background: #22c55e; color: white; border: none; padding: 8px; border-radius: 8px; font-weight: 700; cursor: pointer; }
 .btn-rej { background: rgba(255,255,255,0.1); color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
 .no-reqs { text-align: center; color: #64748b; font-style: italic; padding-top: 10px; }
+.management-section {
+  margin-bottom: 20px;
+}
+
+.management-section h3 {
+  color: #fff;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.section-divider {
+  opacity: 0.2;
+}
+
+/* Optional: styling for the 'Pending' status text */
+.req-user span {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
