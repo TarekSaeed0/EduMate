@@ -46,10 +46,9 @@ export class TeamService {
   }
 
   // Used for "Create Team as Leader" button
-  createTeam(team: Omit<Team, 'id'>): Observable<Team> {
+  createTeam(team: Omit<Team, 'id' | 'members'>): Observable<Team> {
     return this.http.post<Team>(this.baseUrl, team, { withCredentials: true });
   }
-
 
   getTeam(id: number): Observable<Team> {
     return this.http.get<Team>(`${this.baseUrl}/${id}`, { withCredentials: true });
@@ -58,6 +57,4 @@ export class TeamService {
   deleteTeam(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`, { withCredentials: true });
   }
-
-
 }

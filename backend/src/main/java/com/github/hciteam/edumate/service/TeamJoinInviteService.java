@@ -10,6 +10,7 @@ import com.github.hciteam.edumate.dto.TeamJoinInviteDTO;
 import com.github.hciteam.edumate.exception.TeamJoinInviteNotFoundException;
 import com.github.hciteam.edumate.repository.TeamJoinInviteRepository;
 import com.github.hciteam.edumate.specification.TeamJoinInviteSpecifications;
+import jakarta.transaction.Transactional;
 
 @Service
 public class TeamJoinInviteService {
@@ -57,10 +58,13 @@ public class TeamJoinInviteService {
 				.orElseThrow(() -> new TeamJoinInviteNotFoundException());
 	}
 
+	@Transactional
 	public void acceptInvite(Long inviteId) {
 		TeamJoinInvite invite =
 				inviteRepository.findById(inviteId).map(existingInvite -> {
 					existingInvite.setStatus(TeamJoinStatus.ACCEPTED);
+					existingInvite.getTeam().getMembers()
+							.add(existingInvite.getStudent());
 					return existingInvite;
 				}).orElseThrow(() -> new TeamJoinInviteNotFoundException());
 

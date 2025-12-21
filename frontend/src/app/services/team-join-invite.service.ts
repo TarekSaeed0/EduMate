@@ -40,7 +40,7 @@ export class TeamJoinInviteService {
     return this.http.get<TeamJoinInvite[]>(`${this.baseUrl}`, { withCredentials: true, params });
   }
 
-  createInvite(invite: Omit<TeamJoinInvite, 'id'>): Observable<TeamJoinInvite> {
+  createInvite(invite: Omit<TeamJoinInvite, 'id' | 'status'>): Observable<TeamJoinInvite> {
     return this.http.post<TeamJoinInvite>(`${this.baseUrl}`, invite, { withCredentials: true });
   }
 
@@ -49,11 +49,15 @@ export class TeamJoinInviteService {
   }
 
   acceptInvite(inviteId: number): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/${inviteId}/accept`, { withCredentials: true });
+    return this.http.post<void>(`${this.baseUrl}/${inviteId}/accept`, null, {
+      withCredentials: true,
+    });
   }
 
   rejectInvite(inviteId: number): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/${inviteId}/reject`, { withCredentials: true });
+    return this.http.post<void>(`${this.baseUrl}/${inviteId}/reject`, null, {
+      withCredentials: true,
+    });
   }
 
   deleteInvite(inviteId: number): Observable<void> {

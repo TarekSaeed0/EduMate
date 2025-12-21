@@ -8,14 +8,17 @@
         <button (click)="location.back()" class="back-link">← Back</button>
         <div class="selected-course-info" *ngIf="group">
           <span class="label">Course Group:</span>
-          <h2 class="course-code">{{ group?.offering?.course?.code }}</h2>
-          <p class="course-name">{{ group?.name }}</p>
+          <h2 class="course-code">{{ group.offering.course.code }}</h2>
+          <p class="course-name">{{ group.offering.course.name }}</p>
         </div>
       </div>
-      <hr class="divider">
+      <hr class="divider" />
       <section class="sidebar-section">
         <h3 class="section-title">Instructions</h3>
-        <p class="course-name">Click <strong>Request Join</strong> to notify the team leader. You will join the team once they approve you.</p>
+        <p class="course-name">
+          Click <strong>Request Join</strong> to notify the team leader. You will join the team once
+          they approve you.
+        </p>
       </section>
     </aside>
 
@@ -30,13 +33,16 @@
 
       <div class="team-list-container" *ngIf="!loading">
         <div *ngFor="let team of teams; let i = index" class="team-row">
-          <div class="color-strip" [ngClass]="'strip-' + (i % 3 === 0 ? 'green' : i % 3 === 1 ? 'orange' : 'red')"></div>
+          <div
+            class="color-strip"
+            [ngClass]="'strip-' + (i % 3 === 0 ? 'green' : i % 3 === 1 ? 'orange' : 'red')"
+          ></div>
 
           <div class="row-content">
             <div class="text-group">
               <h3 class="row-team-name">Leader: {{ team.leader.name }}</h3>
               <span class="row-spots">
-                {{ (team.members.length + 1) }} / {{ group?.maximumMemberCount }} Members
+                {{ team.members.length + 1 }} / {{ group?.maximumMemberCount }} Members
               </span>
             </div>
 
@@ -44,22 +50,44 @@
               <div class="avatar-circle bg-purple-light" [title]="'Leader: ' + team.leader.name">
                 {{ getInitials(team.leader.name) }}
               </div>
-              <div *ngFor="let m of team.members" class="avatar-circle bg-blue-light" [title]="m.name">
+              <div
+                *ngFor="let m of team.members"
+                class="avatar-circle bg-blue-light"
+                [title]="m.name"
+              >
                 {{ getInitials(m.name) }}
               </div>
             </div>
 
             <div class="action-area">
-              <button *ngIf="team.leader.id === authService.user()?.student?.id"
-                      class="full-btn" disabled>Your Team</button>
+              <button
+                *ngIf="team.leader.id === authService.user()?.student?.id"
+                class="full-btn"
+                disabled
+              >
+                Your Team
+              </button>
 
-              <button *ngIf="team.leader.id !== authService.user()?.student?.id && pendingRequestTeamIds.has(team.id)"
-                      class="full-btn" style="background-color: #fef3c7; color: #d97706;" disabled>
+              <button
+                *ngIf="
+                  team.leader.id !== authService.user()?.student?.id &&
+                  pendingRequestTeamIds.has(team.id)
+                "
+                class="full-btn"
+                style="background-color: #fef3c7; color: #d97706"
+                disabled
+              >
                 Requested
               </button>
 
-              <button *ngIf="team.leader.id !== authService.user()?.student?.id && !pendingRequestTeamIds.has(team.id)"
-                      class="join-btn" (click)="handleRequestJoin(team)">
+              <button
+                *ngIf="
+                  team.leader.id !== authService.user()?.student?.id &&
+                  !pendingRequestTeamIds.has(team.id)
+                "
+                class="join-btn"
+                (click)="handleRequestJoin(team)"
+              >
                 Request Join
               </button>
             </div>
