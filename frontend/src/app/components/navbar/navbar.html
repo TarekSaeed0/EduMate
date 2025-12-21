@@ -33,5 +33,13 @@
     <li><a (click)="navigateTo('student/announcements')" style="cursor: pointer;"><span>Announcement</span></a></li>
     <li><a (click)="navigateTo('student/materials')" style="cursor: pointer;"><span>Material Sources</span></a></li>
     <li><a (click)="navigateTo('student/faq')" style="cursor: pointer;"><span>FAQ</span></a></li>
+
+    @if (isAdmin()) {
+      <li class="admin-link">
+        <a (click)="navigateTo('admin/dashboard')" style="cursor: pointer; border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px;">
+          <span style="color: #e11d48; font-weight: bold;">🛠 Admin Panel</span>
+        </a>
+      </li>
+    }
   </ul>
 </div>

@@ -69,4 +69,9 @@ public class StudentController {
 			@PathVariable Long studentId) {
 		return ResponseEntity.ok(studentService.getStudentTimetable(studentId));
 	}
+    @GetMapping
+    @PreAuthorize("hasRole('ADMINISTRATOR')") // Only admins can see the full list
+    public ResponseEntity<List<StudentDTO>> getAllStudents() {
+        return ResponseEntity.ok(studentService.getAllStudents());
+    }
 }

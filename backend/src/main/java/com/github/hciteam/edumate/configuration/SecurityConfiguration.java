@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity; // Added for @PreAuthorize support
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,92 +25,89 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity // CRITICAL: This allows the @PreAuthorize in your Controller to work
 public class SecurityConfiguration {
-	private final UserRepository userRepository;
-	private final AuthenticationEntryPoint authenticationEntryPoint;
-	private final AccessDeniedHandler accessDeniedHandler;
+    private final UserRepository userRepository;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final AccessDeniedHandler accessDeniedHandler;
 
-	public SecurityConfiguration(UserRepository userRepository,
-			@Qualifier("delegatedAuthenticationEntryPoint") AuthenticationEntryPoint authenticationEntryPoint,
-			@Qualifier("delegatedAccessDeniedHandler") AccessDeniedHandler accessDeniedHandler) {
-		this.userRepository = userRepository;
-		this.authenticationEntryPoint = authenticationEntryPoint;
-		this.accessDeniedHandler = accessDeniedHandler;
-	}
+    public SecurityConfiguration(UserRepository userRepository,
+                                 @Qualifier("delegatedAuthenticationEntryPoint") AuthenticationEntryPoint authenticationEntryPoint,
+                                 @Qualifier("delegatedAccessDeniedHandler") AccessDeniedHandler accessDeniedHandler) {
+        this.userRepository = userRepository;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        this.accessDeniedHandler = accessDeniedHandler;
+    }
 
-	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		return http.csrf(csrf -> csrf.disable())
-				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
-				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/api/auth/signup", "/api/auth/signin").permitAll()
-						.requestMatchers("/h2-console/**").permitAll()
-						.requestMatchers(HttpMethod.GET, "/api/semesters/**").permitAll()
-						.requestMatchers("/api/semesters/**").hasRole("ADMINISTRATOR")
-						.requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
-						.requestMatchers("/api/courses/**").hasRole("ADMINISTRATOR")
-						.requestMatchers(HttpMethod.GET, "/api/offerings/**").permitAll()
-						.requestMatchers("/api/offerings/**").hasRole("ADMINISTRATOR")
-						.requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
-						.requestMatchers("/api/tasks/**")
-						.hasAnyRole("COORDINATOR", "ADMINISTRATOR")
-						.requestMatchers(HttpMethod.GET, "/api/faqs/**").permitAll()
-						.requestMatchers("/api/faqs/**").hasRole("ADMINISTRATOR")
-						.requestMatchers(HttpMethod.GET, "/api/team-groups/**").permitAll()
-						.requestMatchers("/api/team-groups/**")
-						.hasAnyRole("COORDINATOR", "ADMINISTRATOR")
-						.requestMatchers(HttpMethod.GET, "/api/time-periods/**").permitAll()
-						.requestMatchers("/api/time-periods/**").hasRole("ADMINISTRATOR")
-						.requestMatchers(HttpMethod.GET, "/api/time-slots/**").permitAll()
-						.requestMatchers("/api/time-slots/**").hasRole("ADMINISTRATOR")
-						.anyRequest().authenticated())
-				.headers(headers -> headers
-						.frameOptions(frameOptions -> frameOptions.sameOrigin()))
-				.sessionManagement(session -> session
-						.sessionConcurrency(sessionConcurrency -> sessionConcurrency
-								.maximumSessions(1).maxSessionsPreventsLogin(true)))
-				.logout(logout -> logout.logoutUrl("/api/auth/signout")
-						.deleteCookies("JSESSIONID")
-						.logoutSuccessHandler((request, response, authentication) -> {
-							response.setStatus(HttpServletResponse.SC_OK);
-						}))
-				.exceptionHandling(exception -> exception
-						.authenticationEntryPoint(authenticationEntryPoint)
-						.accessDeniedHandler(accessDeniedHandler))
-				.build();
-	}
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/signup", "/api/auth/signin").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/semesters/**").permitAll()
+                        .requestMatchers("/api/semesters/**").hasRole("ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()
+                        .requestMatchers("/api/courses/**").hasRole("ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.GET, "/api/offerings/**").permitAll()
+                        .requestMatchers("/api/offerings/**").hasRole("ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
 
-	@Bean
-	CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowedOrigins(List.of("http://localhost:4200"));
-		configuration
-				.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-		configuration.setAllowedHeaders(List.of("*"));
-		configuration.setAllowCredentials(true);
+                        .requestMatchers("/api/students/**").authenticated()
+                        .requestMatchers("/api/registrations/**").hasRole("ADMINISTRATOR")
+                        .requestMatchers("/api/tasks/**").hasAnyRole("COORDINATOR", "ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.GET, "/api/faqs/**").permitAll()
+                        .requestMatchers("/api/faqs/**").hasRole("ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.GET, "/api/team-groups/**").permitAll()
+                        .requestMatchers("/api/team-groups/**").hasAnyRole("COORDINATOR", "ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.GET, "/api/time-periods/**").permitAll()
+                        .requestMatchers("/api/time-periods/**").hasRole("ADMINISTRATOR")
+                        .requestMatchers(HttpMethod.GET, "/api/time-slots/**").permitAll()
+                        .requestMatchers("/api/time-slots/**").hasRole("ADMINISTRATOR")
+                        .anyRequest().authenticated())
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.sameOrigin()))
+                .sessionManagement(session -> session
+                        .sessionConcurrency(sessionConcurrency -> sessionConcurrency
+                                .maximumSessions(1).maxSessionsPreventsLogin(true)))
+                .logout(logout -> logout.logoutUrl("/api/auth/signout")
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                        }))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler))
+                .build();
+    }
 
-		UrlBasedCorsConfigurationSource source =
-				new UrlBasedCorsConfigurationSource();
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
 
-		source.registerCorsConfiguration("/**", configuration);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
-		return source;
-	}
+    @Bean
+    UserDetailsService userDetailsService() {
+        return email -> userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
 
-	@Bean
-	UserDetailsService userDetailsService() {
-		return email -> userRepository.findByEmail(email)
-				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
-	}
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
-	@Bean
-	AuthenticationManager authenticationManager(
-			AuthenticationConfiguration config) throws Exception {
-		return config.getAuthenticationManager();
-	}
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
 }

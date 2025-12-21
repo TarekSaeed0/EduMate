@@ -52,4 +52,7 @@ export class Navbar {
       this.authenticationService.signout().subscribe(() => this.navigateTo('home'));
     }
   }
+  isAdmin(): boolean {
+    return this.authenticationService.hasRole('ADMINISTRATOR');
+  }
 }

@@ -42,6 +42,7 @@ export interface Timetable {
 export class StudentService {
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/api/students';
+  private apiUrl = 'http://localhost:8080/api/students';
 
   static studentTaskMapper = (studentTask: StudentTask): StudentTask => ({
     ...studentTask,
@@ -49,8 +50,10 @@ export class StudentService {
     submittedAt: studentTask.submittedAt ? new Date(studentTask.submittedAt) : null,
   });
 
-  getStudent(id: number): Observable<Student> {
-    return this.http.get<Student>(`${this.baseUrl}/${id}`, { withCredentials: true });
+  getStudents(): Observable<Student[]> {
+    return this.http.get<Student[]>(this.apiUrl, {
+      withCredentials: true // This sends your Admin "session" to the backend
+    });
   }
 
   getStudentTasks(studentId: number, filter?: StudentTaskFilter): Observable<StudentTask[]> {
@@ -101,6 +104,16 @@ export class StudentService {
   getStudentTimetable(studentId: number): Observable<Timetable> {
     return this.http.get<Timetable>(`${this.baseUrl}/${studentId}/timetable`, {
       withCredentials: true,
+    });
+  }
+  enrollStudent(studentId: number, offeringId: number) {
+    const enrollmentData = { studentId, offeringId, status: 'REGISTERED' };
+
+    this.http.post('http://localhost:8080/api/registrations', enrollmentData, {
+      withCredentials: true // Tells the backend an Admin is doing this
+    }).subscribe({
+      next: () => alert('Student Enrolled!'),
+      error: (err) => console.error('Enrollment error:', err)
     });
   }
 }
