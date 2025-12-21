@@ -10,7 +10,8 @@ import { MaterialsComponent } from './components/student/materials/materials';
 import { TimetableComponent } from './components/student/timetable/timetable';
 import {AdminDashboard} from './components/admin-dashboard/admin-dashboard';
 import { Map } from './components/map/map';
-
+import { TeamsListComponent } from './components/student/teams-list/teams-list';
+import { TeamDetailsComponent } from './components/student/team-details/team-details';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,6 +21,10 @@ export const routes: Routes = [
   { path: 'student/tasks', component: StudentTasks, title: 'Tasks' },
   { path: 'student/faq', component: FAQComponent, title: 'FAQ' },
   { path: 'student/team-creator', component: TeamCreator, title: 'Teams' },
+
+  { path: 'student/teams-list', component: TeamsListComponent, title: 'Find Team' },
+  { path: 'student/team-details/:id', component: TeamDetailsComponent, title: 'Team Details' },
+
   { path: 'student/announcements', component: AnnouncementsComponent, title: 'Announcements' },
   { path: 'student/materials', component: MaterialsComponent, title: 'Materials' },
   { path: 'student/timetable', component: TimetableComponent, title: 'Time Table' },
