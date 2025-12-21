@@ -1,4 +1,5 @@
 <span #overlay class="overlay"></span>
+
 <nav class="navbar">
   <div class="nav-left">
     <button id="main-menu" class="main-menu" (click)="toggleSidebar($event)">
@@ -10,6 +11,7 @@
       </a>
     </h1>
   </div>
+
   <div class="nav-right">
     <div class="profile-photo"></div>
     <div class="dropdown" [class.open]="dropdownOpen">
@@ -25,6 +27,7 @@
 <div #sidebar class="sidebar">
   <ul>
     <li><a (click)="navigateTo('home')" style="cursor: pointer;"><span>Home Page</span></a></li>
+    <li><a (click)="navigateTo('home')" style="cursor: pointer;"><span>Time Table</span></a></li>
     <li><a (click)="navigateTo('student/tasks')" style="cursor: pointer;"><span>Task Tracker</span></a></li>
     <li><a (click)="navigateTo('student/team-creator')" style="cursor: pointer;"><span>Team Creator</span></a></li>
     <li><a (click)="navigateTo('student/announcements')" style="cursor: pointer;"><span>Announcement</span></a></li>
