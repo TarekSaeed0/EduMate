@@ -25,6 +25,13 @@ export class Navbar {
     this.cdr.detectChanges();
   }
 
+  // Closes sidebar and navigates
+  navigateTo(path: string) {
+    this.router.navigate([path]);
+    this.sidebar()?.nativeElement.classList.remove('active');
+    this.overlay()?.nativeElement.classList.remove('active');
+  }
+
   @HostListener('document:click', ['$event'])
   hideSidebar(event: Event) {
     const target = event.target as HTMLElement;
@@ -38,19 +45,11 @@ export class Navbar {
   dropdownOpen = false;
   toggleDropdown() { this.dropdownOpen = !this.dropdownOpen; }
 
-  navigateTo(path: string) {
-    this.router.navigate([path]);
-    this.sidebar()?.nativeElement.classList.remove('active');
-    this.overlay()?.nativeElement.classList.remove('active');
-  }
-
   onProfileSelect(option: string) {
     this.dropdownOpen = false;
-    if (option === "main") { this.router.navigate(['main']); }
+    if (option === "main") { this.navigateTo('main'); }
     else if (option === "logout") {
-      this.authenticationService.signout().subscribe(() => {
-        this.router.navigate(['home']);
-      });
+      this.authenticationService.signout().subscribe(() => this.navigateTo('home'));
     }
   }
 }

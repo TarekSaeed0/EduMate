@@ -5,25 +5,15 @@
     <div class="dashboard-content">
       <aside class="profile-card">
         <div class="card-header"></div>
-        <div class="avatar-container">
-          <div class="avatar">🧑🏻‍🎓</div>
-        </div>
+        <div class="avatar-container"><div class="avatar">🧑🏻‍🎓</div></div>
         <div class="user-details">
           <h2>{{ greeting() }}</h2>
-          @if (authenticationService.user()?.student) {
-            <span class="student-id">ID: {{ authenticationService.user()?.student?.id }}</span>
-            <span class="status-badge">Active Student</span>
-          }
+          <span class="student-id">ID: {{ authenticationService.user()?.student?.id }}</span>
+          <span class="status-badge">Active Student</span>
         </div>
         <div class="stats-list">
-          <div class="stat-item">
-            <label>ACADEMIC YEAR</label>
-            <span>2024 / 2025</span>
-          </div>
-          <div class="stat-item">
-            <label>SEMESTER</label>
-            <span>Spring Term</span>
-          </div>
+          <div class="stat-item"><label>ACADEMIC YEAR</label><span>2024 / 2025</span></div>
+          <div class="stat-item"><label>SEMESTER</label><span>Spring Term</span></div>
         </div>
       </aside>
 
@@ -64,12 +54,6 @@
             <p>Access study files.</p>
           </div>
 
-          <div (click)="navigateTo('home')" class="feature-card pink-card" style="cursor: pointer;">
-            <div class="icon-box">📍</div>
-            <h3>Campus Map</h3>
-            <p>Find your way.</p>
-          </div>
-
           <div (click)="navigateTo('student/faq')" class="feature-card lime-card" style="cursor: pointer;">
             <div class="icon-box">❓</div>
             <h3>FAQ</h3>
@@ -93,13 +77,13 @@
         <a (click)="navigateTo('signup')" class="btn-primary" style="cursor: pointer;">Sign Up</a>
       </div>
     </header>
+
     <section class="hero-section">
       <div class="hero-content-centered">
         <span class="pill">WELCOME TO EDUMATE</span>
         <h1>Find Focus.<br />Learn <span class="accent">&</span> Inspire.</h1>
         <p>
-          Your ultimate companion for tracking tasks, managing teams, and acing your academic
-          journey.
+          Your ultimate companion for tracking tasks, managing teams, and acing your academic journey.
         </p>
         <a (click)="navigateTo('signup')" class="cta-button" style="cursor: pointer;"> GET STARTED → </a>
       </div>

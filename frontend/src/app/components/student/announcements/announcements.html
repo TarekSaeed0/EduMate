@@ -1,97 +1,28 @@
 <app-navbar></app-navbar>
 
-<div class="page-wrapper">
-  <header class="page-header">
-    <div class="header-content">
-      <h1>Announcements</h1>
-      <p>Stay informed with the latest updates from your campus and courses.</p>
-    </div>
-    <button class="add-post-btn" (click)="toggleModal()">+ NEW POST</button>
-  </header>
+<div class="page-container">
+  <div class="header-section">
+    <h1>Announcements</h1>
+    <button class="btn-create" (click)="toggleModal()">+ NEW POST</button>
+  </div>
 
-  <div class="grid-layout">
-    <aside class="sidebar-nav">
-      <h3>FILTERS</h3>
-      <div class="filter-actions">
-        <button
-          (click)="setFilter('ALL')"
-          [class.active]="activeFilter === 'ALL'">
-          All Announcements
-        </button>
-        <button
-          (click)="setFilter('COURSE')"
-          [class.active]="activeFilter === 'COURSE'">
-          Course Specific
-        </button>
-      </div>
-
-      <div class="course-picker-container" *ngIf="activeFilter === 'COURSE'">
-        <label>Select Course</label>
-        <select [(ngModel)]="selectedCourseId" class="styled-select">
-          <option [ngValue]="null" disabled>-- Choose Course --</option>
-          <option *ngFor="let c of courses" [ngValue]="c.id">
-            {{ c.code }}: {{ c.name }}
-          </option>
-        </select>
+  <div class="main-grid">
+    <aside class="filter-sidebar">
+      <h3>Filters</h3>
+      <div class="filter-list">
+        <button class="filter-btn active" (click)="setFilter('ALL')">All Announcements</button>
+        <button class="filter-btn" (click)="setFilter('COURSE')">Course Specific</button>
       </div>
     </aside>
 
-    <main class="feed-container">
-      <div class="empty-feed" *ngIf="filteredAnnouncements.length === 0">
-        <p>No announcements found for this selection.</p>
-      </div>
-
+    <main class="feed-area">
       <div class="post-card" *ngFor="let post of filteredAnnouncements">
-        <div class="post-header">
-          <span class="type-badge" [ngClass]="post.scopeType.toLowerCase()">
-            {{ post.scopeType }} #{{ post.scopeId }}
-          </span>
-          <button class="delete-btn" (click)="deletePost(post.id)">Delete</button>
+        <div class="card-meta">
+          <span class="badge">{{ post.scopeType }}</span>
         </div>
-        <h2 class="post-title">{{ post.title }}</h2>
-        <p class="post-date">{{ post.createdAt | date:'mediumDate' }} at {{ post.createdAt | date:'shortTime' }}</p>
-        <p class="post-text">{{ post.content }}</p>
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.content }}</p>
       </div>
     </main>
-  </div>
-</div>
-
-<div class="modal-overlay" *ngIf="showModal">
-  <div class="modal-box">
-    <div class="modal-header">
-      <h2>Create New Post</h2>
-      <button class="modal-close" (click)="toggleModal()">&times;</button>
-    </div>
-
-    <div class="modal-body">
-      <div class="form-group">
-        <label>Title</label>
-        <input type="text" [(ngModel)]="newPost.title" placeholder="Enter title...">
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label>Scope Type</label>
-          <select [(ngModel)]="newPost.scopeType">
-            <option value="COURSE">Course</option>
-            <option value="GLOBAL">Global</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Scope ID</label>
-          <input type="number" [(ngModel)]="newPost.scopeId" placeholder="e.g., 101">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Message</label>
-        <textarea [(ngModel)]="newPost.content" rows="5" placeholder="Write your announcement..."></textarea>
-      </div>
-    </div>
-
-    <div class="modal-footer">
-      <button class="cancel-link" (click)="toggleModal()">Discard</button>
-      <button class="publish-btn" (click)="submitPost()">Publish Announcement</button>
-    </div>
   </div>
 </div>
