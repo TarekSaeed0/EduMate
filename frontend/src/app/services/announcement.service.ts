@@ -6,6 +6,7 @@ export interface Announcement {
   id: number;
   scopeType: string;
   scopeId: number;
+  scope: { [key: string]: any };
   title: string;
   content: string;
   createdAt: Date;
@@ -45,7 +46,7 @@ export class AnnouncementService {
       .pipe(map((announcements) => announcements.map(AnnouncementService.announcementMapper)));
   }
 
-  createAnnouncement(announcement: Omit<Announcement, 'id'>): Observable<Announcement> {
+  createAnnouncement(announcement: Omit<Announcement, 'id' | 'scope'>): Observable<Announcement> {
     return this.http
       .post<Announcement>(`${this.baseUrl}`, announcement, { withCredentials: true })
       .pipe(map(AnnouncementService.announcementMapper));
