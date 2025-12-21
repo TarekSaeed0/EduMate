@@ -2,77 +2,47 @@
 
 <div class="page-content-wrapper">
   <main class="main-content-layout">
-
     <aside class="sidebar">
-      <div class="sidebar-header bg-accent">
-        Team Creator
-      </div>
-
+      <div class="sidebar-header bg-accent">Team Creator</div>
       <div class="sidebar-section">
-        <button (click)="location.back()" class="back-link" style="background:none; border:none; padding:0;">
-          ← Back to Courses
-        </button>
-
+        <button (click)="location.back()" class="back-link">← Back</button>
         <div class="selected-course-info" *ngIf="group">
-          <span class="label">Selected Group:</span>
-          <h2 class="course-code">{{ group?.offering?.course?.code }}</h2>
-          <p class="course-name">{{ group?.name }}</p>
+          <span class="label">Course Group:</span>
+          <h2 class="course-code">{{ group.offering.course.code }}</h2>
+          <p class="course-name">{{ group.offering.course.name }}</p>
         </div>
       </div>
-
-      <hr class="divider">
-
-      <section class="sidebar-section active-teams">
+      <hr class="divider" />
+      <section class="sidebar-section">
         <h3 class="section-title">Instructions</h3>
-        <p class="course-name">Join an existing team to see your teammates here, or lead your own!</p>
+        <p class="course-name">
+          Click <strong>Request Join</strong> to notify the team leader. You will join the team once
+          they approve you.
+        </p>
       </section>
     </aside>
 
     <section class="content-area">
-
       <div class="header-row" *ngIf="group">
         <div>
           <h1 class="page-title">Find a Team</h1>
           <p class="page-subtitle">Join an existing group or start your own.</p>
         </div>
-        <button class="create-btn" (click)="handleCreateTeam()">
-          Create New Team for {{ group.name }}
-        </button>
-      </div>
-
-      <div class="info-bar" *ngIf="group">
-        <div class="info-item">
-          <span class="info-label">MAX MEMBERS:</span>
-          <span class="info-value">{{ group?.maximumMemberCount }}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">MIN MEMBERS:</span>
-          <span class="info-value">{{ group?.minimumMemberCount }}</span>
-        </div>
-        <div class="info-item">
-          <span class="info-label">TOTAL TEAMS:</span>
-          <span class="info-value">{{ teams.length }}</span>
-        </div>
+        <button class="create-btn" (click)="handleCreateTeam()">Create New Team</button>
       </div>
 
       <div class="team-list-container" *ngIf="!loading">
-        <div *ngFor="let team of teams; let i = index" class="team-row"
-             [class.team-full]="(team.members.length + 1) >= (group?.maximumMemberCount || 0)">
-
-          <div class="color-strip"
-               [class.strip-green]="i % 3 === 0"
-               [class.strip-orange]="i % 3 === 1"
-               [class.strip-red]="i % 3 === 2">
-          </div>
+        <div *ngFor="let team of teams; let i = index" class="team-row">
+          <div
+            class="color-strip"
+            [ngClass]="'strip-' + (i % 3 === 0 ? 'green' : i % 3 === 1 ? 'orange' : 'red')"
+          ></div>
 
           <div class="row-content">
             <div class="text-group">
-              <h3 class="row-team-name">Team Leader: {{ team.leader.name }}</h3>
-              <span class="row-spots"
-                    [class.text-green]="i % 3 === 0"
-                    [class.text-orange]="i % 3 === 1"
-                    [class.text-red]="i % 3 === 2">
-                {{ (team.members.length + 1) }} / {{ group?.maximumMemberCount }} Members
+              <h3 class="row-team-name">Leader: {{ team.leader.name }}</h3>
+              <span class="row-spots">
+                {{ team.members.length + 1 }} / {{ group?.maximumMemberCount }} Members
               </span>
             </div>
 
@@ -80,32 +50,51 @@
               <div class="avatar-circle bg-purple-light" [title]="'Leader: ' + team.leader.name">
                 {{ getInitials(team.leader.name) }}
               </div>
-              <div *ngFor="let m of team.members" class="avatar-circle bg-blue-light">
+              <div
+                *ngFor="let m of team.members"
+                class="avatar-circle bg-blue-light"
+                [title]="m.name"
+              >
                 {{ getInitials(m.name) }}
               </div>
-              <p class="members-list">Members: {{ getMemberNames(team) }}</p>
             </div>
 
             <div class="action-area">
               <button
-                *ngIf="team.leader.id !== authService.user()?.student?.id"
-                class="join-btn"
-                (click)="handleJoin(team)"> Join Team
+                *ngIf="team.leader.id === authService.user()?.student?.id"
+                class="full-btn"
+                disabled
+              >
+                Your Team
               </button>
 
-              <button *ngIf="(team.members.length + 1) >= (group?.maximumMemberCount || 0)"
-                      class="full-btn" disabled>Full</button>
+              <button
+                *ngIf="
+                  team.leader.id !== authService.user()?.student?.id &&
+                  pendingRequestTeamIds.has(team.id)
+                "
+                class="full-btn"
+                style="background-color: #fef3c7; color: #d97706"
+                disabled
+              >
+                Requested
+              </button>
+
+              <button
+                *ngIf="
+                  team.leader.id !== authService.user()?.student?.id &&
+                  !pendingRequestTeamIds.has(team.id)
+                "
+                class="join-btn"
+                (click)="handleRequestJoin(team)"
+              >
+                Request Join
+              </button>
             </div>
           </div>
         </div>
-
-        <div class="page-subtitle" *ngIf="teams.length === 0">
-          No teams available for this group yet. Be the first to create one!
-        </div>
       </div>
-
-      <div *ngIf="loading" class="page-subtitle">Loading teams...</div>
-
+      <div *ngIf="loading" class="page-subtitle">Searching for teams...</div>
     </section>
   </main>
 </div>

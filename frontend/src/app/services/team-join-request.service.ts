@@ -1,8 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Student } from './student.service';
-import { Team, TeamJoinStatus } from './team.service';
 import { Observable } from 'rxjs';
+import { Team, TeamJoinStatus } from './team.service';
+import { Student } from './student.service';
 
 export interface TeamJoinRequest {
   id: number;
@@ -40,7 +40,7 @@ export class TeamJoinRequestService {
     return this.http.get<TeamJoinRequest[]>(`${this.baseUrl}`, { withCredentials: true, params });
   }
 
-  createRequest(request: Omit<TeamJoinRequest, 'id'>): Observable<TeamJoinRequest> {
+  createRequest(request: Omit<TeamJoinRequest, 'id' | 'status'>): Observable<TeamJoinRequest> {
     return this.http.post<TeamJoinRequest>(`${this.baseUrl}`, request, { withCredentials: true });
   }
 
@@ -51,11 +51,15 @@ export class TeamJoinRequestService {
   }
 
   acceptRequest(requestId: number): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/${requestId}/accept`, { withCredentials: true });
+    return this.http.post<void>(`${this.baseUrl}/${requestId}/accept`, null, {
+      withCredentials: true,
+    });
   }
 
   rejectRequest(requestId: number): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/${requestId}/reject`, { withCredentials: true });
+    return this.http.post<void>(`${this.baseUrl}/${requestId}/reject`, null, {
+      withCredentials: true,
+    });
   }
 
   deleteRequest(requestId: number): Observable<void> {
