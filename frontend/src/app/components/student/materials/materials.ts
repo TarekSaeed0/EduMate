@@ -63,36 +63,33 @@ export class MaterialsComponent implements OnInit {
     alert(`Hardcoded Action: Downloading ${fileName}`);
   }
 
-  // Correct list declaration
-  list: Resource[] = [];
-
-  course = signal<string>('');
+  course = signal<string>("Computer Orginazation");
 
   showMaterials(course: string) {
 
     this.course.set(course)
     switch (course) {
-      case "CO":
+      case "Computer Organization":
         this.list = this.COList;
         break;
 
-      case "prog2":
+      case "Programming 2":
         this.list = this.prog2List;
         break;
 
-      case "discrete":
+      case "Discrete Structures":
         this.list = this.discreteList;
         break;
 
-      case "numerical":
+      case "Numerical Computing":
         this.list = this.numerical;
         break;
 
-      case "hci":
+      case "Human Computer Interaction":
         this.list = this.hciList;
         break;
 
-      case "comm":
+      case "Communication Skills":
         this.list = this.commList;
         break;
 
@@ -112,32 +109,32 @@ addSource(){
           attachment: this.attachment
         }
   switch (this.course()) {
-      case "CO":
+      case "Computer Organization":
         this.COList.push(item);
         this.list = this.COList;
         break;
 
-      case "prog2":
+      case "Programming 2":
         this.prog2List.push(item);
         this.list = this.prog2List;
         break;
 
-      case "discrete":
+      case "Discrete Structures":
         this.discreteList.push(item);
         this.list = this.discreteList;
         break;
 
-      case "numerical":
+      case "Numerical Computing":
         this.numerical.push(item);
         this.list = this.numerical;
         break;
 
-      case "hci":
+      case "Human Computer Interaction":
         this.hciList.push(item);
         this.list = this.hciList;
         break;
 
-      case "comm":
+      case "Communication Skills":
         this.commList.push(item);
         this.list = this.commList;
         break;
@@ -145,7 +142,6 @@ addSource(){
       default:
         this.list = [];
   }
-
 
 }
 
@@ -178,5 +174,8 @@ addSource(){
   hciList: Resource[] = []
 
   commList: Resource[] = []
+
+
+  list: Resource[] = this.COList;
 
 }

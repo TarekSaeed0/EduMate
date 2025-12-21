@@ -16,12 +16,12 @@
       <h3>Your Courses</h3>
 
       <div class="nav-buttons">
-        <button (click)="showMaterials('CO')">Computer Organization</button>
-        <button (click)="showMaterials('prog2')">Programming 2</button>
-        <button (click)="showMaterials('discrete')">Discrete Structures</button>
-        <button (click)="showMaterials('numerical')">Numerical Computing</button>
-        <button (click)="showMaterials('hci')">Human Computer Interaction</button>
-        <button (click)="showMaterials('comm')">Communication Skills</button>
+        <button (click)="showMaterials('Computer Organization')">Computer Organization</button>
+        <button (click)="showMaterials('Programming 2')">Programming 2</button>
+        <button (click)="showMaterials('Discrete Structures')">Discrete Structures</button>
+        <button (click)="showMaterials('Numerical Computing')">Numerical Computing</button>
+        <button (click)="showMaterials('Human Computer Interaction')">Human Computer Interaction</button>
+        <button (click)="showMaterials('Communication Skills')">Communication Skills</button>
 
         <!-- Future dynamic version -->
         <!--
@@ -38,6 +38,10 @@
 
     <!-- File Viewer -->
     <main class="source-viewer">
+
+      <div style="font-size: 40px; padding-bottom: 15px;">
+        {{ course() }}
+      </div>
 
       @if (list.length === 0) {
         <!-- Empty state -->
@@ -59,7 +63,6 @@
                   <a href="{{ item.link }}">{{ item.link }}</a>
                   <p>{{ item.attachment }}</p>
                 </div>
-
                 <button>
                   Download
                 </button>
@@ -77,11 +80,13 @@
             <label for="link">Link: </label>
             <input type="text" id="link" [(ngModel)]="link">
 
+            <!--
             <div>
               <label for="attach">attachment: </label>
               <button>upload</button>
             </div>
-            
+            -->
+
             <button (click)="addSource()">Add</button>
         </div>
 
