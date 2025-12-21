@@ -6,71 +6,72 @@
       <h1>Announcements</h1>
       <p>Stay updated with the latest campus and course news.</p>
     </div>
-    <button class="add-btn" (click)="toggleModal()">+ NEW POST</button>
   </div>
 
   <div class="layout-grid">
     <aside class="sidebar-filters">
       <h3>FILTERS</h3>
-      <div class="btn-group">
-        <button [class.active]="activeFilter === 'ALL'" (click)="setFilter('ALL')">All Announcements</button>
-        <button [class.active]="activeFilter === 'COURSE'" (click)="setFilter('COURSE')">Course Specific</button>
+      <div class="filter-options">
+        <div class="filter-item" [class.active]="activeFilter === 'ALL'" (click)="setFilter('ALL')">
+          <span class="dot"></span> All Announcements
+        </div>
+        <div class="filter-item" [class.active]="activeFilter === 'COURSE'" (click)="setFilter('COURSE')">
+          <span class="dot"></span> Course Specific
+        </div>
       </div>
 
-      <div class="course-dropdown" *ngIf="activeFilter === 'COURSE'">
-        <label>Course Select</label>
+      <div class="course-select-box" *ngIf="activeFilter === 'COURSE'">
+        <label>Pick a Course</label>
         <select [(ngModel)]="selectedCourseId">
-          <option [ngValue]="null">Select Course...</option>
-          <option *ngFor="let c of courses" [ngValue]="c.id">{{ c.code }}</option>
+          <option [ngValue]="null">Select from list...</option>
+          <option *ngFor="let c of courses" [ngValue]="c.id">{{ c.name }}</option>
         </select>
       </div>
     </aside>
 
     <main class="feed-area">
       <div class="announcement-card" *ngFor="let post of filteredAnnouncements">
-        <div class="card-meta">
-          <span class="type-tag" [ngClass]="post.scopeType.toLowerCase()">{{ post.scopeType }}</span>
-          <button class="del-btn" (click)="deletePost(post.id)">Delete</button>
+        <div class="card-top">
+          <span class="type-badge" [ngClass]="post.scopeType.toLowerCase()">{{ post.scopeType }}</span>
+
+          <div class="admin-controls" *ngIf="isAdmin">
+            <button class="btn-edit" (click)="openEditModal(post)">Edit</button>
+            <button class="btn-delete" (click)="deletePost(post.id)">Delete</button>
+          </div>
         </div>
-        <h2>{{ post.title }}</h2>
-        <p>{{ post.content }}</p>
+
+        <div class="card-body">
+          <h2>{{ post.title }}</h2>
+          <p>{{ post.content }}</p>
+        </div>
+
+        <div class="card-bottom">
+          <span class="timestamp" *ngIf="post.createdAt">📅 {{ post.createdAt | date:'mediumDate' }}</span>
+        </div>
       </div>
     </main>
   </div>
 </div>
 
-<div class="modal-backdrop" *ngIf="showModal">
-  <div class="modal-container">
+<div class="modal-overlay" *ngIf="showEditModal">
+  <div class="modal-content" *ngIf="editingPost">
     <div class="modal-header">
-      <h2>Create New Post</h2>
-      <button class="close-x" (click)="toggleModal()">&times;</button>
+      <h2>Edit Announcement</h2>
+      <button class="x-btn" (click)="closeEditModal()">&times;</button>
     </div>
     <div class="modal-body">
-      <div class="input-box">
+      <div class="input-field">
         <label>Title</label>
-        <input type="text" [(ngModel)]="newPost.title">
+        <input type="text" [(ngModel)]="editingPost!.title">
       </div>
-      <div class="row">
-        <div class="input-box">
-          <label>Scope Type</label>
-          <select [(ngModel)]="newPost.scopeType">
-            <option value="COURSE">Course</option>
-            <option value="GLOBAL">Global</option>
-          </select>
-        </div>
-        <div class="input-box">
-          <label>Scope ID</label>
-          <input type="number" [(ngModel)]="newPost.scopeId">
-        </div>
-      </div>
-      <div class="input-box">
-        <label>Content</label>
-        <textarea [(ngModel)]="newPost.content" rows="4"></textarea>
+      <div class="input-field">
+        <label>Message</label>
+        <textarea [(ngModel)]="editingPost!.content" rows="6"></textarea>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" (click)="toggleModal()">Cancel</button>
-      <button class="btn-save" (click)="submitPost()">Publish Post</button>
+    <div class="modal-actions">
+      <button class="cancel-btn" (click)="closeEditModal()">Cancel</button>
+      <button class="save-btn" (click)="updatePost()">Save Changes</button>
     </div>
   </div>
 </div>

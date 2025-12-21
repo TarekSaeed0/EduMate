@@ -6,6 +6,7 @@
       <button [class.active]="activeTab === 'courses'" (click)="activeTab = 'courses'">📚 Course Management</button>
       <button [class.active]="activeTab === 'tasks'" (click)="activeTab = 'tasks'">📋 Task Assignment</button>
       <button [class.active]="activeTab === 'enrollment'" (click)="activeTab = 'enrollment'">🎓 Student Enrollment</button>
+      <button [class.active]="activeTab === 'announcements'" (click)="activeTab = 'announcements'">📢 Announcements</button>
     </nav>
   </aside>
 
@@ -113,6 +114,43 @@
             </td>
           </tr>
         </table>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab === 'announcements'">
+      <div class="action-card">
+        <h3>Publish New Announcement</h3>
+        <div class="form-grid">
+          <div class="input-group">
+            <label>Headline / Title</label>
+            <input type="text" [(ngModel)]="newAnnouncement.title" placeholder="e.g. Campus Holiday Notice">
+          </div>
+          <div class="input-group">
+            <label>Scope Type</label>
+            <select [(ngModel)]="newAnnouncement.scopeType">
+              <option value="GLOBAL">Global (All Students)</option>
+              <option value="COURSE">Course Specific</option>
+            </select>
+          </div>
+          <div class="input-group" *ngIf="newAnnouncement.scopeType === 'COURSE'">
+            <label>Target Course (Offering ID)</label>
+            <select [(ngModel)]="newAnnouncement.scopeId">
+              <option [ngValue]="0">-- Select Course --</option>
+              <option *ngFor="let off of offeringsList" [value]="off.id">
+                {{off.course.name}} (ID: {{off.id}})
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-group" style="margin-top: 1rem;">
+          <label>Message Content</label>
+          <textarea [(ngModel)]="newAnnouncement.content" rows="5" placeholder="Write your announcement message here..."></textarea>
+        </div>
+
+        <button class="btn-submit" style="margin-top: 1.5rem;" (click)="saveAnnouncement()">
+          Broadcast Announcement
+        </button>
       </div>
     </div>
 

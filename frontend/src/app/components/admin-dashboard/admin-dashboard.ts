@@ -8,6 +8,7 @@ import { TaskService, Task } from '../../services/task.service';
 import { CourseOfferingService, CourseOffering } from '../../services/course-offering.service';
 import { SemesterService, Semester } from '../../services/semester.service';
 import { StudentService, Student } from '../../services/student.service';
+import { AnnouncementService } from '../../services/announcement.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -22,28 +23,27 @@ export class AdminDashboard implements OnInit {
   private offeringService = inject(CourseOfferingService);
   private semesterService = inject(SemesterService);
   private studentService = inject(StudentService);
+  private announcementService = inject(AnnouncementService);
   private http = inject(HttpClient);
 
-  activeTab: 'courses' | 'tasks' | 'enrollment' = 'courses';
+  activeTab: 'courses' | 'tasks' | 'enrollment' | 'announcements' = 'courses';
 
   coursesList: Course[] = [];
   semestersList: Semester[] = [];
   offeringsList: CourseOffering[] = [];
   studentsList: Student[] = [];
   enrolledStudentIds: number[] = [];
-
   selectedOfferingId: number | null = null;
 
   newCourse: Omit<Course, 'id'> = { code: '', name: '', credits: 3 };
   newOffering: any = { semesterId: null, course: { id: null } };
+  newTask: any = { title: '', requirements: '', submissionUrl: '', dueDate: null, notes: '', offering: { id: null } };
 
-  newTask: any = {
+  newAnnouncement: any = {
     title: '',
-    requirements: '',
-    submissionUrl: '',
-    dueDate: null,
-    notes: '',
-    offering: { id: null }
+    content: '',
+    scopeType: 'GLOBAL',
+    scopeId: 0
   };
 
   ngOnInit() {
@@ -57,19 +57,20 @@ export class AdminDashboard implements OnInit {
     this.studentService.getStudents().subscribe(data => this.studentsList = data);
   }
 
-  checkEnrollmentStatus() {
-    if (!this.selectedOfferingId) {
-      this.enrolledStudentIds = [];
-      return;
-    }
-    this.http.get<number[]>(`http://localhost:8080/api/registrations/offering/${this.selectedOfferingId}`, {
-      withCredentials: true
-    }).subscribe({
-      next: (ids) => this.enrolledStudentIds = ids,
-      error: (err) => console.error("Error fetching enrollment status", err)
+  saveAnnouncement() {
+    this.announcementService.createAnnouncement(this.newAnnouncement).subscribe({
+      next: () => {
+        alert('Announcement Published!');
+        this.newAnnouncement = { title: '', content: '', scopeType: 'GLOBAL', scopeId: 0 };
+      },
+      error: (err: any) => { // Fixed TS7006 by adding ': any'
+        console.error('Error publishing announcement:', err);
+        alert('Failed to publish announcement.');
+      }
     });
   }
 
+  // --- Other existing methods ---
   saveCourse() {
     this.courseService.createCourse(this.newCourse).subscribe(() => {
       alert('Subject Saved!');
@@ -84,37 +85,30 @@ export class AdminDashboard implements OnInit {
     });
   }
 
-  enrollStudent(studentId: number, offeringId: number) {
-    // FIX: Structuring the payload to match CourseRegistrationDTO.java
-    const enrollmentData = {
-      studentId: studentId,
-      offering: { id: offeringId }, // Matches the CourseOfferingDTO requirement
-      status: 'REGISTERED'
-    };
-
-    this.http.post('http://localhost:8080/api/registrations', enrollmentData, {
-      withCredentials: true
-    }).subscribe({
-      next: () => {
-        alert('Student Enrolled and Tasks Assigned!');
-        if (!this.enrolledStudentIds.includes(studentId)) {
-          this.enrolledStudentIds.push(studentId);
-        }
-      },
-      error: (err) => {
-        console.error('Enrollment error:', err);
-        alert('Could not enroll student. Ensure the backend Registration Service is updated.');
-      }
-    });
-  }
-
   saveTask() {
     this.taskService.createTask(this.newTask).subscribe({
       next: () => {
         alert('Task Published successfully!');
         this.newTask = { title: '', requirements: '', submissionUrl: '', dueDate: null, notes: '', offering: { id: null } };
       },
-      error: (err) => console.error('Error creating task:', err)
+      error: (err: any) => console.error('Error creating task:', err)
     });
+  }
+
+  enrollStudent(studentId: number, offeringId: number) {
+    const enrollmentData = { studentId: studentId, offering: { id: offeringId }, status: 'REGISTERED' };
+    this.http.post('http://localhost:8080/api/registrations', enrollmentData, { withCredentials: true }).subscribe({
+      next: () => {
+        alert('Student Enrolled!');
+        if (!this.enrolledStudentIds.includes(studentId)) this.enrolledStudentIds.push(studentId);
+      },
+      error: (err: any) => alert('Could not enroll student.')
+    });
+  }
+
+  checkEnrollmentStatus() {
+    if (!this.selectedOfferingId) { this.enrolledStudentIds = []; return; }
+    this.http.get<number[]>(`http://localhost:8080/api/registrations/offering/${this.selectedOfferingId}`, { withCredentials: true })
+      .subscribe({ next: (ids) => this.enrolledStudentIds = ids });
   }
 }
