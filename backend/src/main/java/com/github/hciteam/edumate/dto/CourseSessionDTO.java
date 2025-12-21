@@ -23,6 +23,8 @@ public class CourseSessionDTO {
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private TimeSlotDTO slot;
 
+	private String location;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private CourseSessionType type;

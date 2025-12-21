@@ -18,13 +18,19 @@
   margin-bottom: 24px;
 }
 
-.timetable-header h1 { font-size: 28px; font-weight: 700; color: #111; }
-.timetable-header p { color: #64748b; margin-top: 4px; }
+.timetable-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111;
+}
+.timetable-header p {
+  color: #64748b;
+  margin-top: 4px;
+}
 
 /* Fixed Grid Column Count */
 .grid-row {
   display: grid;
-  grid-template-columns: 80px repeat(6, 1fr); /* 1 Time + 6 Days = 7 Columns */
   border-bottom: 1px solid #e2e8f0;
 }
 
@@ -34,7 +40,8 @@
   border-bottom: 1px solid #cbd5e1;
 }
 
-.cell-time, .cell-day {
+.cell-time,
+.cell-day {
   padding: 16px 10px;
   font-size: 12px;
   font-weight: 700;

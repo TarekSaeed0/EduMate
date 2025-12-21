@@ -10,6 +10,7 @@ export interface CourseSession {
   id: number;
   offering: CourseOffering;
   slot: TimeSlot;
+  location: string;
   type: CourseSessionType;
 }
 

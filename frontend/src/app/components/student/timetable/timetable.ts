@@ -1,38 +1,36 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Navbar } from '../../navbar/navbar';
-import { Router } from '@angular/router';
+import { StudentService, Timetable } from '../../../services/student.service';
+import { AuthenticationService } from '../../../services/authentication.service';
+import { CourseSession } from '../../../services/course-session.service';
 
 @Component({
   selector: 'app-timetable',
   standalone: true,
   imports: [CommonModule, Navbar],
   templateUrl: './timetable.html',
-  styleUrl: './timetable.css'
+  styleUrl: './timetable.css',
 })
 export class TimetableComponent {
-  private router = inject(Router);
+  private authenticationService = inject(AuthenticationService);
+  private studentService = inject(StudentService);
 
-  // Your new days (6 total)
-  days = ['Saturday','Sunday','Monday', 'Tuesday', 'Wednesday', 'Thursday'];
+  timetable = signal<Timetable | null>(null);
 
-  // Your new time slots
-  hours = ['08:30', '10:20', '12:10', '01:50', '03:40', '05:30'];
-
-  scheduleMatrix: any = {
-    'Monday': {
-      '08:30': [
-        { code: 'CS101', room: 'L1', color: 'blue' },
-        { code: 'MATH2', room: 'R5', color: 'teal' }
-      ]
-    }
-  };
-
-  getSessions(day: string, hour: string) {
-    return this.scheduleMatrix[day]?.[hour] || [];
+  ngOnInit() {
+    this.studentService
+      .getStudentTimetable(this.authenticationService.user()!.student!.id)
+      .subscribe((timetable) => this.timetable.set(timetable));
   }
 
-  navigateTo(path: string) {
-    this.router.navigate([path]);
+  courseColors = ['#0ea5e9', '#00B894', '#FFA726', '#9C27B0', '#E91E63'];
+
+  getSessionColor(session: CourseSession) {
+    return this.courseColors[session.offering.course.id % this.courseColors.length];
+  }
+
+  getSessions(i: number, j: number) {
+    return this.timetable()?.sessions[i]?.[j] || [];
   }
 }

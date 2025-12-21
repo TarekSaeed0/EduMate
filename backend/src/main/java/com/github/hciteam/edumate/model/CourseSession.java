@@ -36,6 +36,8 @@ public class CourseSession {
 	@JoinColumn(name = "slot_id", nullable = false)
 	private TimeSlot slot;
 
+	private String location;
+
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private CourseSessionType type;
