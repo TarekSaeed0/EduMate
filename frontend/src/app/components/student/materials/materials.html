@@ -1,43 +1,90 @@
 <app-navbar></app-navbar>
 
 <div class="materials-container">
+
+  <!-- Page Header -->
   <div class="page-header">
     <h1>Course Materials</h1>
     <p>Access your study resources and shared documents.</p>
   </div>
 
+  <!-- Main Layout -->
   <div class="materials-layout">
+
+    <!-- Sidebar Navigation -->
     <aside class="course-nav">
-      <h3>YOUR COURSES</h3>
+      <h3>Your Courses</h3>
+
       <div class="nav-buttons">
-        <button
-          *ngFor="let reg of registrations"
-          (click)="selectCourse(reg.offering.course.id)"
-          [class.active]="selectedCourseId === reg.offering.course.id">
-          {{ reg.offering.course.code }}
-        </button>
+        <button (click)="showMaterials('CO')">Computer Organization</button>
+        <button (click)="showMaterials('prog2')">Programming 2</button>
+        <button (click)="showMaterials('discrete')">Discrete Structures</button>
+        <button (click)="showMaterials('numerical')">Numerical Computing</button>
+        <button (click)="showMaterials('hci')">Human Computer Interaction</button>
+        <button (click)="showMaterials('comm')">Communication Skills</button>
+
+        <!-- Future dynamic version -->
+        <!--
+        @for (reg of registrations; track reg.offering.course.id) {
+          <button
+            (click)="selectCourse(reg.offering.course.id)"
+            [class.active]="selectedCourseId === reg.offering.course.id">
+            {{ reg.offering.course.code }}
+          </button>
+        }
+        -->
       </div>
     </aside>
 
-    <main class="file-viewer">
-      <div class="empty-state" *ngIf="filteredMaterials.length === 0">
-        <p>No materials available for this course.</p>
-      </div>
+    <!-- File Viewer -->
+    <main class="source-viewer">
 
-      <div class="file-grid" *ngIf="filteredMaterials.length > 0">
-        <div class="file-card" *ngFor="let file of filteredMaterials">
-          <div class="file-icon" [attr.data-type]="file.type">
-            {{ file.type }}
-          </div>
-          <div class="file-details">
-            <h3>{{ file.name }}</h3>
-            <p>{{ file.size }} • Uploaded: {{ file.uploadDate }}</p>
-          </div>
-          <button class="download-btn" (click)="onDownload(file.name)">
-            Download
-          </button>
+      @if (list.length === 0) {
+        <!-- Empty state -->
+        <div class="empty-state">
+          <p>No materials available for this course.</p>
         </div>
-      </div>
+      }
+      @else {
+          <!-- Materials Grid -->
+          <div class="source-grid">
+            @for (item of list; track item) {
+              <div class="source-card">
+
+                <div class="source-icon">
+                  {{ item.title }}
+                </div>
+
+                <div class="source-details">
+                  <a href="{{ item.link }}">{{ item.link }}</a>
+                  <p>{{ item.attachment }}</p>
+                </div>
+
+                <button>
+                  Download
+                </button>
+
+              </div>
+            }
+          </div>
+        }
+        <div class="add-more">
+            <p>Add Sources</p>
+
+            <label for="title">Title: </label>
+            <input type="text" id="title" [(ngModel)]="title">
+
+            <label for="link">Link: </label>
+            <input type="text" id="link" [(ngModel)]="link">
+
+            <div>
+              <label for="attach">attachment: </label>
+              <button>upload</button>
+            </div>
+            
+            <button (click)="addSource()">Add</button>
+        </div>
+
     </main>
   </div>
 </div>
