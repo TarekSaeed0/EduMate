@@ -24,28 +24,7 @@ export class TimetableComponent {
       .subscribe((timetable) => this.timetable.set(timetable));
   }
 
-  courseColors = [
-    'red',
-    'blue',
-    'green',
-    'orange',
-    'purple',
-    'teal',
-    'pink',
-    'brown',
-    'indigo',
-    'cyan',
-    'lime',
-    'amber',
-    'deeporange',
-    'lightblue',
-    'yellow',
-    'deepPurple',
-    'lightGreen',
-    'grey',
-    'blueGrey',
-    'magenta',
-  ];
+  courseColors = ['#0ea5e9', '#00B894', '#FFA726', '#9C27B0', '#E91E63'];
 
   getSessionColor(session: CourseSession) {
     return this.courseColors[session.offering.course.id % this.courseColors.length];

@@ -31,7 +31,10 @@
             <div class="cell-day-slot">
               <div class="conflict-layer">
                 @for (session of getSessions(i, j); track session) {
-                  <div class="mini-session" [ngClass]="getSessionColor(session)">
+                  <div
+                    class="mini-session"
+                    [style.border-left]="'4px solid ' + getSessionColor(session)"
+                  >
                     <span
                       >{{ session.offering.course.name }}
                       {{ session.type.charAt(0) + session.type.slice(1).toLowerCase() }}</span
