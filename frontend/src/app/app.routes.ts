@@ -7,6 +7,7 @@ import { FAQComponent } from './components/student/faq/faq.component';
 import { TeamCreator } from './components/student/team-creator/team-creator';
 import { AnnouncementsComponent } from './components/student/announcements/announcements';
 import { MaterialsComponent } from './components/student/materials/materials';
+import { TimetableComponent } from './components/student/timetable/timetable';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -18,4 +19,5 @@ export const routes: Routes = [
   { path: 'student/team-creator', component: TeamCreator, title: 'Teams' },
   { path: 'student/announcements', component: AnnouncementsComponent, title: 'Announcements' },
   { path: 'student/materials', component: MaterialsComponent, title: 'Materials' },
+  { path: 'student/timetable', component: TimetableComponent, title: 'Time Table' },
 ];
