@@ -296,46 +296,70 @@ public class DataInitializer implements CommandLineRunner {
 
 		CourseSession[] sessions = {
 				CourseSession.builder().offering(persistedOfferings.get("CSE 282"))
-						.slot(slotMap.get(WeekDay.SATURDAY).get(0))
+						.slot(slotMap.get(WeekDay.SATURDAY).get(0)).location("Room 103")
 						.type(CourseSessionType.LECTURE).build(),
 				CourseSession.builder().offering(persistedOfferings.get("CSE 233"))
-						.slot(slotMap.get(WeekDay.SATURDAY).get(1))
+						.slot(slotMap.get(WeekDay.SATURDAY).get(1)).location("Room 103")
 						.type(CourseSessionType.LECTURE).build(),
 				CourseSession.builder().offering(persistedOfferings.get("CSE 213"))
-						.slot(slotMap.get(WeekDay.SATURDAY).get(2))
+						.slot(slotMap.get(WeekDay.SATURDAY).get(2)).location("Room 103")
 						.type(CourseSessionType.LECTURE).build(),
 				CourseSession.builder().offering(persistedOfferings.get("CSE 233"))
 						.slot(slotMap.get(WeekDay.SATURDAY).get(3))
 						.type(CourseSessionType.LAB).build(),
+				CourseSession.builder().offering(persistedOfferings.get("CSE 213"))
+						.slot(slotMap.get(WeekDay.SATURDAY).get(3))
+						.type(CourseSessionType.LAB).build(),
+				CourseSession.builder().offering(persistedOfferings.get("CSE 233"))
+						.slot(slotMap.get(WeekDay.SATURDAY).get(4))
+						.type(CourseSessionType.LAB).build(),
+				CourseSession.builder().offering(persistedOfferings.get("CSE 213"))
+						.slot(slotMap.get(WeekDay.SATURDAY).get(4))
+						.type(CourseSessionType.LAB).build(),
+				CourseSession.builder().offering(persistedOfferings.get("CSE 233"))
+						.slot(slotMap.get(WeekDay.SATURDAY).get(5))
+						.type(CourseSessionType.LAB).build(),
+				CourseSession.builder().offering(persistedOfferings.get("CSE 213"))
+						.slot(slotMap.get(WeekDay.SATURDAY).get(5))
+						.type(CourseSessionType.LAB).build(),
+
 				CourseSession.builder().offering(persistedOfferings.get("CSE 214"))
-						.slot(slotMap.get(WeekDay.SUNDAY).get(0))
+						.slot(slotMap.get(WeekDay.SUNDAY).get(0)).location("Room 103")
 						.type(CourseSessionType.TUTORIAL).build(),
 				CourseSession.builder().offering(persistedOfferings.get("CSE 214"))
 						.slot(slotMap.get(WeekDay.SUNDAY).get(1))
 						.type(CourseSessionType.LAB).build(),
 				CourseSession.builder().offering(persistedOfferings.get("CSE 213"))
-						.slot(slotMap.get(WeekDay.SUNDAY).get(2))
+						.slot(slotMap.get(WeekDay.SUNDAY).get(2)).location("Room 503")
 						.type(CourseSessionType.TUTORIAL).build(),
 				CourseSession.builder().offering(persistedOfferings.get("CSE 223"))
-						.slot(slotMap.get(WeekDay.SUNDAY).get(3))
+						.slot(slotMap.get(WeekDay.SUNDAY).get(3)).location("Room 103")
 						.type(CourseSessionType.LECTURE).build(),
+
 				CourseSession.builder().offering(persistedOfferings.get("CSE 282"))
-						.slot(slotMap.get(WeekDay.TUESDAY).get(0))
+						.slot(slotMap.get(WeekDay.TUESDAY).get(0)).location("Room 503")
 						.type(CourseSessionType.TUTORIAL).build(),
 				CourseSession.builder().offering(persistedOfferings.get("CSE 214"))
-						.slot(slotMap.get(WeekDay.TUESDAY).get(1))
+						.slot(slotMap.get(WeekDay.TUESDAY).get(1)).location("Room 104")
 						.type(CourseSessionType.LECTURE).build(),
 				CourseSession.builder().offering(persistedOfferings.get("CSE 213"))
-						.slot(slotMap.get(WeekDay.TUESDAY).get(2))
+						.slot(slotMap.get(WeekDay.TUESDAY).get(2)).location("Room 503")
 						.type(CourseSessionType.LECTURE).build(),
 				CourseSession.builder().offering(persistedOfferings.get("CSE 223"))
-						.slot(slotMap.get(WeekDay.TUESDAY).get(3))
+						.slot(slotMap.get(WeekDay.TUESDAY).get(3)).location("Room 503")
 						.type(CourseSessionType.TUTORIAL).build(),
+
 				CourseSession.builder().offering(persistedOfferings.get("CSE 233"))
-						.slot(slotMap.get(WeekDay.WEDNESDAY).get(0))
+						.slot(slotMap.get(WeekDay.WEDNESDAY).get(0)).location("Room 103")
 						.type(CourseSessionType.TUTORIAL).build(),
 				CourseSession.builder().offering(persistedOfferings.get("CSE 223"))
 						.slot(slotMap.get(WeekDay.WEDNESDAY).get(1))
+						.type(CourseSessionType.LAB).build(),
+				CourseSession.builder().offering(persistedOfferings.get("CSE 223"))
+						.slot(slotMap.get(WeekDay.WEDNESDAY).get(2))
+						.type(CourseSessionType.LAB).build(),
+				CourseSession.builder().offering(persistedOfferings.get("CSE 223"))
+						.slot(slotMap.get(WeekDay.WEDNESDAY).get(3))
 						.type(CourseSessionType.LAB).build(),};
 
 		for (CourseSession session : sessions) {
