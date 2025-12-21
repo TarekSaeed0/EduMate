@@ -12,4 +12,7 @@ public interface StudentTaskRepository
 	List<StudentTask> findByStudentId(Long studentId);
 
 	List<StudentTask> findByTaskId(Long taskId);
+
+	List<StudentTask> findByStudentIdAndTaskOfferingId(Long studentId,
+			Long offeringId);
 }

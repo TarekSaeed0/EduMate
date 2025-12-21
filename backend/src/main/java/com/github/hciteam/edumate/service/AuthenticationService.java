@@ -109,10 +109,10 @@ public class AuthenticationService {
 
 		List<StudentTask> studentTasks = offeringRepository.findAll().stream()
 				.flatMap(offering -> offering.getTasks().stream()
-						.map(task -> new StudentTask(
-								new StudentTaskKey(createdUser.getStudent().getId(),
-										task.getId()),
-								student, task, null)))
+						.map(task -> StudentTask.builder()
+								.id(new StudentTaskKey(createdUser.getStudent().getId(),
+										task.getId()))
+								.student(student).task(task).build()))
 				.toList();
 
 		studentTaskRepository.saveAll(studentTasks);

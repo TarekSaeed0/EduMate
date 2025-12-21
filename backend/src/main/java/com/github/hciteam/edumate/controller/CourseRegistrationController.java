@@ -81,13 +81,4 @@ public class CourseRegistrationController {
 
 		return ResponseEntity.noContent().build();
 	}
-
-    // ADD THIS METHOD: It allows the frontend to check the database
-    @GetMapping("/offering/{offeringId}")
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
-    public ResponseEntity<List<CourseRegistrationDTO>> getByOffering(@PathVariable Long offeringId) {
-        // This checks the DB using the offeringId
-        return ResponseEntity.ok(registrationService.getRegistrations(offeringId, null, null, null, null));
-    }
-
 }

@@ -2,7 +2,6 @@ package com.github.hciteam.edumate.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -44,6 +43,11 @@ public class StudentService {
 		this.studentMapper = studentMapper;
 		this.studentTaskMapper = studentTaskMapper;
 		this.sessionMapper = sessionMapper;
+	}
+
+	public List<StudentDTO> getStudents() {
+		return studentRepository.findAll().stream().map(studentMapper::toDTO)
+				.toList();
 	}
 
 	public StudentDTO getStudent(Long studentId) {
@@ -148,11 +152,4 @@ public class StudentService {
 
 		return TimetableDTO.fromSessions(sessions);
 	}
-
-    public List<StudentDTO> getAllStudents() {
-        return studentRepository.findAll()
-                .stream()
-                .map(studentMapper::toDTO)
-                .collect(Collectors.toList());
-    }
 }

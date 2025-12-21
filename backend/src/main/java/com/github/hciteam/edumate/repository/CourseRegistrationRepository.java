@@ -17,5 +17,4 @@ public interface CourseRegistrationRepository
 			Long studentId);
 
 	boolean existsByOfferingIdAndStudentId(Long offeringId, Long studentId);
-
 }

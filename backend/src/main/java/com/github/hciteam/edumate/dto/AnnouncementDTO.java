@@ -23,6 +23,9 @@ public class AnnouncementDTO {
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private Long scopeId;
 
+	@Null(groups = {ValidationGroups.Create.class})
+	private AnnouncementScopeDTO scope;
+
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private String title;

@@ -1,10 +1,6 @@
 package com.github.hciteam.edumate.service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import com.github.hciteam.edumate.repository.CourseRegistrationRepository;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.StudentTask;
 import com.github.hciteam.edumate.model.Task;
@@ -15,54 +11,46 @@ import com.github.hciteam.edumate.model.CourseRegistrationStatus;
 import com.github.hciteam.edumate.dto.TaskDTO;
 import com.github.hciteam.edumate.repository.StudentTaskRepository;
 import com.github.hciteam.edumate.repository.TaskRepository;
-import com.github.hciteam.edumate.model.CourseRegistration;
 import jakarta.transaction.Transactional;
-import com.github.hciteam.edumate.key.StudentTaskKey;
 
 @Service
 public class TaskService {
 	private final TaskRepository taskRepository;
 	private final StudentTaskRepository studentTaskRepository;
 	private final TaskMapper taskMapper;
-    private final CourseRegistrationRepository registrationRepository;
 
 	public TaskService(TaskRepository taskRepository,
-                       StudentTaskRepository studentTaskRepository, TaskMapper taskMapper, CourseRegistrationRepository registrationRepository) {
+			StudentTaskRepository studentTaskRepository, TaskMapper taskMapper) {
 		this.taskRepository = taskRepository;
 		this.studentTaskRepository = studentTaskRepository;
 		this.taskMapper = taskMapper;
-        this.registrationRepository = registrationRepository;
-    }
+	}
 
 	public List<TaskDTO> getTasks() {
 		return taskRepository.findAll().stream().map(taskMapper::toDTO).toList();
 	}
 
-    @Transactional // Crucial: This ensures either everything saves or nothing does
-    public TaskDTO createTask(TaskDTO taskDTO) {
-        // 1. Save the task basic info
-        Task task = taskMapper.toEntity(taskDTO);
-        Task savedTask = taskRepository.save(task);
+	@Transactional
+	public TaskDTO createTask(TaskDTO taskDTO) {
+		Task task = taskMapper.toEntity(taskDTO);
 
-        // 2. Find everyone currently in that class
-        List<CourseRegistration> registrations = registrationRepository
-                .findByOfferingId(savedTask.getOffering().getId());
+		Task persistedTask = taskRepository.save(task);
 
-        // 3. Create a 'Tracker' entry for every student found
-        List<StudentTask> broadcastList = registrations.stream()
-                .map(reg -> StudentTask.builder()
-                        .id(new StudentTaskKey(reg.getStudent().getId(), savedTask.getId()))
-                        .student(reg.getStudent())
-                        .task(savedTask)
-                        .submittedAt(null) // New tasks start as 'Not submitted'
-                        .build())
-                .toList();
+		List<StudentTask> studentTasks =
+				persistedTask.getOffering().getRegistrations().stream()
+						.filter(registration -> registration
+								.getStatus() == CourseRegistrationStatus.REGISTERED)
+						.map(registration -> StudentTask.builder()
+								.id(new StudentTaskKey(registration.getStudent().getId(),
+										persistedTask.getId()))
+								.student(registration.getStudent()).task(persistedTask).build())
+						.toList();
 
-        // 4. Save all links to the database
-        studentTaskRepository.saveAll(broadcastList);
+		studentTaskRepository.saveAll(studentTasks);
 
-        return taskMapper.toDTO(savedTask);
-    }
+		return taskMapper.toDTO(persistedTask);
+	}
+
 	public TaskDTO getTask(Long taskId) {
 		return taskRepository.findById(taskId).map(taskMapper::toDTO)
 				.orElseThrow(() -> new TaskNotFoundException());
@@ -81,7 +69,7 @@ public class TaskService {
 			if (offeringChanged) {
 				studentTaskRepository.deleteAll(persistedTask.getStudentTasks());
 
-				Set<StudentTask> studentTasks = persistedTask.getOffering()
+				List<StudentTask> studentTasks = persistedTask.getOffering()
 						.getRegistrations().stream()
 						.filter(registration -> registration
 								.getStatus() == CourseRegistrationStatus.REGISTERED)
@@ -89,7 +77,7 @@ public class TaskService {
 								.id(new StudentTaskKey(registration.getStudent().getId(),
 										persistedTask.getId()))
 								.student(registration.getStudent()).task(persistedTask).build())
-						.collect(Collectors.toSet());
+						.toList();
 
 				studentTaskRepository.saveAll(studentTasks);
 			}
@@ -101,9 +89,13 @@ public class TaskService {
 	}
 
 	public void deleteTask(Long taskId) {
-		if (!taskRepository.existsById(taskId)) {
-			throw new TaskNotFoundException();
-		}
+		Task task = taskRepository.findById(taskId)
+				.orElseThrow(() -> new TaskNotFoundException());
+
+		List<StudentTask> studentTasks =
+				studentTaskRepository.findByTaskId(task.getId());
+
+		studentTaskRepository.deleteAll(studentTasks);
 
 		taskRepository.deleteById(taskId);
 	}

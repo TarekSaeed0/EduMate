@@ -24,6 +24,12 @@ public class StudentController {
 		this.studentService = studentService;
 	}
 
+	@GetMapping
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
+	public ResponseEntity<List<StudentDTO>> getStudents() {
+		return ResponseEntity.ok(studentService.getStudents());
+	}
+
 	@GetMapping("/{studentId}")
 	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<StudentDTO> getStudent(@PathVariable Long studentId) {
@@ -69,9 +75,4 @@ public class StudentController {
 			@PathVariable Long studentId) {
 		return ResponseEntity.ok(studentService.getStudentTimetable(studentId));
 	}
-    @GetMapping
-    @PreAuthorize("hasRole('ADMINISTRATOR')") // Only admins can see the full list
-    public ResponseEntity<List<StudentDTO>> getAllStudents() {
-        return ResponseEntity.ok(studentService.getAllStudents());
-    }
 }
