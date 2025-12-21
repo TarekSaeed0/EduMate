@@ -1,0 +1,30 @@
+.materials-container { padding: 40px 60px; background-color: var(--bg-main); min-height: 100vh; }
+.page-header h1 { font-size: 2.2rem; color: var(--text-dark); margin-bottom: 5px; }
+
+.materials-layout { display: grid; grid-template-columns: 280px 1fr; gap: 40px; margin-top: 30px; }
+
+/* Sidebar */
+.course-nav { background: white; padding: 25px; border-radius: 20px; border: 1px solid var(--border-color); height: fit-content; }
+.course-nav h3 { font-size: 0.8rem; color: var(--text-light); letter-spacing: 1px; margin-bottom: 20px; }
+.nav-buttons button {
+  display: block; width: 100%; text-align: left; padding: 12px 15px; border: none; background: none;
+  border-radius: 10px; cursor: pointer; color: var(--text-grey); margin-bottom: 8px;
+}
+.nav-buttons button.active { background: var(--primary-light); color: var(--primary); font-weight: bold; }
+
+/* File List */
+.file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+.file-card { background: white; border: 1px solid var(--border-color); padding: 25px; border-radius: 16px; display: flex; align-items: center; gap: 15px; }
+
+.file-icon { width: 50px; height: 50px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.7rem; }
+.file-icon[data-type="PDF"] { background: #ffebee; color: #d32f2f; }
+.file-icon[data-type="DOC"] { background: #e3f2fd; color: #1976d2; }
+.file-icon[data-type="ZIP"] { background: #fff3e0; color: #f57c00; }
+
+.file-details h3 { font-size: 1rem; color: var(--text-dark); margin-bottom: 4px; }
+.file-details p { font-size: 0.8rem; color: var(--text-light); }
+
+.download-btn {
+  margin-left: auto; background: var(--primary); color: white; border: none; padding: 8px 16px;
+  border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600;
+}

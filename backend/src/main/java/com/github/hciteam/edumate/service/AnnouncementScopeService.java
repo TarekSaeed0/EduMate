@@ -25,12 +25,6 @@ public class AnnouncementScopeService {
 		for (AnnouncementScopeMapper scopeMapper : scopeMappers) {
 			this.scopeMappers.put(scopeMapper.getScopeType(), scopeMapper);
 		}
-
-		System.out.println("Registered Announcement Scope Repositories: "
-				+ this.scopeRepositories.keySet());
-
-		System.out.println(
-				"Registered Announcement Scope Mappers: " + this.scopeMappers.keySet());
 	}
 
 	public AnnouncementScopeRepository getScopeRepository(String scopeType) {

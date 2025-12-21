@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
 	private final UserRepository userRepository;
 	private final AuthenticationEntryPoint authenticationEntryPoint;
@@ -51,6 +53,8 @@ public class SecurityConfiguration {
 						.requestMatchers(HttpMethod.GET, "/api/offerings/**").permitAll()
 						.requestMatchers("/api/offerings/**").hasRole("ADMINISTRATOR")
 						.requestMatchers(HttpMethod.GET, "/api/tasks/**").permitAll()
+						.requestMatchers("/api/students/**").authenticated()
+						.requestMatchers("/api/registrations/**").hasRole("ADMINISTRATOR")
 						.requestMatchers("/api/tasks/**")
 						.hasAnyRole("COORDINATOR", "ADMINISTRATOR")
 						.requestMatchers(HttpMethod.GET, "/api/faqs/**").permitAll()
@@ -90,9 +94,7 @@ public class SecurityConfiguration {
 
 		UrlBasedCorsConfigurationSource source =
 				new UrlBasedCorsConfigurationSource();
-
 		source.registerCorsConfiguration("/**", configuration);
-
 		return source;
 	}
 

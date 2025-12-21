@@ -3,7 +3,7 @@
 <div class="task-tracker">
   <!-- LEFT SIDEBAR -->
   <div class="search-bar">
-    <button type="button">+ New Task</button>
+    <button type="button" (click)="openCreateForm()">+ New Task</button>
 
     <div class="task-types">
       <div class="task-type" id="all-tasks" (click)="toggleStatus(null)">All Tasks</div>
@@ -25,26 +25,31 @@
 
     <div class="tasks-container">
       @for (studentTask of studentTasks(); track studentTask.task.id) {
-        <div
-          class="task-item"
-          [class.expanded]="isExpanded(studentTask)"
-          (click)="toggleTask(studentTask, $event)"
-        >
+        <!-- NEW (correct): -->
+        <div class="task-item" [class.expanded]="isExpanded(studentTask)"
+             [class.completed]="studentTask.submittedAt !== null" [class.overdue]="isOverdue(studentTask)"
+             (click)="toggleTask(studentTask, $event)">
           <!-- Always visible -->
           <div class="row">
             <span class="label">Title:</span>
             <span class="value">{{ studentTask.task.title }}</span>
           </div>
+          <div class="row">
+            <span class="label">Status:</span>
+            <span class="status-badge" [class]="'status-' + getTaskStatus(studentTask).toLowerCase()">
+            {{ getTaskStatus(studentTask) }}
+          </span>
+          </div>
 
           <div class="row">
             <span class="label">Due Date:</span>
             <span class="value">
-              @if (studentTask.task.dueDate == null) {
-                N/A
-              } @else {
-                {{ studentTask.task.dueDate.toLocaleString() }}
-              }
-            </span>
+            @if (studentTask.task.dueDate == null) {
+              N/A
+            } @else {
+              {{ studentTask.task.dueDate.toLocaleString() }}
+            }
+          </span>
           </div>
 
           <!-- Hidden content -->
@@ -92,6 +97,19 @@
                 {{ studentTask.submittedAt.toLocaleString() }}
               }
             </div>
+
+
+            <div class="row button-row">
+              @if (studentTask.submittedAt === null) {
+                <button class="submit-button" type="button" (click)="submitTask(studentTask, $event)">
+                  Submit Task
+                </button>
+              } @else {
+                <button class="unsubmit-button" type="button" (click)="unsubmitTask(studentTask, $event)">
+                  Unsubmit Task
+                </button>
+              }
+            </div>
           </div>
         </div>
       } @empty {
@@ -102,4 +120,67 @@
   </div>
   <!-- tasks-section -->
 </div>
+<!-- ADD ALL OF THIS AFTER THE CLOSING </div> of task-tracker: -->
+
+<!-- CREATE TASK MODAL -->
+@if (showCreateForm()) {
+  <div class="modal-overlay" (click)="closeCreateForm()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Create New Task</h2>
+        <button class="close-btn" type="button" (click)="closeCreateForm()">&times;</button>
+      </div>
+
+      <form (submit)="onSubmitCreateTask($event)" class="create-task-form">
+        <div class="form-group">
+          <label for="title">Title *</label>
+          <input type="text" id="title" name="title" required />
+        </div>
+
+        <div class="form-group">
+          <label for="offeringId">Offering ID *</label>
+          <input type="number" id="offeringId" name="offeringId" required />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="dueDate">Due Date</label>
+            <input type="date" id="dueDate" name="dueDate" />
+          </div>
+
+          <div class="form-group">
+            <label for="dueTime">Due Time</label>
+            <input type="time" id="dueTime" name="dueTime" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="requirements">Requirements</label>
+          <textarea id="requirements" name="requirements" rows="3"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="submissionUrl">Submission URL</label>
+          <input type="url" id="submissionUrl" name="submissionUrl" />
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Notes</label>
+          <textarea id="notes" name="notes" rows="2"></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="cancel-btn" (click)="closeCreateForm()">Cancel</button>
+          <button type="submit" class="create-btn" [disabled]="isCreating()">
+            @if (isCreating()) {
+              Creating...
+            } @else {
+              Create Task
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
 <!-- task-tracker -->

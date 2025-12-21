@@ -3,25 +3,36 @@ package com.github.hciteam.edumate.service;
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.github.hciteam.edumate.dto.CourseRegistrationDTO;
 import com.github.hciteam.edumate.model.CourseRegistration;
 import com.github.hciteam.edumate.model.CourseRegistrationStatus;
+import com.github.hciteam.edumate.model.StudentTask;
+import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.exception.CourseRegistrationAlreadyExistsException;
 import com.github.hciteam.edumate.exception.CourseRegistrationNotFoundException;
 import com.github.hciteam.edumate.mapper.CourseRegistrationMapper;
 import com.github.hciteam.edumate.repository.CourseRegistrationRepository;
+import com.github.hciteam.edumate.repository.TaskRepository;
+import com.github.hciteam.edumate.repository.StudentTaskRepository;
 import com.github.hciteam.edumate.specification.CourseRegistrationSpecifications;
 
 @Service
 public class CourseRegistrationService {
 	private final CourseRegistrationRepository registrationRepository;
 	private final CourseRegistrationMapper registrationMapper;
+	private final TaskRepository taskRepository;
+	private final StudentTaskRepository studentTaskRepository;
 
 	public CourseRegistrationService(
 			CourseRegistrationRepository registrationRepository,
-			CourseRegistrationMapper registrationMapper) {
+			CourseRegistrationMapper registrationMapper,
+			TaskRepository taskRepository,
+			StudentTaskRepository studentTaskRepository) {
 		this.registrationRepository = registrationRepository;
 		this.registrationMapper = registrationMapper;
+		this.taskRepository = taskRepository;
+		this.studentTaskRepository = studentTaskRepository;
 	}
 
 	public List<CourseRegistrationDTO> getRegistrations(Long offeringId,
@@ -59,6 +70,7 @@ public class CourseRegistrationService {
 				.map(registrationMapper::toDTO).toList();
 	}
 
+	@Transactional
 	public CourseRegistrationDTO createRegistration(
 			CourseRegistrationDTO registrationDTO) {
 		if (registrationRepository.existsByOfferingIdAndStudentId(
@@ -70,7 +82,20 @@ public class CourseRegistrationService {
 		CourseRegistration registration =
 				registrationMapper.toEntity(registrationDTO);
 
-		return registrationMapper.toDTO(registrationRepository.save(registration));
+		CourseRegistration presistedRegistration =
+				registrationRepository.save(registration);
+
+		List<StudentTask> studentTasks = taskRepository
+				.findByOfferingId(registrationDTO.getOffering().getId()).stream()
+				.map(task -> StudentTask.builder()
+						.id(new StudentTaskKey(presistedRegistration.getStudent().getId(),
+								task.getId()))
+						.student(presistedRegistration.getStudent()).task(task).build())
+				.toList();
+
+		studentTaskRepository.saveAll(studentTasks);
+
+		return registrationMapper.toDTO(presistedRegistration);
 	}
 
 	public CourseRegistrationDTO getRegistration(Long registrationId) {
@@ -93,10 +118,17 @@ public class CourseRegistrationService {
 	}
 
 	public void deleteRegistration(Long registrationId) {
-		if (!registrationRepository.existsById(registrationId)) {
-			throw new CourseRegistrationNotFoundException(registrationId);
-		}
+		CourseRegistration registration =
+				registrationRepository.findById(registrationId).orElseThrow(
+						() -> new CourseRegistrationNotFoundException(registrationId));
+
+		List<StudentTask> studentTasks = studentTaskRepository
+				.findByStudentIdAndTaskOfferingId(registration.getStudent().getId(),
+						registration.getOffering().getId());
+
+		studentTaskRepository.deleteAll(studentTasks);
 
 		registrationRepository.deleteById(registrationId);
 	}
 }
+

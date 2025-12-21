@@ -1,0 +1,89 @@
+.dashboard-wrapper {
+  background-color: #f8fafc; /* Standard EduMate BG */
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.timetable-container {
+  width: 100%;
+  max-width: 1250px; /* Slightly wider for 6 days */
+}
+
+.timetable-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.timetable-header h1 { font-size: 28px; font-weight: 700; color: #111; }
+.timetable-header p { color: #64748b; margin-top: 4px; }
+
+/* Fixed Grid Column Count */
+.grid-row {
+  display: grid;
+  grid-template-columns: 80px repeat(6, 1fr); /* 1 Time + 6 Days = 7 Columns */
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.header-row {
+  background: #f1f5f9;
+  border-radius: 12px 12px 0 0;
+  border-bottom: 1px solid #cbd5e1;
+}
+
+.cell-time, .cell-day {
+  padding: 16px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.cell-time-stamp {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.cell-day-slot {
+  min-height: 85px;
+  padding: 6px;
+  border-right: 1px solid #e2e8f0;
+}
+
+/* Conflict Layer (Side-by-side for 3D logic) */
+.conflict-layer {
+  display: flex;
+  gap: 4px;
+  height: 100%;
+}
+
+.mini-session {
+  flex: 1;
+  border-radius: 8px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 11px;
+  border-left: 4px solid #0ea5e9;
+  background: #f0f9ff;
+}
+
+.btn-add-slot {
+  background: white;
+  border: 1px solid #111;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}

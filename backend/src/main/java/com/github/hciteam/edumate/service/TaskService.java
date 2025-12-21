@@ -1,8 +1,6 @@
 package com.github.hciteam.edumate.service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.StudentTask;
 import com.github.hciteam.edumate.model.Task;
@@ -38,7 +36,7 @@ public class TaskService {
 
 		Task persistedTask = taskRepository.save(task);
 
-		Set<StudentTask> studentTasks =
+		List<StudentTask> studentTasks =
 				persistedTask.getOffering().getRegistrations().stream()
 						.filter(registration -> registration
 								.getStatus() == CourseRegistrationStatus.REGISTERED)
@@ -46,7 +44,7 @@ public class TaskService {
 								.id(new StudentTaskKey(registration.getStudent().getId(),
 										persistedTask.getId()))
 								.student(registration.getStudent()).task(persistedTask).build())
-						.collect(Collectors.toSet());
+						.toList();
 
 		studentTaskRepository.saveAll(studentTasks);
 
@@ -71,7 +69,7 @@ public class TaskService {
 			if (offeringChanged) {
 				studentTaskRepository.deleteAll(persistedTask.getStudentTasks());
 
-				Set<StudentTask> studentTasks = persistedTask.getOffering()
+				List<StudentTask> studentTasks = persistedTask.getOffering()
 						.getRegistrations().stream()
 						.filter(registration -> registration
 								.getStatus() == CourseRegistrationStatus.REGISTERED)
@@ -79,7 +77,7 @@ public class TaskService {
 								.id(new StudentTaskKey(registration.getStudent().getId(),
 										persistedTask.getId()))
 								.student(registration.getStudent()).task(persistedTask).build())
-						.collect(Collectors.toSet());
+						.toList();
 
 				studentTaskRepository.saveAll(studentTasks);
 			}
@@ -91,9 +89,13 @@ public class TaskService {
 	}
 
 	public void deleteTask(Long taskId) {
-		if (!taskRepository.existsById(taskId)) {
-			throw new TaskNotFoundException();
-		}
+		Task task = taskRepository.findById(taskId)
+				.orElseThrow(() -> new TaskNotFoundException());
+
+		List<StudentTask> studentTasks =
+				studentTaskRepository.findByTaskId(task.getId());
+
+		studentTaskRepository.deleteAll(studentTasks);
 
 		taskRepository.deleteById(taskId);
 	}

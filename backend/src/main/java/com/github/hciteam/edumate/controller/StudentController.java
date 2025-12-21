@@ -24,6 +24,12 @@ public class StudentController {
 		this.studentService = studentService;
 	}
 
+	@GetMapping
+	@PreAuthorize("hasRole('ADMINISTRATOR')")
+	public ResponseEntity<List<StudentDTO>> getStudents() {
+		return ResponseEntity.ok(studentService.getStudents());
+	}
+
 	@GetMapping("/{studentId}")
 	@PreAuthorize("@authorizationService.isStudentSelf(#studentId) or hasRole('ADMINISTRATOR')")
 	public ResponseEntity<StudentDTO> getStudent(@PathVariable Long studentId) {

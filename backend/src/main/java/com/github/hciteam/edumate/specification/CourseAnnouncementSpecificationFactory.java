@@ -1,6 +1,7 @@
 package com.github.hciteam.edumate.specification;
 
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Component;
 import com.github.hciteam.edumate.model.Announcement;
 import com.github.hciteam.edumate.model.Course;
 import com.github.hciteam.edumate.model.CourseOffering;
@@ -10,6 +11,7 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 
+@Component
 class CourseAnnouncementSpecificationFactory
 		implements AnnouncementSpecificationFactory {
 	@Override

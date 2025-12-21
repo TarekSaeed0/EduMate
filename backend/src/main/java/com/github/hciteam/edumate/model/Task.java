@@ -37,7 +37,7 @@ public class Task {
 	@Column(nullable = false)
 	private String title;
 
-	@Column(nullable = false, columnDefinition = "TEXT")
+	@Column(columnDefinition = "TEXT")
 	private String requirements;
 
 	private String submissionUrl;

@@ -42,6 +42,7 @@ export class AuthenticationService {
     return this.http.get<User>(`${this.baseUrl}/me`, { withCredentials: true }).pipe(
       tap((user) => this.user.set(user)),
       catchError(() => {
+        // Only change: Setting user to null on error instead of breaking the app
         this.user.set(null);
         return of(null);
       }),

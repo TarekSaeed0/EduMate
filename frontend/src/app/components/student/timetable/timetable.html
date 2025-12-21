@@ -1,0 +1,35 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard-wrapper">
+  <div class="timetable-container">
+    <header class="timetable-header">
+      <div class="header-info">
+        <h1>Weekly Schedule</h1>
+        <p>Spring Semester 2024/2025</p>
+      </div>
+      <button class="btn-add-slot">+ Add Slot</button>
+    </header>
+
+    <div class="timetable-card">
+      <div class="grid-row header-row">
+        <div class="cell-time">TIME</div>
+        <div class="cell-day" *ngFor="let day of days">{{ day }}</div>
+      </div>
+
+      <div class="grid-row" *ngFor="let hour of hours">
+        <div class="cell-time-stamp">{{ hour }}</div>
+
+        <div class="cell-day-slot" *ngFor="let day of days">
+          <div class="conflict-layer">
+            <div class="mini-session"
+                 *ngFor="let s of getSessions(day, hour)"
+                 [ngClass]="s.color">
+              <span class="s-code">{{ s.code }}</span>
+              <span class="s-room">{{ s.room }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
