@@ -14,10 +14,12 @@ public interface CourseMapper extends AnnouncementScopeMapper {
 
 	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "offerings", ignore = true)
+	@Mapping(target = "materials", ignore = true)
 	Course toEntity(CourseDTO courseDTO);
 
 	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "offerings", ignore = true)
+	@Mapping(target = "materials", ignore = true)
 	void updateEntityFromDTO(CourseDTO courseDTO, @MappingTarget Course course);
 
 	@Override

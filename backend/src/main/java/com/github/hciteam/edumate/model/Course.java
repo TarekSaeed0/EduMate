@@ -40,6 +40,10 @@ public class Course implements AnnouncementScope {
 			orphanRemoval = true)
 	private Set<CourseOffering> offerings;
 
+	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL,
+			orphanRemoval = true)
+	private Set<CourseMaterial> materials;
+
 	@Override
 	public String getScopeType() {
 		return "COURSE";
