@@ -7,24 +7,30 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.dto.AnnouncementDTO;
 import com.github.hciteam.edumate.exception.AnnouncementNotFoundException;
+import com.github.hciteam.edumate.exception.AnnouncementScopeNotFoundException;
 import com.github.hciteam.edumate.mapper.AnnouncementMapper;
 import com.github.hciteam.edumate.model.Announcement;
+import com.github.hciteam.edumate.model.AnnouncementScope;
 import com.github.hciteam.edumate.repository.AnnouncementRepository;
+import com.github.hciteam.edumate.repository.AnnouncementScopeRepository;
 import com.github.hciteam.edumate.specification.AnnouncementSpecificationFactory;
 
 @Service
 public class AnnouncementService {
 	private AnnouncementRepository announcementRepository;
 	private AnnouncementMapper announcementMapper;
+	private AnnouncementScopeService scopeService;
 	private Map<String, AnnouncementSpecificationFactory> specificationFactories =
 			new HashMap<>();
 
 
 	public AnnouncementService(AnnouncementRepository announcementRepository,
 			AnnouncementMapper announcementMapper,
+			AnnouncementScopeService scopeService,
 			List<AnnouncementSpecificationFactory> specificationFactories) {
 		this.announcementRepository = announcementRepository;
 		this.announcementMapper = announcementMapper;
+		this.scopeService = scopeService;
 
 		for (AnnouncementSpecificationFactory specificationFactory : specificationFactories) {
 			this.specificationFactories.put(specificationFactory.getScopeType(),
@@ -52,7 +58,20 @@ public class AnnouncementService {
 		}
 
 		return announcementRepository.findAll(specification).stream()
-				.map(announcementMapper::toDTO).toList();
+				.map(announcement -> {
+					AnnouncementScopeRepository scopeRepository =
+							scopeService.getScopeRepository(announcement.getScopeType());
+
+					announcement
+							.setScope(
+									scopeRepository.findScopeById(announcement.getScopeId())
+											.map(scope -> (AnnouncementScope) scope)
+											.orElseThrow(() -> new AnnouncementScopeNotFoundException(
+													announcement.getScopeType(),
+													announcement.getScopeId())));
+
+					return announcement;
+				}).map(announcementMapper::toDTO).toList();
 	}
 
 	public AnnouncementDTO createAnnouncement(AnnouncementDTO announcementDTO) {

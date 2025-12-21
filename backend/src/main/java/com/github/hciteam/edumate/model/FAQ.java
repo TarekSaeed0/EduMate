@@ -33,7 +33,7 @@ public class FAQ {
 	@Column(nullable = false)
 	private String question;
 
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TEXT")
 	private String answer;
 
 	@ManyToMany(fetch = FetchType.EAGER,

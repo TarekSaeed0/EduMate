@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CourseDTO {
+public class CourseDTO implements AnnouncementScopeDTO {
 	@Null(groups = {ValidationGroups.Create.class})
 	private Long id;
 
@@ -25,4 +25,14 @@ public class CourseDTO {
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private Integer credits;
+
+	@Override
+	public String getScopeType() {
+		return "COURSE";
+	}
+
+	@Override
+	public Long getScopeId() {
+		return this.id;
+	}
 }
