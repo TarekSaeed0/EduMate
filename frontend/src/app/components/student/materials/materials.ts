@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Navbar } from '../../navbar/navbar';
 import { CourseRegistrationService, CourseRegistration } from '../../../services/course-registration.service';
@@ -12,14 +13,21 @@ interface MaterialFile {
   uploadDate: string;
 }
 
+interface Resource {
+  title: string;
+  link: string;
+  attachment: string;
+}
+
 @Component({
   selector: 'app-materials',
   standalone: true,
-  imports: [CommonModule, Navbar],
+  imports: [CommonModule, Navbar, FormsModule],
   templateUrl: './materials.html',
   styleUrls: ['./materials.css']
 })
 export class MaterialsComponent implements OnInit {
+
   private registrationService = inject(CourseRegistrationService);
 
   registrations: CourseRegistration[] = [];
@@ -54,4 +62,121 @@ export class MaterialsComponent implements OnInit {
   onDownload(fileName: string) {
     alert(`Hardcoded Action: Downloading ${fileName}`);
   }
+
+  // Correct list declaration
+  list: Resource[] = [];
+
+  course = signal<string>('');
+
+  showMaterials(course: string) {
+
+    this.course.set(course)
+    switch (course) {
+      case "CO":
+        this.list = this.COList;
+        break;
+
+      case "prog2":
+        this.list = this.prog2List;
+        break;
+
+      case "discrete":
+        this.list = this.discreteList;
+        break;
+
+      case "numerical":
+        this.list = this.numerical;
+        break;
+
+      case "hci":
+        this.list = this.hciList;
+        break;
+
+      case "comm":
+        this.list = this.commList;
+        break;
+
+      default:
+        this.list = [];
+    }
+}
+
+title: string = ""
+link: string = ""
+attachment: string = ""
+
+addSource(){
+  const item: Resource = {
+          title: this.title,
+          link: this.link,
+          attachment: this.attachment
+        }
+  switch (this.course()) {
+      case "CO":
+        this.COList.push(item);
+        this.list = this.COList;
+        break;
+
+      case "prog2":
+        this.prog2List.push(item);
+        this.list = this.prog2List;
+        break;
+
+      case "discrete":
+        this.discreteList.push(item);
+        this.list = this.discreteList;
+        break;
+
+      case "numerical":
+        this.numerical.push(item);
+        this.list = this.numerical;
+        break;
+
+      case "hci":
+        this.hciList.push(item);
+        this.list = this.hciList;
+        break;
+
+      case "comm":
+        this.commList.push(item);
+        this.list = this.commList;
+        break;
+
+      default:
+        this.list = [];
+  }
+
+
+}
+
+  // Correct CO list
+  COList: Resource[] = [
+    {
+      title: "Cache Lecture",
+      link: "https://drive.google.com/file/d/1JcZnJNF_sQauWR9wQkC2dEESmMDqXatt/view?usp=sharing",
+      attachment: ""
+    },
+    {
+      title: "Addressing modes Lecture",
+      link: "https://drive.google.com/file/d/1Z-IUiOf5dRTiYhjun77n0mS0jUy8Dexc/view?usp=sharing",
+      attachment: ""
+    }
+  ];
+
+  prog2List: Resource[] = [
+    {
+      title: "Concurrency Design Pattern",
+      link: "https://drive.google.com/file/d/195RE24isemsdoFUuSBUlPZm_0dl73b4h/view?usp=sharing",
+      attachment: ""
+    }
+  ]
+
+  discreteList: Resource[] = []
+
+  numerical: Resource[] = []
+  
+  hciList: Resource[] = []
+
+  commList: Resource[] = []
+
 }
