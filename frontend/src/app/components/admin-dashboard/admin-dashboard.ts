@@ -120,23 +120,33 @@ export class AdminDashboard implements OnInit {
     this.http.get<number[]>(`http://localhost:8080/api/registrations/offering/${this.selectedOfferingId}`, { withCredentials: true })
       .subscribe({ next: (ids) => this.enrolledStudentIds = ids });
   }
+  isSubmitting = false;
+
   saveTeamGroup() {
-    if (!this.newTeamGroup.offering.id) {
-      alert("Please select a course offering first.");
+    if (!this.newTeamGroup.offering.id || this.isSubmitting) {
       return;
     }
+
+    this.isSubmitting = true;
 
     this.teamGroupService.createGroup(this.newTeamGroup).subscribe({
       next: () => {
         alert('Course Team Group Created Successfully!');
-        // Reset form
+        // Reset the form data
         this.newTeamGroup = { name: '', minimumMemberCount: 2, maximumMemberCount: 5, offering: { id: null } };
+
+        // RELEASE THE LOCK: Now you can add a different team group
+        this.isSubmitting = false;
       },
       error: (err: any) => {
         console.error("Error creating group:", err);
-        alert("Failed to create team group. Check if the course is already registered.");
+        alert("Failed to create team group. Check your connection or data.");
+
+        // RELEASE THE LOCK: Allows you to try again after an error
+        this.isSubmitting = false;
       }
     });
   }
 
 }
+

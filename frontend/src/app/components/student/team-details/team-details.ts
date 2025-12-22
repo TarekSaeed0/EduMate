@@ -5,6 +5,7 @@ import { Navbar } from '../../navbar/navbar';
 
 import { TeamService, Team } from '../../../services/team.service';
 import { TeamJoinRequestService, TeamJoinRequest } from '../../../services/team-join-request.service';
+import { TeamJoinInviteService, TeamJoinInvite } from '../../../services/team-join-invite.service';
 import { AuthenticationService } from '../../../services/authentication.service';
 
 @Component({
@@ -18,12 +19,14 @@ export class TeamDetailsComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private teamService = inject(TeamService);
   private requestService = inject(TeamJoinRequestService);
+  private inviteService = inject(TeamJoinInviteService);
   private authService = inject(AuthenticationService);
   public location = inject(Location);
 
   teamId!: number;
   team?: Team;
   requests: TeamJoinRequest[] = [];
+  invites: TeamJoinInvite[] = [];
   loading = true;
 
   get isLeader(): boolean {
@@ -44,38 +47,39 @@ export class TeamDetailsComponent implements OnInit {
     this.teamService.getTeam(this.teamId).subscribe({
       next: (team) => {
         this.team = team;
-        if (this.isLeader) this.loadRequests();
+        if (this.isLeader) this.loadManagementData();
         this.loading = false;
       },
       error: () => this.loading = false
     });
   }
 
-  loadRequests(): void {
+  loadManagementData(): void {
+    // Fetches student requests to join this team
     this.requestService.getRequests({ teamId: this.teamId, status: 'PENDING' })
-      .subscribe({
-        next: (data) => this.requests = data,
-        error: (err: any) => console.error("Error loading requests:", err)
-      });
+      .subscribe(data => this.requests = data);
+
+    // Fetches invites sent by this leader to students
+    this.inviteService.getInvites({ teamId: this.teamId, status: 'PENDING' })
+      .subscribe(data => this.invites = data);
   }
 
-  // Changed parameter to number | undefined to match HTML template
   acceptJoinRequest(requestId: number | undefined): void {
     if (!requestId) return;
     this.requestService.acceptRequest(requestId).subscribe({
       next: () => {
-        alert('Student accepted!');
-        this.loadTeamData();
+        alert('Student accepted! They are now in the team.');
+        this.loadTeamData(); // Refreshes to show the student in the member list
       },
-      error: (err: any) => alert('Accept failed: ' + (err.error?.message || 'Unknown error'))
+      error: (err) => alert('Accept failed: ' + (err.error?.message || 'Error'))
     });
   }
 
   rejectJoinRequest(requestId: number | undefined): void {
     if (!requestId || !confirm('Reject this request?')) return;
     this.requestService.rejectRequest(requestId).subscribe({
-      next: () => this.loadRequests(),
-      error: (err: any) => console.error("Reject failed:", err)
+      next: () => this.loadManagementData(),
+      error: (err) => console.error("Reject failed:", err)
     });
   }
 }

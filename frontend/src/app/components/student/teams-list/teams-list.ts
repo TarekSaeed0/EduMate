@@ -119,4 +119,7 @@ export class TeamsListComponent implements OnInit {
         error: () => alert('Failed to create team.'),
       });
   }
+  viewTeamDetails(teamId: number) {
+    this.router.navigate(['/student/team-details', teamId]);
+  }
 }
