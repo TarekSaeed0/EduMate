@@ -1,201 +1,145 @@
-/* General Page Styling */
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f6fa;
-  margin: 0;
-  padding: 0;
-}
-
-.materials-container {
-  padding: 20px;
-}
-
-/* Page Header */
-.page-header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-
-.page-header h1 {
-  font-size: 4rem;
-  margin: 0;
-  color: #2f3640;
-}
-
-.page-header p {
-  font-size: 2rem;
-  color: #718093;
-}
-
-/* Main Layout */
+/* Sidebar Fix: Prevents horizontal spill */
 .materials-layout {
   display: flex;
-  gap: 20px;
-}
-
-/* Sidebar Navigation */
-.course-nav {
-  width: 220px;
-  background-color: #ffffff;
+  gap: 30px;
+  align-items: flex-start;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.course-nav h3 {
-  margin-top: 0;
-  color: #2f3640;
-  font-size: 1.2rem;
+.course-nav {
+  width: 280px;
+  min-width: 280px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .nav-buttons {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-direction: column; /* FORCES VERTICAL STACK */
+  gap: 12px;
   margin-top: 15px;
 }
 
 .nav-buttons button {
-  background-color: #40739e;
-  color: #ffffff;
-  border: none;
-  padding: 10px;
-  border-radius: 6px;
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
   cursor: pointer;
-  font-size: 0.95rem;
-  transition: background-color 0.2s;
-}
-
-.nav-buttons button:hover {
-  background-color: #2f3640;
+  color: #475569;
 }
 
 .nav-buttons button.active {
-  background-color: #e1b12c;
-  color: #2f3640;
+  background: #eef2ff;
+  color: #4f46e5;
+  border-color: #c7d2fe;
+  font-weight: 600;
 }
 
-/* File Viewer */
-.source-viewer {
-  flex: 1;
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 10px;
-  min-height: 500px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-/* Empty State */
-.empty-state {
-  text-align: center;
-  color: #718093;
-  font-size: 1rem;
-  margin-top: 50px;
-}
-
-/* Materials Grid */
-.source-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 20px;
-}
-
+/* Card Fix: Dropdown Floating Logic */
 .source-card {
-  background-color: #f1f2f6;
-  padding: 15px;
-  border-radius: 8px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 24px;
+  position: relative; /* REQUIRED for floating menu */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  transition: transform 0.2s;
+  min-height: 190px;
 }
 
-.source-card:hover {
-  transform: translateY(-3px);
-}
-
-.source-icon {
-  font-weight: bold;
-  font-size: 1.1rem;
-  margin-bottom: 10px;
+.card-header {
   display: flex;
   justify-content: space-between;
 }
 
-.source-details p,
-.source-details a {
-  font-size: 0.9rem;
-  color: #2f3640;
-  word-break: break-word;
+.dropdown {
+  position: relative;
 }
 
-.source-details a {
-  text-decoration: none;
-  color: #40739e;
-}
-
-.source-details a:hover {
-  text-decoration: underline;
-}
-
-.source-card button {
-  margin-top: 10px;
-  padding: 8px;
+.dropbtn {
+  background: none;
   border: none;
-  border-radius: 6px;
-  background-color: #44bd32;
-  color: #ffffff;
+  font-size: 24px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  color: #94a3b8;
 }
 
-.source-card button:hover {
-  background-color: #2f9e1a;
+.dropdown-content {
+  display: none;
+  position: absolute; /* FLOATS OVER CONTENT */
+  right: 0;
+  top: 100%;
+  background: white;
+  min-width: 150px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
 }
 
-/* Add More Section */
-.add-more {
-  margin-top: 30px;
-  padding: 20px;
-  background-color: #f5f6fa;
-  border-radius: 10px;
-}
-
-.add-more p {
-  font-weight: bold;
-  margin-bottom: 15px;
-  color: #2f3640;
-}
-
-.add-more label {
+.dropdown:hover .dropdown-content {
   display: block;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  font-size: 0.95rem;
-  color: #2f3640;
 }
 
-.add-more input {
-  width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #dcdde1;
-  font-size: 0.95rem;
+.url-text {
+  font-size: 13px;
+  color: #64748b;
+  word-break: break-all;
+  margin: 15px 0;
 }
 
-.add-more button {
-  margin-top: 15px;
-  padding: 10px 15px;
-  background-color: #40739e;
-  color: #ffffff;
+.view-btn {
+  margin-top: auto;
+  background: #22c55e;
+  color: white;
   border: none;
-  border-radius: 6px;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  font-size: 0.95rem;
-  transition: background-color 0.2s;
 }
 
-.add-more button:hover {
-  background-color: #2f3640;
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* 2. The menu MUST be absolute to float OVER the card content */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  min-width: 140px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
+  z-index: 100; /* Ensures it stays on top of other cards */
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+/* 3. Stack the buttons vertically so they aren't "divided" horizontally */
+.dropdown-content a {
+  color: #1e293b;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block; /* Forces vertical stacking */
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.dropdown-content a:hover {
+  background-color: #f8fafc;
+}
+
+/* 4. Show the menu only on hover */
+.dropdown:hover .dropdown-content {
+  display: flex;
+  flex-direction: column;
 }

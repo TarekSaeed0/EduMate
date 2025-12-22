@@ -1,94 +1,48 @@
 <app-navbar></app-navbar>
 
 <div class="materials-container">
-
-  <!-- Page Header -->
   <div class="page-header">
     <h1>Course Materials</h1>
-    <p>Access your study resources and shared documents.</p>
+    <p>Official study resources from the database.</p>
   </div>
 
-  <!-- Main Layout -->
   <div class="materials-layout">
-
-    <!-- Sidebar Navigation -->
     <aside class="course-nav">
-      <h3>Your Courses</h3>
-
+      <h3>Available Courses</h3>
       <div class="nav-buttons">
-        <button (click)="showMaterials('Computer Organization')">Computer Organization</button>
-        <button (click)="showMaterials('Programming 2')">Programming 2</button>
-        <button (click)="showMaterials('Discrete Structures')">Discrete Structures</button>
-        <button (click)="showMaterials('Numerical Computing')">Numerical Computing</button>
-        <button (click)="showMaterials('Human Computer Interaction')">Human Computer Interaction</button>
-        <button (click)="showMaterials('Communication Skills')">Communication Skills</button>
-
-        <!-- Future dynamic version -->
-        <!--
-        @for (reg of registrations; track reg.offering.course.id) {
-          <button
-            (click)="selectCourse(reg.offering.course.id)"
-            [class.active]="selectedCourseId === reg.offering.course.id">
-            {{ reg.offering.course.code }}
-          </button>
-        }
-        -->
+        <button *ngFor="let c of coursesList()"
+                (click)="selectCourse(c.id)"
+                [class.active]="selectedCourseId() === c.id">
+          {{ c.name }}
+        </button>
       </div>
     </aside>
 
-    <!-- File Viewer -->
     <main class="source-viewer">
-
-      <div style="font-size: 40px; padding-bottom: 15px;">
-        {{ course() }}
+      <div class="empty-state" *ngIf="filteredList().length === 0">
+        <p>No materials have been uploaded for this course yet.</p>
       </div>
 
-      @if (list.length === 0) {
-        <!-- Empty state -->
-        <div class="empty-state">
-          <p>No materials available for this course.</p>
-        </div>
-      }
-      @else {
-          <!-- Materials Grid -->
-          <div class="source-grid">
-            @for (item of list; track item) {
-              <div class="source-card">
-                  <div class="source-icon">
-                    {{ item.title }}
-                  </div>
-
-                <div class="source-details">
-                  <a href="{{ item.link }}">{{ item.link }}</a>
-                  <p>{{ item.attachment }}</p>
-                </div>
-                <button>
-                  Download
-                </button>
-
-              </div>
-            }
-          </div>
-        }
-        <div class="add-more">
-            <p>Add Sources</p>
-
-            <label for="title">Title: </label>
-            <input type="text" id="title" [(ngModel)]="title">
-
-            <label for="link">Link: </label>
-            <input type="text" id="link" [(ngModel)]="link">
-
-            <!--
-            <div>
-              <label for="attach">attachment: </label>
-              <button>upload</button>
+      <div class="source-grid" *ngIf="filteredList().length > 0">
+        <div *ngFor="let item of filteredList()" class="source-card">
+          <div class="card-header">
+            <div class="card-info">
+              <span class="course-tag">{{ item.course?.code }}</span>
+              <h4 class="material-title">{{ item.title }}</h4>
             </div>
-            -->
 
-            <button (click)="addSource()">Add</button>
+            <div class="dropdown">
+              <button class="dropbtn">⋮</button>
+              <div class="dropdown-content">
+                <a (click)="onOpen(item.url)">Open Resource</a>
+                <a (click)="onDelete(item.id)" style="color: red;">Delete</a>
+              </div>
+            </div>
+          </div>
+          <p class="url-text">{{ item.url }}</p>
+          <button class="view-btn" (click)="onOpen(item.url)">View Material</button>
         </div>
-
+      </div>
     </main>
   </div>
 </div>

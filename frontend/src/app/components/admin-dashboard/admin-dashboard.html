@@ -4,14 +4,81 @@
   <aside class="admin-sidebar">
     <nav class="admin-nav">
       <button [class.active]="activeTab === 'courses'" (click)="activeTab = 'courses'">📚 Course Management</button>
-      <button [class.active]="activeTab === 'tasks'" (click)="activeTab = 'tasks'">📋 Task Assignment</button>
-      <button [class.active]="activeTab === 'enrollment'" (click)="activeTab = 'enrollment'">🎓 Student Enrollment</button>
+      <button [class.active]="activeTab === 'tasks'" (click)="activeTab = 'tasks'">📝 Task Assignment</button>
+      <button [class.active]="activeTab === 'enrollment'" (click)="activeTab = 'enrollment'">👥 Student Enrollment</button>
       <button [class.active]="activeTab === 'announcements'" (click)="activeTab = 'announcements'">📢 Announcements</button>
-      <button [class.active]="activeTab === 'teamGroups'" (click)="activeTab = 'teamGroups'">👥 Team Setup</button>
+      <button [class.active]="activeTab === 'teamGroups'" (click)="activeTab = 'teamGroups'">⚖️ Team Setup</button>
+      <button [class.active]="activeTab === 'materials'" (click)="activeTab = 'materials'">📖 Material Source</button>
     </nav>
   </aside>
 
   <main class="admin-main">
+
+    <div *ngIf="activeTab === 'materials'">
+      <div class="action-card">
+        <h3>{{ isEditingMaterial ? '✏️ Edit Resource' : '➕ Add New Material' }}</h3>
+        <div class="form-grid">
+          <div class="input-group">
+            <label>Target Course</label>
+            <select [(ngModel)]="materialForm.course.id">
+              <option [ngValue]="null">-- Select Course --</option>
+              <option *ngFor="let c of coursesList" [value]="c.id">{{ c.name }}</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Title</label>
+            <input type="text" [(ngModel)]="materialForm.title" placeholder="e.g. Lecture 1">
+          </div>
+          <div class="input-group" style="grid-column: span 2;">
+            <label>Resource URL</label>
+            <input type="text" [(ngModel)]="materialForm.url" placeholder="https://...">
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn-submit" (click)="saveMaterial()">{{ isEditingMaterial ? 'Save Changes' : 'Publish' }}</button>
+          <button *ngIf="isEditingMaterial" class="btn-submit" style="background: #94a3b8;" (click)="resetMaterialForm()">Cancel</button>
+        </div>
+      </div>
+
+      <div class="action-card">
+        <h3>Management Library</h3>
+        <div class="source-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+          <div *ngFor="let m of materialsList" class="source-card" style="position: relative; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background: white; min-height: 100px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <div style="flex: 1;">
+                <span style="font-size: 11px; font-weight: 800; color: #4f46e5; text-transform: uppercase;">{{ m.course?.code }}</span>
+                <p style="margin: 5px 0; font-weight: 600; color: #1e293b; font-size: 1.1rem;">{{ m.title }}</p>
+              </div>
+
+              <div class="dropdown">
+                <button class="dropbtn">⋮</button>
+                <div class="dropdown-content">
+                  <a (click)="editMaterial(m)">Edit Info</a>
+                  <a (click)="deleteMaterial(m.id)" style="color: #ef4444;">Delete Permanently</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab === 'courses'">
+      <div class="action-card">
+        <h3>1. Create New Master Course</h3>
+        <div class="form-grid">
+          <div class="input-group">
+            <label>Course Code</label>
+            <input type="text" [(ngModel)]="newCourse.code">
+          </div>
+          <div class="input-group">
+            <label>Full Course Name</label>
+            <input type="text" [(ngModel)]="newCourse.name">
+          </div>
+        </div>
+        <button class="btn-submit" (click)="saveCourse()">Add to Database</button>
+      </div>
+    </div>
 
     <div *ngIf="activeTab === 'courses'">
       <div class="action-card">
@@ -103,15 +170,11 @@
           <tr *ngFor="let s of studentsList">
             <td>{{s.name}} ({{s.email}})</td>
             <td style="text-align: right;">
-              <span *ngIf="enrolledStudentIds.includes(s.id)" class="status-badge">
-                ✅ Already Enrolled
-              </span>
+              <span *ngIf="enrolledStudentIds.includes(s.id)" class="status-badge">✅ Already Enrolled</span>
               <button *ngIf="!enrolledStudentIds.includes(s.id)"
                       class="btn-enroll"
                       [disabled]="!selectedOfferingId"
-                      (click)="enrollStudent(s.id, selectedOfferingId!)">
-                + Enroll
-              </button>
+                      (click)="enrollStudent(s.id, selectedOfferingId!)">+ Enroll</button>
             </td>
           </tr>
         </table>
@@ -137,23 +200,18 @@
             <label>Target Course (Offering ID)</label>
             <select [(ngModel)]="newAnnouncement.scopeId">
               <option [ngValue]="0">-- Select Course --</option>
-              <option *ngFor="let off of offeringsList" [value]="off.id">
-                {{off.course.name}} (ID: {{off.id}})
-              </option>
+              <option *ngFor="let off of offeringsList" [value]="off.id">{{off.course.name}} (ID: {{off.id}})</option>
             </select>
           </div>
         </div>
-
         <div class="input-group" style="margin-top: 1rem;">
           <label>Message Content</label>
-          <textarea [(ngModel)]="newAnnouncement.content" rows="5" placeholder="Write your announcement message here..."></textarea>
+          <textarea [(ngModel)]="newAnnouncement.content" rows="5" placeholder="Write your message here..."></textarea>
         </div>
-
-        <button class="btn-submit" style="margin-top: 1.5rem;" (click)="saveAnnouncement()">
-          Broadcast Announcement
-        </button>
+        <button class="btn-submit" style="margin-top: 1.5rem;" (click)="saveAnnouncement()">Broadcast Announcement</button>
       </div>
     </div>
+
     <div *ngIf="activeTab === 'teamGroups'">
       <div class="action-card">
         <h3>Create Course Team Group</h3>
@@ -164,32 +222,25 @@
             <label>Target Class Instance</label>
             <select [(ngModel)]="newTeamGroup.offering.id">
               <option [ngValue]="null">-- Select Class --</option>
-              <option *ngFor="let off of offeringsList" [value]="off.id">
-                {{off.course.name}} (ID: {{off.id}})
-              </option>
+              <option *ngFor="let off of offeringsList" [value]="off.id">{{off.course.name}} (ID: {{off.id}})</option>
             </select>
           </div>
-
           <div class="input-group">
             <label>Group Activity Name</label>
             <input type="text" [(ngModel)]="newTeamGroup.name" placeholder="e.g. Final Project Teams">
           </div>
-
           <div class="input-group">
             <label>Min Members</label>
             <input type="number" [(ngModel)]="newTeamGroup.minimumMemberCount">
           </div>
-
           <div class="input-group">
             <label>Max Members</label>
             <input type="number" [(ngModel)]="newTeamGroup.maximumMemberCount">
           </div>
         </div>
-
         <button class="btn-submit" (click)="saveTeamGroup()">Initialize Team Creation</button>
       </div>
     </div>
 
-    
   </main>
 </div>
