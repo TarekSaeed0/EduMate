@@ -119,6 +119,8 @@ body {
   font-weight: bold;
   font-size: 1.1rem;
   margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .source-details p,
