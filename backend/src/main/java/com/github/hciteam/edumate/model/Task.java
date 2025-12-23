@@ -46,6 +46,10 @@ public class Task {
 
 	private String notes;
 
+	@Column(nullable = false)
+	@Builder.Default
+	private LocalDateTime createdAt = LocalDateTime.now();
+
 	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<StudentTask> studentTasks;
 }

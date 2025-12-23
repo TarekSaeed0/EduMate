@@ -22,12 +22,14 @@ public abstract class TaskMapper {
 	@Mapping(target = "id", ignore = true)
 	@Mapping(source = "offering", target = "offering",
 			qualifiedByName = "mapOffering")
+	@Mapping(target = "createdAt", ignore = true)
 	@Mapping(target = "studentTasks", ignore = true)
 	public abstract Task toEntity(TaskDTO taskDTO);
 
 	@Mapping(target = "id", ignore = true)
 	@Mapping(source = "offering", target = "offering",
 			qualifiedByName = "mapOffering")
+	@Mapping(target = "createdAt", ignore = true)
 	@Mapping(target = "studentTasks", ignore = true)
 	public abstract void updateEntityFromDTO(TaskDTO taskDTO,
 			@MappingTarget Task task);
