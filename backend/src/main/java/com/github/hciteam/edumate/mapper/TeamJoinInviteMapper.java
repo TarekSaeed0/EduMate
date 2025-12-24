@@ -28,7 +28,7 @@ public abstract class TeamJoinInviteMapper {
 	@Mapping(source = "team", target = "team", qualifiedByName = "mapTeam")
 	@Mapping(source = "student", target = "student",
 			qualifiedByName = "mapStudent")
-	@Mapping(target = "status", constant = "PENDING")
+	@Mapping(target = "status", ignore = true)
 	public abstract TeamJoinInvite toEntity(TeamJoinInviteDTO inviteDTO);
 
 	@Named("mapTeam")

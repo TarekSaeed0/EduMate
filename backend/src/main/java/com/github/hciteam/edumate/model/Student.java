@@ -9,6 +9,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -28,6 +29,10 @@ import lombok.Setter;
 public class Student implements Serializable {
 	@Id
 	private Long id;
+
+	@ManyToOne
+	@JoinColumn(name = "university_id", nullable = false)
+	private University university;
 
 	@Column(nullable = false)
 	private String name;

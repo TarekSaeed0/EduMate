@@ -10,13 +10,23 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CourseOfferingDTO {
+public class UniversityDTO implements AnnouncementScopeDTO {
 	@Null(groups = {ValidationGroups.Create.class})
 	private Long id;
 
-	@NotNull(groups = {ValidationGroups.Create.class})
+	@NotNull(
+			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
+	private String name;
+
 	private SemesterDTO semester;
 
-	@NotNull(groups = {ValidationGroups.Create.class})
-	private CourseDTO course;
+	@Override
+	public String getScopeType() {
+		return "UNIVERSITY";
+	}
+
+	@Override
+	public Long getScopeId() {
+		return this.id;
+	}
 }

@@ -30,6 +30,7 @@ public abstract class CourseRegistrationMapper {
 			qualifiedByName = "mapOffering")
 	@Mapping(source = "studentId", target = "student",
 			qualifiedByName = "mapStudent")
+	@Mapping(target = "status", ignore = true)
 	public abstract CourseRegistration toEntity(
 			CourseRegistrationDTO registrationDTO);
 

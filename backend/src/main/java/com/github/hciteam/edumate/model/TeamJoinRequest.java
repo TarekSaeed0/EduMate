@@ -1,6 +1,5 @@
 package com.github.hciteam.edumate.model;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -38,5 +37,6 @@ public class TeamJoinRequest {
 
 	@JoinColumn(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private TeamJoinStatus status;
+	@Builder.Default
+	private TeamJoinStatus status = TeamJoinStatus.PENDING;
 }

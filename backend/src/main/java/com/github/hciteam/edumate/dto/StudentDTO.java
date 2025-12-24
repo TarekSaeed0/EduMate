@@ -18,6 +18,10 @@ public class StudentDTO {
 
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
+	private UniversityDTO university;
+
+	@NotNull(
+			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private String name;
 
 	@NotNull(

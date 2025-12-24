@@ -23,7 +23,7 @@ public class CourseRegistrationDTO {
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private Long studentId;
 
-	@NotNull(
-			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
+	@Null(groups = {ValidationGroups.Create.class})
+	@NotNull(groups = {ValidationGroups.Update.class})
 	private CourseRegistrationStatus status;
 }

@@ -16,6 +16,10 @@ public class CourseDTO implements AnnouncementScopeDTO {
 
 	@NotNull(
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
+	private UniversityDTO university;
+
+	@NotNull(
+			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private String code;
 
 	@NotNull(

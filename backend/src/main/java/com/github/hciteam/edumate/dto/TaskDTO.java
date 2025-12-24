@@ -30,4 +30,7 @@ public class TaskDTO {
 	private LocalDateTime dueDate;
 
 	private String notes;
+
+	@Null(groups = {ValidationGroups.Create.class})
+	private LocalDateTime createdAt;
 };

@@ -41,5 +41,6 @@ public class CourseRegistration {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private CourseRegistrationStatus status;
+	@Builder.Default
+	private CourseRegistrationStatus status = CourseRegistrationStatus.REGISTERED;
 }

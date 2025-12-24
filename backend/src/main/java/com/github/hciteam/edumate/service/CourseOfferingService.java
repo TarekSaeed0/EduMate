@@ -41,7 +41,7 @@ public class CourseOfferingService {
 
 	public CourseOfferingDTO createOffering(CourseOfferingDTO offeringDTO) {
 		if (offeringRepository.existsBySemesterIdAndCourseId(
-				offeringDTO.getSemesterId(), offeringDTO.getCourse().getId())) {
+				offeringDTO.getSemester().getId(), offeringDTO.getCourse().getId())) {
 			throw new CourseAlreadyExistsException();
 		}
 

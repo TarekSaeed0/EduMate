@@ -37,5 +37,6 @@ public class TeamJoinInvite {
 
 	@JoinColumn(nullable = false)
 	@Enumerated(EnumType.STRING)
-	private TeamJoinStatus status;
+	@Builder.Default
+	private TeamJoinStatus status = TeamJoinStatus.PENDING;
 }
