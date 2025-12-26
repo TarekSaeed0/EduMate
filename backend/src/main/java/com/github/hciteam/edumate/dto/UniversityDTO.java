@@ -18,7 +18,7 @@ public class UniversityDTO implements AnnouncementScopeDTO {
 			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
 	private String name;
 
-	private SemesterDTO semester;
+	private SemesterDTO currentSemester;
 
 	@Override
 	public String getScopeType() {

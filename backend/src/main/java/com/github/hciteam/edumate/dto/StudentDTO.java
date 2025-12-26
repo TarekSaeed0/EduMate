@@ -12,8 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentDTO {
-	@NotNull(
-			groups = {ValidationGroups.Create.class, ValidationGroups.Update.class})
+	@Null(groups = {ValidationGroups.Create.class})
 	private Long id;
 
 	@NotNull(

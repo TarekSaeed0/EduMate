@@ -21,9 +21,6 @@ public class SignupRequest {
 	@NotBlank
 	private String password;
 
-	@NotNull
-	private Long studentId;
-
 	@NotBlank
 	private String name;
 

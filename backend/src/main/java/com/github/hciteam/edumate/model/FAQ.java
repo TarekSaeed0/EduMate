@@ -1,5 +1,6 @@
 package com.github.hciteam.edumate.model;
 
+import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -41,5 +42,6 @@ public class FAQ {
 	@JoinTable(name = "faqs_categories",
 			joinColumns = @JoinColumn(name = "faq_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
-	private Set<FAQCategory> categories;
+	@Builder.Default
+	private Set<FAQCategory> categories = new HashSet<>();
 }

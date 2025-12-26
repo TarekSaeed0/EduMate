@@ -6,24 +6,29 @@ import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.User;
 import com.github.hciteam.edumate.dto.UserDTO;
 import com.github.hciteam.edumate.repository.StudentRepository;
+import com.github.hciteam.edumate.repository.UniversityRepository;
 import com.github.hciteam.edumate.repository.UserRepository;
 import com.github.hciteam.edumate.exception.UserAlreadyExistsException;
 import com.github.hciteam.edumate.exception.UserNotFoundException;
 import com.github.hciteam.edumate.mapper.UserMapper;
 import com.github.hciteam.edumate.exception.StudentAlreadyExistsException;
+import com.github.hciteam.edumate.exception.UniversityNotFoundException;
 
 @Service
 public class UserService {
 	private final UserRepository userRepository;
 	private final StudentRepository studentRepository;
+	private final UniversityRepository universityRepository;
 	private final UserMapper userMapper;
 	private final PasswordEncoder passwordEncoder;
 
 	public UserService(UserRepository userRepository,
-			StudentRepository studentRepository, UserMapper userMapper,
+			StudentRepository studentRepository,
+			UniversityRepository universityRepository, UserMapper userMapper,
 			PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
 		this.studentRepository = studentRepository;
+		this.universityRepository = universityRepository;
 		this.userMapper = userMapper;
 		this.passwordEncoder = passwordEncoder;
 	}
@@ -41,9 +46,9 @@ public class UserService {
 
 		user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
-		if (user.getStudent() != null
-				&& studentRepository.existsById(user.getStudent().getId())) {
-			throw new StudentAlreadyExistsException();
+		if (user.getStudent() != null) {
+			user.getStudent().setUniversity(universityRepository.findAll().stream()
+					.findFirst().orElseThrow(() -> new UniversityNotFoundException()));
 		}
 
 		return userMapper.toDTO(userRepository.save(user));

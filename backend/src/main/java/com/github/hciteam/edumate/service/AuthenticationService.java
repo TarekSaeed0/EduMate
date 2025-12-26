@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
-import com.github.hciteam.edumate.model.UserRole;
+import com.github.hciteam.edumate.model.Role;
 import com.github.hciteam.edumate.model.Student;
 import com.github.hciteam.edumate.model.CourseRegistration;
 import com.github.hciteam.edumate.model.StudentTask;
@@ -22,28 +22,25 @@ import com.github.hciteam.edumate.dto.SigninRequest;
 import com.github.hciteam.edumate.dto.SignupRequest;
 import com.github.hciteam.edumate.model.CourseRegistrationStatus;
 import com.github.hciteam.edumate.dto.UserDTO;
-import com.github.hciteam.edumate.repository.UserRoleRepository;
+import com.github.hciteam.edumate.repository.RoleRepository;
 import com.github.hciteam.edumate.repository.CourseOfferingRepository;
 import com.github.hciteam.edumate.repository.CourseRegistrationRepository;
-import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.StudentTaskRepository;
 import com.github.hciteam.edumate.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import com.github.hciteam.edumate.exception.UserAlreadyExistsException;
-import com.github.hciteam.edumate.exception.UserRoleNotFoundException;
+import com.github.hciteam.edumate.exception.RoleNotFoundException;
 import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.mapper.UserMapper;
-import com.github.hciteam.edumate.exception.StudentAlreadyExistsException;
 
 @Service
 public class AuthenticationService {
 	private final AuthenticationManager authenticationManager;
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
-	private final UserRoleRepository roleRepository;
-	private final StudentRepository studentRepository;
+	private final RoleRepository roleRepository;
 	private final CourseOfferingRepository offeringRepository;
 	private final CourseRegistrationRepository registrationRepository;
 	private final StudentTaskRepository studentTaskRepository;
@@ -55,7 +52,7 @@ public class AuthenticationService {
 
 	public AuthenticationService(AuthenticationManager authenticationManager,
 			PasswordEncoder passwordEncoder, UserRepository userRepository,
-			UserRoleRepository roleRepository, StudentRepository studentRepository,
+			RoleRepository roleRepository,
 			CourseOfferingRepository courseOfferingRepository,
 			CourseRegistrationRepository registrationRepository,
 			StudentTaskRepository studentTaskRepository, UserMapper userMapper) {
@@ -63,7 +60,6 @@ public class AuthenticationService {
 		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
-		this.studentRepository = studentRepository;
 		this.offeringRepository = courseOfferingRepository;
 		this.registrationRepository = registrationRepository;
 		this.studentTaskRepository = studentTaskRepository;
@@ -76,22 +72,18 @@ public class AuthenticationService {
 			throw new UserAlreadyExistsException(signupRequest.getEmail());
 		}
 
-		UserRole studentRole = roleRepository.findByName("STUDENT")
-				.orElseThrow(() -> new UserRoleNotFoundException());
+		Role studentRole = roleRepository.findByName("STUDENT")
+				.orElseThrow(() -> new RoleNotFoundException());
 
-		Set<UserRole> roles = new HashSet<>();
+		Set<Role> roles = new HashSet<>();
 		roles.add(studentRole);
 
 		User user = User.builder().email(signupRequest.getEmail())
 				.password(passwordEncoder.encode(signupRequest.getPassword()))
 				.roles(roles).build();
 
-		if (studentRepository.existsById(signupRequest.getStudentId())) {
-			throw new StudentAlreadyExistsException();
-		}
-
-		Student student = Student.builder().id(signupRequest.getStudentId())
-				.name(signupRequest.getName()).gender(signupRequest.getGender())
+		Student student = Student.builder().name(signupRequest.getName())
+				.gender(signupRequest.getGender())
 				.email(signupRequest.getUniversityEmail()).build();
 
 		user.setStudent(student);

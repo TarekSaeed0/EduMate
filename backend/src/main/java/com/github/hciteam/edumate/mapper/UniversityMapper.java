@@ -19,7 +19,7 @@ public abstract class UniversityMapper {
 	public abstract UniversityDTO toDTO(University university);
 
 	@Mapping(target = "id", ignore = true)
-	@Mapping(source = "semester", target = "semester",
+	@Mapping(source = "currentSemester", target = "currentSemester",
 			qualifiedByName = "mapSemester")
 	@Mapping(target = "courses", ignore = true)
 	@Mapping(target = "students", ignore = true)

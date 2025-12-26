@@ -16,7 +16,7 @@ import com.github.hciteam.edumate.model.Course;
 import com.github.hciteam.edumate.model.FAQ;
 import com.github.hciteam.edumate.model.FAQCategory;
 import com.github.hciteam.edumate.model.Gender;
-import com.github.hciteam.edumate.model.UserRole;
+import com.github.hciteam.edumate.model.Role;
 import com.github.hciteam.edumate.model.WeekDay;
 import com.github.hciteam.edumate.model.Semester;
 import com.github.hciteam.edumate.model.CourseOffering;
@@ -26,11 +26,12 @@ import com.github.hciteam.edumate.model.Task;
 import com.github.hciteam.edumate.model.Term;
 import com.github.hciteam.edumate.model.TimePeriod;
 import com.github.hciteam.edumate.model.TimeSlot;
+import com.github.hciteam.edumate.model.University;
 import com.github.hciteam.edumate.repository.CourseRepository;
 import com.github.hciteam.edumate.repository.CourseSessionRepository;
 import com.github.hciteam.edumate.repository.FAQCategoryRepository;
 import com.github.hciteam.edumate.repository.FAQRepository;
-import com.github.hciteam.edumate.repository.UserRoleRepository;
+import com.github.hciteam.edumate.repository.RoleRepository;
 import com.github.hciteam.edumate.service.UserService;
 import jakarta.transaction.Transactional;
 import com.github.hciteam.edumate.repository.CourseOfferingRepository;
@@ -38,11 +39,13 @@ import com.github.hciteam.edumate.repository.SemesterRepository;
 import com.github.hciteam.edumate.repository.TaskRepository;
 import com.github.hciteam.edumate.repository.TimePeriodRepository;
 import com.github.hciteam.edumate.repository.TimeSlotRepository;
+import com.github.hciteam.edumate.repository.UniversityRepository;
 import com.github.hciteam.edumate.repository.UserRepository;
 
 @Component
 public class DataInitializer implements CommandLineRunner {
-	private final UserRoleRepository roleRepository;
+	private final UniversityRepository universityRepository;
+	private final RoleRepository roleRepository;
 	private final CourseRepository courseRepository;
 	private final SemesterRepository semesterRepository;
 	private final CourseOfferingRepository offeringRepository;
@@ -55,14 +58,16 @@ public class DataInitializer implements CommandLineRunner {
 	private final TimeSlotRepository slotRepository;
 	private final CourseSessionRepository sessionRepository;
 
-	public DataInitializer(UserRoleRepository roleRepository,
-			CourseRepository courseRepository, SemesterRepository semesterRepository,
+	public DataInitializer(UniversityRepository universityRepository,
+			RoleRepository roleRepository, CourseRepository courseRepository,
+			SemesterRepository semesterRepository,
 			CourseOfferingRepository offeringRepository,
 			TaskRepository taskRepository,
 			FAQCategoryRepository faqCategoryRepository, FAQRepository faqRepository,
 			UserRepository userRepository, UserService userService,
 			TimePeriodRepository periodRepository, TimeSlotRepository slotRepository,
 			CourseSessionRepository sessionRepository) {
+		this.universityRepository = universityRepository;
 		this.roleRepository = roleRepository;
 		this.courseRepository = courseRepository;
 		this.semesterRepository = semesterRepository;
@@ -80,13 +85,22 @@ public class DataInitializer implements CommandLineRunner {
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
+		University university = University.builder()
+				.name("Faculty of Engineering, Alexandria University").build();
+
+		University persistedUniversity =
+				universityRepository.findByName(university.getName())
+						.orElseGet(() -> universityRepository.save(university));
+
 		String[] roleNames = {"STUDENT", "COORDINATOR", "ADMINISTRATOR"};
 		Arrays.stream(roleNames).forEach(roleName -> {
 			if (!roleRepository.existsByName(roleName)) {
-				UserRole role = UserRole.builder().name(roleName).build();
+				Role role = Role.builder().name(roleName).build();
 				roleRepository.save(role);
 			}
 		});
+
+		// TODO: initialize permissions
 
 		if (!userRepository.existsByEmail("admin@gmail.com")) {
 			userService.createUser(new UserDTO(null, "admin@gmail.com", "1234",
@@ -95,7 +109,7 @@ public class DataInitializer implements CommandLineRunner {
 
 		if (!userRepository.existsByEmail("coordinator@gmail.com")) {
 			userService.createUser(new UserDTO(null, "coordinator@gmail.com", "1234",
-					Set.of("STUDENT", "COORDINATOR"), new StudentDTO(23010000L,
+					Set.of("STUDENT", "COORDINATOR"), new StudentDTO(null, null,
 							"John Doe", Gender.MALE, "es.john.doe2023@alexu.edu.eg", null)));
 		}
 

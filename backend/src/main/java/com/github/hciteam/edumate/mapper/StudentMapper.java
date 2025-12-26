@@ -20,6 +20,7 @@ public abstract class StudentMapper {
 	@Mapping(source = "user.id", target = "userId")
 	public abstract StudentDTO toDTO(Student student);
 
+	@Mapping(target = "id", ignore = true)
 	@Mapping(source = "university", target = "university",
 			qualifiedByName = "mapUniversity")
 	@Mapping(source = "userId", target = "user.id")

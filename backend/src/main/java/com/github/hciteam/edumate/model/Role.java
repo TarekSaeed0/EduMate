@@ -1,15 +1,17 @@
 package com.github.hciteam.edumate.model;
 
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,13 +20,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "universities")
+@Table(name = "roles")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class University implements AnnouncementScope {
+public class Role implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -32,25 +34,10 @@ public class University implements AnnouncementScope {
 	@Column(nullable = false, unique = true)
 	private String name;
 
-	@OneToOne
-	@JoinColumn(name = "current_semester_id")
-	private Semester currentSemester;
-
-	@OneToMany(mappedBy = "university", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private Set<Course> courses;
-
-	@OneToMany(mappedBy = "university", cascade = CascadeType.ALL,
-			orphanRemoval = true)
-	private Set<Student> students;
-
-	@Override
-	public String getScopeType() {
-		return "UNIVERSITY";
-	}
-
-	@Override
-	public Long getScopeId() {
-		return this.id;
-	}
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "roles_permissions",
+			joinColumns = @JoinColumn(name = "role_id"),
+			inverseJoinColumns = @JoinColumn(name = "permission_id"))
+	@Builder.Default
+	private Set<Permission> permissions = new HashSet<>();
 }
