@@ -1,6 +1,5 @@
 package com.github.hciteam.edumate.model;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import jakarta.persistence.Column;
@@ -24,7 +23,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Role implements Serializable {
+public class Role {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

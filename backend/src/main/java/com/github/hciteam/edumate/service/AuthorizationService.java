@@ -4,11 +4,13 @@ import java.util.Optional;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import com.github.hciteam.edumate.mapper.UserMapper;
 import com.github.hciteam.edumate.model.CourseRegistration;
 import com.github.hciteam.edumate.model.Team;
 import com.github.hciteam.edumate.model.TeamJoinInvite;
 import com.github.hciteam.edumate.model.TeamJoinRequest;
 import com.github.hciteam.edumate.model.User;
+import com.github.hciteam.edumate.model.UserPrincipal;
 import com.github.hciteam.edumate.repository.CourseRegistrationRepository;
 import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.TeamJoinInviteRepository;
@@ -22,22 +24,25 @@ public class AuthorizationService {
 	TeamRepository teamRepository;
 	TeamJoinInviteRepository inviteRepository;
 	TeamJoinRequestRepository requestRepository;
+	UserMapper userMapper;
 
 	public AuthorizationService(StudentRepository studentRepository,
 			CourseRegistrationRepository registrationRepository,
 			TeamRepository teamRepository, TeamJoinInviteRepository inviteRepository,
-			TeamJoinRequestRepository requestRepository) {
+			TeamJoinRequestRepository requestRepository, UserMapper userMapper) {
 		this.studentRepository = studentRepository;
 		this.registrationRepository = registrationRepository;
 		this.teamRepository = teamRepository;
 		this.inviteRepository = inviteRepository;
 		this.requestRepository = requestRepository;
+		this.userMapper = userMapper;
 	}
 
 	public boolean isStudentSelf(Long studentId) {
 		Authentication authentication =
 				SecurityContextHolder.getContext().getAuthentication();
-		User user = (User) authentication.getPrincipal();
+		User user =
+				userMapper.toEntity((UserPrincipal) authentication.getPrincipal());
 
 		if (user.getStudent() == null) {
 			return false;
@@ -49,7 +54,8 @@ public class AuthorizationService {
 	public boolean isRegistrationOwner(Long registrationId) {
 		Authentication authentication =
 				SecurityContextHolder.getContext().getAuthentication();
-		User user = (User) authentication.getPrincipal();
+		User user =
+				userMapper.toEntity((UserPrincipal) authentication.getPrincipal());
 
 		if (user.getStudent() == null) {
 			return false;
@@ -68,7 +74,8 @@ public class AuthorizationService {
 	public boolean isTeamLeader(Long teamId) {
 		Authentication authentication =
 				SecurityContextHolder.getContext().getAuthentication();
-		User user = (User) authentication.getPrincipal();
+		User user =
+				userMapper.toEntity((UserPrincipal) authentication.getPrincipal());
 
 		if (user.getStudent() == null) {
 			return false;
@@ -85,7 +92,8 @@ public class AuthorizationService {
 	public boolean isInviteSender(Long inviteId) {
 		Authentication authentication =
 				SecurityContextHolder.getContext().getAuthentication();
-		User user = (User) authentication.getPrincipal();
+		User user =
+				userMapper.toEntity((UserPrincipal) authentication.getPrincipal());
 
 		if (user.getStudent() == null) {
 			return false;
@@ -103,7 +111,8 @@ public class AuthorizationService {
 	public boolean isInviteRecipient(Long inviteId) {
 		Authentication authentication =
 				SecurityContextHolder.getContext().getAuthentication();
-		User user = (User) authentication.getPrincipal();
+		User user =
+				userMapper.toEntity((UserPrincipal) authentication.getPrincipal());
 
 		if (user.getStudent() == null) {
 			return false;
@@ -120,7 +129,8 @@ public class AuthorizationService {
 	public boolean isRequestSender(Long requestId) {
 		Authentication authentication =
 				SecurityContextHolder.getContext().getAuthentication();
-		User user = (User) authentication.getPrincipal();
+		User user =
+				userMapper.toEntity((UserPrincipal) authentication.getPrincipal());
 
 		if (user.getStudent() == null) {
 			return false;
@@ -137,7 +147,8 @@ public class AuthorizationService {
 	public boolean isRequestRecipient(Long requestId) {
 		Authentication authentication =
 				SecurityContextHolder.getContext().getAuthentication();
-		User user = (User) authentication.getPrincipal();
+		User user =
+				userMapper.toEntity((UserPrincipal) authentication.getPrincipal());
 
 		if (user.getStudent() == null) {
 			return false;

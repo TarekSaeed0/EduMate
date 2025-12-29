@@ -19,6 +19,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import com.github.hciteam.edumate.mapper.UserMapper;
 import com.github.hciteam.edumate.repository.UserRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -28,13 +29,16 @@ import java.util.List;
 @EnableMethodSecurity
 public class SecurityConfiguration {
 	private final UserRepository userRepository;
+	private final UserMapper userMapper;
 	private final AuthenticationEntryPoint authenticationEntryPoint;
 	private final AccessDeniedHandler accessDeniedHandler;
 
 	public SecurityConfiguration(UserRepository userRepository,
+			UserMapper userMapper,
 			@Qualifier("delegatedAuthenticationEntryPoint") AuthenticationEntryPoint authenticationEntryPoint,
 			@Qualifier("delegatedAccessDeniedHandler") AccessDeniedHandler accessDeniedHandler) {
 		this.userRepository = userRepository;
+		this.userMapper = userMapper;
 		this.authenticationEntryPoint = authenticationEntryPoint;
 		this.accessDeniedHandler = accessDeniedHandler;
 	}
@@ -101,6 +105,7 @@ public class SecurityConfiguration {
 	@Bean
 	UserDetailsService userDetailsService() {
 		return email -> userRepository.findByEmail(email)
+				.map(userMapper::toPrincipal)
 				.orElseThrow(() -> new UsernameNotFoundException("User not found"));
 	}
 

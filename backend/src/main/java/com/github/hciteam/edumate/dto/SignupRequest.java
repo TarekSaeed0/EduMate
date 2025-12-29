@@ -22,8 +22,4 @@ public class SignupRequest {
 
 	@NotBlank
 	private String name;
-
-	@NotNull
-	@Email
-	private String universityEmail;
 }

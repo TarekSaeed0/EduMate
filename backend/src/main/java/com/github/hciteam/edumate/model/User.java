@@ -1,12 +1,7 @@
 package com.github.hciteam.edumate.model;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,7 +25,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements UserDetails {
+public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -48,30 +43,4 @@ public class User implements UserDetails {
 
 	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Student student;
-
-	public void setStudent(Student student) {
-		this.student = student;
-		if (student != null) {
-			student.setUser(this);
-		}
-	}
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return roles.stream().flatMap(role -> Stream.concat(
-				Stream.of(new SimpleGrantedAuthority("ROLE_" + role.getName())),
-				role.getPermissions().stream().map(
-						permission -> new SimpleGrantedAuthority(permission.getName()))))
-				.toList();
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
-	@Override
-	public String getUsername() {
-		return email;
-	}
 }
