@@ -5,17 +5,15 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.github.hciteam.edumate.model.TimePeriod;
 import com.github.hciteam.edumate.model.TimeSlot;
-import com.github.hciteam.edumate.repository.TimePeriodRepository;
-import com.github.hciteam.edumate.dto.TimePeriodDTO;
+import com.github.hciteam.edumate.repository.TimeSlotRepository;
 import com.github.hciteam.edumate.dto.TimeSlotDTO;
-import com.github.hciteam.edumate.exception.TimePeriodNotFoundException;
+import com.github.hciteam.edumate.exception.TimeSlotNotFoundException;
 
 @Mapper(componentModel = "spring", uses = {TimePeriodMapper.class})
 public abstract class TimeSlotMapper {
 	@Autowired
-	protected TimePeriodRepository periodRepository;
+	protected TimeSlotRepository slotRepository;
 
 	public abstract TimeSlotDTO toDTO(TimeSlot slot);
 
@@ -28,9 +26,9 @@ public abstract class TimeSlotMapper {
 	public abstract void updateEntityFromDTO(TimeSlotDTO slotDTO,
 			@MappingTarget TimeSlot slot);
 
-	@Named("mapPeriod")
-	protected TimePeriod mapPeriod(TimePeriodDTO periodDTO) {
-		return periodRepository.findById(periodDTO.getId())
-				.orElseThrow(() -> new TimePeriodNotFoundException(periodDTO.getId()));
+	@Named("mapSlot")
+	protected TimeSlot mapSlot(TimeSlotDTO slotDTO) {
+		return slotRepository.findById(slotDTO.getId())
+				.orElseThrow(() -> new TimeSlotNotFoundException(slotDTO.getId()));
 	}
 }

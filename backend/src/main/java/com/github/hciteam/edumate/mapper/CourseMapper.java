@@ -7,17 +7,15 @@ import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.github.hciteam.edumate.model.AnnouncementScope;
 import com.github.hciteam.edumate.model.Course;
-import com.github.hciteam.edumate.model.University;
-import com.github.hciteam.edumate.repository.UniversityRepository;
+import com.github.hciteam.edumate.repository.CourseRepository;
 import com.github.hciteam.edumate.dto.AnnouncementScopeDTO;
 import com.github.hciteam.edumate.dto.CourseDTO;
-import com.github.hciteam.edumate.dto.UniversityDTO;
-import com.github.hciteam.edumate.exception.UniversityNotFoundException;
+import com.github.hciteam.edumate.exception.CourseNotFoundException;
 
 @Mapper(componentModel = "spring", uses = {UniversityMapper.class})
 public abstract class CourseMapper implements AnnouncementScopeMapper {
 	@Autowired
-	protected UniversityRepository universityRepository;
+	protected CourseRepository courseRepository;
 
 	public abstract CourseDTO toDTO(Course course);
 
@@ -36,10 +34,10 @@ public abstract class CourseMapper implements AnnouncementScopeMapper {
 	public abstract void updateEntityFromDTO(CourseDTO courseDTO,
 			@MappingTarget Course course);
 
-	@Named("mapUniversity")
-	protected University mapUniversity(UniversityDTO universityDTO) {
-		return universityRepository.findById(universityDTO.getId()).orElseThrow(
-				() -> new UniversityNotFoundException(universityDTO.getId()));
+	@Named("mapCourse")
+	protected Course mapCourse(CourseDTO courseDTO) {
+		return courseRepository.findById(courseDTO.getId())
+				.orElseThrow(() -> new CourseNotFoundException(courseDTO.getId()));
 	}
 
 	@Override

@@ -4,24 +4,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.github.hciteam.edumate.model.Course;
 import com.github.hciteam.edumate.model.CourseOffering;
-import com.github.hciteam.edumate.model.Semester;
-import com.github.hciteam.edumate.repository.CourseRepository;
-import com.github.hciteam.edumate.repository.SemesterRepository;
-import com.github.hciteam.edumate.dto.CourseDTO;
+import com.github.hciteam.edumate.repository.CourseOfferingRepository;
 import com.github.hciteam.edumate.dto.CourseOfferingDTO;
-import com.github.hciteam.edumate.dto.SemesterDTO;
-import com.github.hciteam.edumate.exception.CourseNotFoundException;
-import com.github.hciteam.edumate.exception.SemesterNotFoundException;
+import com.github.hciteam.edumate.exception.CourseOfferingNotFoundException;
 
 @Mapper(componentModel = "spring",
 		uses = {CourseMapper.class, SemesterMapper.class})
 public abstract class CourseOfferingMapper {
 	@Autowired
-	protected CourseRepository courseRepository;
-	@Autowired
-	protected SemesterRepository semesterRepository;
+	protected CourseOfferingRepository offeringRepository;
 
 	public abstract CourseOfferingDTO toDTO(CourseOffering offering);
 
@@ -34,15 +26,9 @@ public abstract class CourseOfferingMapper {
 	@Mapping(target = "teamGroups", ignore = true)
 	public abstract CourseOffering toEntity(CourseOfferingDTO offeringDTO);
 
-	@Named("mapCourse")
-	protected Course mapCourse(CourseDTO courseDTO) {
-		return courseRepository.findById(courseDTO.getId())
-				.orElseThrow(() -> new CourseNotFoundException(courseDTO.getId()));
-	}
-
-	@Named("mapSemester")
-	protected Semester mapSemester(SemesterDTO semesterDTO) {
-		return semesterRepository.findById(semesterDTO.getId())
-				.orElseThrow(() -> new SemesterNotFoundException(semesterDTO.getId()));
+	@Named("mapOffering")
+	protected CourseOffering mapOffering(CourseOfferingDTO offeringDTO) {
+		return offeringRepository.findById(offeringDTO.getId()).orElseThrow(
+				() -> new CourseOfferingNotFoundException(offeringDTO.getId()));
 	}
 }

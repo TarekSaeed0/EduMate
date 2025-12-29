@@ -5,16 +5,14 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.github.hciteam.edumate.model.University;
-import com.github.hciteam.edumate.model.Semester;
-import com.github.hciteam.edumate.repository.SemesterRepository;
+import com.github.hciteam.edumate.repository.UniversityRepository;
 import com.github.hciteam.edumate.dto.UniversityDTO;
-import com.github.hciteam.edumate.dto.SemesterDTO;
-import com.github.hciteam.edumate.exception.SemesterNotFoundException;
+import com.github.hciteam.edumate.exception.UniversityNotFoundException;
 
 @Mapper(componentModel = "spring", uses = {SemesterMapper.class})
 public abstract class UniversityMapper {
 	@Autowired
-	protected SemesterRepository semesterRepository;
+	protected UniversityRepository universityRepository;
 
 	public abstract UniversityDTO toDTO(University university);
 
@@ -25,9 +23,9 @@ public abstract class UniversityMapper {
 	@Mapping(target = "students", ignore = true)
 	public abstract University toEntity(UniversityDTO universityDTO);
 
-	@Named("mapSemester")
-	protected Semester mapSemester(SemesterDTO semesterDTO) {
-		return semesterRepository.findById(semesterDTO.getId())
-				.orElseThrow(() -> new SemesterNotFoundException(semesterDTO.getId()));
+	@Named("mapUniversity")
+	protected University mapUniversity(UniversityDTO universityDTO) {
+		return universityRepository.findById(universityDTO.getId()).orElseThrow(
+				() -> new UniversityNotFoundException(universityDTO.getId()));
 	}
 }
