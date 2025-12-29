@@ -1,8 +1,6 @@
 package com.github.hciteam.edumate.service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,16 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
-import com.github.hciteam.edumate.model.Role;
-import com.github.hciteam.edumate.model.Student;
 import com.github.hciteam.edumate.model.CourseRegistration;
 import com.github.hciteam.edumate.model.StudentTask;
 import com.github.hciteam.edumate.model.User;
 import com.github.hciteam.edumate.dto.SigninRequest;
 import com.github.hciteam.edumate.dto.SignupRequest;
-import com.github.hciteam.edumate.model.CourseRegistrationStatus;
 import com.github.hciteam.edumate.dto.UserDTO;
-import com.github.hciteam.edumate.repository.RoleRepository;
 import com.github.hciteam.edumate.repository.CourseOfferingRepository;
 import com.github.hciteam.edumate.repository.CourseRegistrationRepository;
 import com.github.hciteam.edumate.repository.StudentTaskRepository;
@@ -31,8 +25,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import com.github.hciteam.edumate.exception.UserAlreadyExistsException;
-import com.github.hciteam.edumate.exception.RoleNotFoundException;
-import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.mapper.UserMapper;
 
 @Service
@@ -40,7 +32,6 @@ public class AuthenticationService {
 	private final AuthenticationManager authenticationManager;
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
-	private final RoleRepository roleRepository;
 	private final CourseOfferingRepository offeringRepository;
 	private final CourseRegistrationRepository registrationRepository;
 	private final StudentTaskRepository studentTaskRepository;
@@ -52,14 +43,12 @@ public class AuthenticationService {
 
 	public AuthenticationService(AuthenticationManager authenticationManager,
 			PasswordEncoder passwordEncoder, UserRepository userRepository,
-			RoleRepository roleRepository,
 			CourseOfferingRepository courseOfferingRepository,
 			CourseRegistrationRepository registrationRepository,
 			StudentTaskRepository studentTaskRepository, UserMapper userMapper) {
 		this.authenticationManager = authenticationManager;
 		this.passwordEncoder = passwordEncoder;
 		this.userRepository = userRepository;
-		this.roleRepository = roleRepository;
 		this.offeringRepository = courseOfferingRepository;
 		this.registrationRepository = registrationRepository;
 		this.studentTaskRepository = studentTaskRepository;
@@ -72,44 +61,27 @@ public class AuthenticationService {
 			throw new UserAlreadyExistsException(signupRequest.getEmail());
 		}
 
-		Role studentRole = roleRepository.findByName("STUDENT")
-				.orElseThrow(() -> new RoleNotFoundException());
+		User user = userMapper.toEntity(signupRequest);
 
-		Set<Role> roles = new HashSet<>();
-		roles.add(studentRole);
+		user.setPassword(passwordEncoder.encode(signupRequest.getPassword()));
 
-		User user = User.builder().email(signupRequest.getEmail())
-				.password(passwordEncoder.encode(signupRequest.getPassword()))
-				.roles(roles).build();
+		User persistedUser = userRepository.save(user);
 
-		Student student = Student.builder().name(signupRequest.getName())
-				.gender(signupRequest.getGender())
-				.email(signupRequest.getUniversityEmail()).build();
-
-		user.setStudent(student);
-		student.setUser(user);
-
-		User createdUser = userRepository.save(user);
-
-		List<CourseRegistration> registrations =
-				offeringRepository
-						.findAll().stream().map(offering -> new CourseRegistration(null,
-								offering, student, CourseRegistrationStatus.REGISTERED))
-						.toList();
+		List<CourseRegistration> registrations = offeringRepository.findAll()
+				.stream().map(offering -> new CourseRegistration(offering,
+						persistedUser.getStudent()))
+				.toList();
 
 		registrationRepository.saveAll(registrations);
 
 		List<StudentTask> studentTasks = offeringRepository.findAll().stream()
 				.flatMap(offering -> offering.getTasks().stream()
-						.map(task -> StudentTask.builder()
-								.id(new StudentTaskKey(createdUser.getStudent().getId(),
-										task.getId()))
-								.student(student).task(task).build()))
+						.map(task -> new StudentTask(persistedUser.getStudent(), task)))
 				.toList();
 
 		studentTaskRepository.saveAll(studentTasks);
 
-		return userMapper.toDTO(createdUser);
+		return userMapper.toDTO(persistedUser);
 	}
 
 	public UserDTO signin(SigninRequest signinRequest, HttpServletRequest request,

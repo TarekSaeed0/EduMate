@@ -1,6 +1,5 @@
 package com.github.hciteam.edumate.dto;
 
-import com.github.hciteam.edumate.model.Gender;
 import com.github.hciteam.edumate.validation.Gmail;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -23,9 +22,6 @@ public class SignupRequest {
 
 	@NotBlank
 	private String name;
-
-	@NotNull
-	private Gender gender;
 
 	@NotNull
 	@Email

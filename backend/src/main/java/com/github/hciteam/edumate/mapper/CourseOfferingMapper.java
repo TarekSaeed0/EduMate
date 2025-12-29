@@ -16,33 +16,33 @@ import com.github.hciteam.edumate.exception.CourseNotFoundException;
 import com.github.hciteam.edumate.exception.SemesterNotFoundException;
 
 @Mapper(componentModel = "spring",
-		uses = {SemesterMapper.class, CourseMapper.class})
+		uses = {CourseMapper.class, SemesterMapper.class})
 public abstract class CourseOfferingMapper {
 	@Autowired
-	protected SemesterRepository semesterRepository;
-	@Autowired
 	protected CourseRepository courseRepository;
+	@Autowired
+	protected SemesterRepository semesterRepository;
 
 	public abstract CourseOfferingDTO toDTO(CourseOffering offering);
 
 	@Mapping(target = "id", ignore = true)
+	@Mapping(source = "course", target = "course", qualifiedByName = "mapCourse")
 	@Mapping(source = "semester", target = "semester",
 			qualifiedByName = "mapSemester")
-	@Mapping(source = "course", target = "course", qualifiedByName = "mapCourse")
 	@Mapping(target = "registrations", ignore = true)
 	@Mapping(target = "tasks", ignore = true)
 	@Mapping(target = "teamGroups", ignore = true)
 	public abstract CourseOffering toEntity(CourseOfferingDTO offeringDTO);
 
-	@Named("mapSemester")
-	protected Semester mapSemester(SemesterDTO semesterDTO) {
-		return semesterRepository.findById(semesterDTO.getId())
-				.orElseThrow(() -> new SemesterNotFoundException(semesterDTO.getId()));
-	}
-
 	@Named("mapCourse")
 	protected Course mapCourse(CourseDTO courseDTO) {
 		return courseRepository.findById(courseDTO.getId())
 				.orElseThrow(() -> new CourseNotFoundException(courseDTO.getId()));
+	}
+
+	@Named("mapSemester")
+	protected Semester mapSemester(SemesterDTO semesterDTO) {
+		return semesterRepository.findById(semesterDTO.getId())
+				.orElseThrow(() -> new SemesterNotFoundException(semesterDTO.getId()));
 	}
 }

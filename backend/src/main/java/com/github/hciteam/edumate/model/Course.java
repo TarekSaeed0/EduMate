@@ -12,7 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +20,6 @@ import lombok.Setter;
 @Table(name = "courses")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Course implements AnnouncementScope {
@@ -49,6 +47,14 @@ public class Course implements AnnouncementScope {
 	@OneToMany(mappedBy = "course", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private Set<CourseMaterial> materials;
+
+	public Course(University university, String code, String name,
+			Integer credits) {
+		this.university = university;
+		this.code = code;
+		this.name = name;
+		this.credits = credits;
+	}
 
 	@Override
 	public String getScopeType() {

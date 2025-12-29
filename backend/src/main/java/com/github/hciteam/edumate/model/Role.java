@@ -14,7 +14,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,6 @@ import lombok.Setter;
 @Table(name = "roles")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role implements Serializable {
@@ -38,6 +36,10 @@ public class Role implements Serializable {
 	@JoinTable(name = "roles_permissions",
 			joinColumns = @JoinColumn(name = "role_id"),
 			inverseJoinColumns = @JoinColumn(name = "permission_id"))
-	@Builder.Default
 	private Set<Permission> permissions = new HashSet<>();
+
+	public Role(String name, Set<Permission> permissions) {
+		this.name = name;
+		this.permissions = permissions;
+	}
 }

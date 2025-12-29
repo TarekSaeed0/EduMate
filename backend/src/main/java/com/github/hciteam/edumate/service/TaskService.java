@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.StudentTask;
 import com.github.hciteam.edumate.model.Task;
 import com.github.hciteam.edumate.exception.TaskNotFoundException;
-import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.mapper.TaskMapper;
 import com.github.hciteam.edumate.model.CourseRegistrationStatus;
 import com.github.hciteam.edumate.dto.TaskDTO;
@@ -40,10 +39,8 @@ public class TaskService {
 				persistedTask.getOffering().getRegistrations().stream()
 						.filter(registration -> registration
 								.getStatus() == CourseRegistrationStatus.REGISTERED)
-						.map(registration -> StudentTask.builder()
-								.id(new StudentTaskKey(registration.getStudent().getId(),
-										persistedTask.getId()))
-								.student(registration.getStudent()).task(persistedTask).build())
+						.map(registration -> new StudentTask(registration.getStudent(),
+								persistedTask))
 						.toList();
 
 		studentTaskRepository.saveAll(studentTasks);
@@ -69,15 +66,13 @@ public class TaskService {
 			if (offeringChanged) {
 				studentTaskRepository.deleteAll(persistedTask.getStudentTasks());
 
-				List<StudentTask> studentTasks = persistedTask.getOffering()
-						.getRegistrations().stream()
-						.filter(registration -> registration
-								.getStatus() == CourseRegistrationStatus.REGISTERED)
-						.map(registration -> StudentTask.builder()
-								.id(new StudentTaskKey(registration.getStudent().getId(),
-										persistedTask.getId()))
-								.student(registration.getStudent()).task(persistedTask).build())
-						.toList();
+				List<StudentTask> studentTasks =
+						persistedTask.getOffering().getRegistrations().stream()
+								.filter(registration -> registration
+										.getStatus() == CourseRegistrationStatus.REGISTERED)
+								.map(registration -> new StudentTask(registration.getStudent(),
+										persistedTask))
+								.toList();
 
 				studentTaskRepository.saveAll(studentTasks);
 			}

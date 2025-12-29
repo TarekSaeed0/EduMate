@@ -10,7 +10,6 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +18,6 @@ import lombok.Setter;
 @Table(name = "announcements")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Announcement {
@@ -45,7 +43,6 @@ public class Announcement {
 	private String content;
 
 	@Column(nullable = false)
-	@Builder.Default
 	private LocalDateTime createdAt = LocalDateTime.now();
 
 	public void setScope(AnnouncementScope scope) {

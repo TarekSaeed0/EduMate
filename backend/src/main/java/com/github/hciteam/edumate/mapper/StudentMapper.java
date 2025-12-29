@@ -7,13 +7,17 @@ import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.github.hciteam.edumate.model.Student;
 import com.github.hciteam.edumate.model.University;
+import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.UniversityRepository;
 import com.github.hciteam.edumate.dto.StudentDTO;
 import com.github.hciteam.edumate.dto.UniversityDTO;
+import com.github.hciteam.edumate.exception.StudentNotFoundException;
 import com.github.hciteam.edumate.exception.UniversityNotFoundException;
 
 @Mapper(componentModel = "spring", uses = {UniversityMapper.class})
 public abstract class StudentMapper {
+	@Autowired
+	protected StudentRepository studentRepository;
 	@Autowired
 	protected UniversityRepository universityRepository;
 
@@ -41,5 +45,11 @@ public abstract class StudentMapper {
 	protected University mapUniversity(UniversityDTO universityDTO) {
 		return universityRepository.findById(universityDTO.getId()).orElseThrow(
 				() -> new UniversityNotFoundException(universityDTO.getId()));
+	}
+
+	@Named("mapStudent")
+	protected Student mapStudent(StudentDTO studentDTO) {
+		return studentRepository.findById(studentDTO.getId())
+				.orElseThrow(() -> new StudentNotFoundException(studentDTO.getId()));
 	}
 }

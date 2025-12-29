@@ -14,7 +14,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,6 @@ import lombok.Setter;
 @Table(name = "faqs")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class FAQ {
@@ -42,6 +40,11 @@ public class FAQ {
 	@JoinTable(name = "faqs_categories",
 			joinColumns = @JoinColumn(name = "faq_id"),
 			inverseJoinColumns = @JoinColumn(name = "category_id"))
-	@Builder.Default
 	private Set<FAQCategory> categories = new HashSet<>();
+
+	public FAQ(String question, String answer, Set<FAQCategory> categories) {
+		this.question = question;
+		this.answer = answer;
+		this.categories = categories;
+	}
 }

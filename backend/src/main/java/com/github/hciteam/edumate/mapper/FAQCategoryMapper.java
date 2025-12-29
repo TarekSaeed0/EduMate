@@ -16,6 +16,6 @@ public abstract class FAQCategoryMapper {
 
 	FAQCategory toEntity(String categoryName) {
 		return categoryRepository.findByName(categoryName)
-				.orElseGet(() -> FAQCategory.builder().name(categoryName).build());
+				.orElseGet(() -> new FAQCategory(categoryName));
 	}
 }

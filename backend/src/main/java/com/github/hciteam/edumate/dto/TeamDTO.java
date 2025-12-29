@@ -1,6 +1,7 @@
 package com.github.hciteam.edumate.dto;
 
 import java.util.List;
+import com.github.hciteam.edumate.model.TeamStatus;
 import com.github.hciteam.edumate.validation.ValidationGroups;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
@@ -25,4 +26,7 @@ public class TeamDTO {
 
 	@Null(groups = {ValidationGroups.Create.class})
 	private List<StudentDTO> members;
+
+	@Null
+	private TeamStatus status;
 }

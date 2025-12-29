@@ -11,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +19,6 @@ import lombok.Setter;
 @Table(name = "course_sessions")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CourseSession {
@@ -41,4 +39,12 @@ public class CourseSession {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private CourseSessionType type;
+
+	public CourseSession(CourseOffering offering, TimeSlot slot, String location,
+			CourseSessionType type) {
+		this.offering = offering;
+		this.slot = slot;
+		this.location = location;
+		this.type = type;
+	}
 }

@@ -10,7 +10,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,7 +18,6 @@ import lombok.Setter;
 @Table(name = "student_tasks")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentTask {
@@ -37,4 +35,10 @@ public class StudentTask {
 	private Task task;
 
 	private LocalDateTime submittedAt;
+
+	public StudentTask(Student student, Task task) {
+		this.student = student;
+		this.task = task;
+		this.id = new StudentTaskKey(student.getId(), task.getId());
+	}
 }

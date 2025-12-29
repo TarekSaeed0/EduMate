@@ -5,29 +5,24 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.User;
 import com.github.hciteam.edumate.dto.UserDTO;
-import com.github.hciteam.edumate.repository.StudentRepository;
 import com.github.hciteam.edumate.repository.UniversityRepository;
 import com.github.hciteam.edumate.repository.UserRepository;
 import com.github.hciteam.edumate.exception.UserAlreadyExistsException;
 import com.github.hciteam.edumate.exception.UserNotFoundException;
 import com.github.hciteam.edumate.mapper.UserMapper;
-import com.github.hciteam.edumate.exception.StudentAlreadyExistsException;
 import com.github.hciteam.edumate.exception.UniversityNotFoundException;
 
 @Service
 public class UserService {
 	private final UserRepository userRepository;
-	private final StudentRepository studentRepository;
 	private final UniversityRepository universityRepository;
 	private final UserMapper userMapper;
 	private final PasswordEncoder passwordEncoder;
 
 	public UserService(UserRepository userRepository,
-			StudentRepository studentRepository,
 			UniversityRepository universityRepository, UserMapper userMapper,
 			PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
-		this.studentRepository = studentRepository;
 		this.universityRepository = universityRepository;
 		this.userMapper = userMapper;
 		this.passwordEncoder = passwordEncoder;

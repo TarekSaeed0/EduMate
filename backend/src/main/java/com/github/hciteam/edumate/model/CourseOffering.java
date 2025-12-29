@@ -12,7 +12,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,6 @@ import lombok.Setter;
 				@UniqueConstraint(columnNames = {"semester_id", "course_id"})})
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CourseOffering {
@@ -32,12 +30,12 @@ public class CourseOffering {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "semester_id", nullable = false)
-	private Semester semester;
-
-	@ManyToOne
 	@JoinColumn(name = "course_id", nullable = false)
 	private Course course;
+
+	@ManyToOne
+	@JoinColumn(name = "semester_id", nullable = false)
+	private Semester semester;
 
 	@OneToMany(mappedBy = "offering", cascade = CascadeType.ALL,
 			orphanRemoval = true)
@@ -50,4 +48,9 @@ public class CourseOffering {
 	@OneToMany(mappedBy = "offering", cascade = CascadeType.ALL,
 			orphanRemoval = true)
 	private Set<TeamGroup> teamGroups;
+
+	public CourseOffering(Course course, Semester semester) {
+		this.course = course;
+		this.semester = semester;
+	}
 }

@@ -12,7 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,6 @@ import lombok.Setter;
 				@UniqueConstraint(columnNames = {"period_id", "weekDay"})})
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class TimeSlot {
@@ -38,4 +36,9 @@ public class TimeSlot {
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private WeekDay weekDay;
+
+	public TimeSlot(TimePeriod period, WeekDay weekDay) {
+		this.period = period;
+		this.weekDay = weekDay;
+	}
 }

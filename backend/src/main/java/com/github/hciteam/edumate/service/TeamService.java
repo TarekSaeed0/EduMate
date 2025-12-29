@@ -3,33 +3,21 @@ package com.github.hciteam.edumate.service;
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import com.github.hciteam.edumate.model.Student;
 import com.github.hciteam.edumate.model.Team;
-import com.github.hciteam.edumate.model.TeamGroup;
 import com.github.hciteam.edumate.model.TeamStatus;
-import com.github.hciteam.edumate.exception.StudentNotFoundException;
-import com.github.hciteam.edumate.exception.TeamGroupNotFoundException;
 import com.github.hciteam.edumate.exception.TeamNotFoundException;
 import com.github.hciteam.edumate.mapper.TeamMapper;
 import com.github.hciteam.edumate.dto.TeamDTO;
-import com.github.hciteam.edumate.repository.StudentRepository;
-import com.github.hciteam.edumate.repository.TeamGroupRepository;
 import com.github.hciteam.edumate.repository.TeamRepository;
 import com.github.hciteam.edumate.specification.TeamSpecifications;
 
 @Service
 public class TeamService {
 	private final TeamRepository teamRepository;
-	private final TeamGroupRepository groupRepository;
-	private final StudentRepository studentRepository;
 	private final TeamMapper teamMapper;
 
-	public TeamService(TeamRepository teamRepository,
-			StudentRepository studentRepository, TeamGroupRepository groupRepository,
-			TeamMapper teamMapper) {
+	public TeamService(TeamRepository teamRepository, TeamMapper teamMapper) {
 		this.teamRepository = teamRepository;
-		this.groupRepository = groupRepository;
-		this.studentRepository = studentRepository;
 		this.teamMapper = teamMapper;
 	}
 
@@ -63,12 +51,7 @@ public class TeamService {
 	}
 
 	public TeamDTO createTeam(TeamDTO teamDTO) {
-		TeamGroup group = groupRepository.findById(teamDTO.getGroup().getId())
-				.orElseThrow(() -> new TeamGroupNotFoundException());
-		Student leader = studentRepository.findById(teamDTO.getLeader().getId())
-				.orElseThrow(() -> new StudentNotFoundException());
-
-		Team team = Team.builder().group(group).leader(leader).build();
+		Team team = teamMapper.toEntity(teamDTO);
 
 		return teamMapper.toDTO(teamRepository.save(team));
 	}

@@ -8,7 +8,6 @@ import com.github.hciteam.edumate.dto.CourseRegistrationDTO;
 import com.github.hciteam.edumate.model.CourseRegistration;
 import com.github.hciteam.edumate.model.CourseRegistrationStatus;
 import com.github.hciteam.edumate.model.StudentTask;
-import com.github.hciteam.edumate.key.StudentTaskKey;
 import com.github.hciteam.edumate.exception.CourseRegistrationAlreadyExistsException;
 import com.github.hciteam.edumate.exception.CourseRegistrationNotFoundException;
 import com.github.hciteam.edumate.mapper.CourseRegistrationMapper;
@@ -87,10 +86,7 @@ public class CourseRegistrationService {
 
 		List<StudentTask> studentTasks = taskRepository
 				.findByOfferingId(registrationDTO.getOffering().getId()).stream()
-				.map(task -> StudentTask.builder()
-						.id(new StudentTaskKey(presistedRegistration.getStudent().getId(),
-								task.getId()))
-						.student(presistedRegistration.getStudent()).task(task).build())
+				.map(task -> new StudentTask(presistedRegistration.getStudent(), task))
 				.toList();
 
 		studentTaskRepository.saveAll(studentTasks);

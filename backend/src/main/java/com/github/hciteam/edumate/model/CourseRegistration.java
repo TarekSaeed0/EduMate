@@ -12,7 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,6 @@ import lombok.Setter;
 				@UniqueConstraint(columnNames = {"offering_id", "student_id"})})
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class CourseRegistration {
@@ -41,6 +39,10 @@ public class CourseRegistration {
 
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
-	@Builder.Default
 	private CourseRegistrationStatus status = CourseRegistrationStatus.REGISTERED;
+
+	public CourseRegistration(CourseOffering offering, Student student) {
+		this.offering = offering;
+		this.student = student;
+	}
 }
