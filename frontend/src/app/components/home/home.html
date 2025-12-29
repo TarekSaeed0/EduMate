@@ -5,10 +5,13 @@
     <div class="dashboard-content">
       <aside class="profile-card">
         <div class="card-header"></div>
-        <div class="avatar-container"><div class="avatar">🧑🏻‍🎓</div></div>
+        <div class="avatar-container">
+          <div class="avatar">
+            <span class="material-symbols-outlined filled">person</span>
+          </div>
+        </div>
         <div class="user-details">
           <h2>{{ greeting() }}</h2>
-          <span class="student-id">ID: {{ authenticationService.user()?.student?.id }}</span>
           <span class="status-badge">Active Student</span>
         </div>
         <div class="stats-list">
@@ -24,40 +27,54 @@
         </div>
 
         <div class="features-grid">
-          <div (click)="navigateTo('student/timetable')" class="feature-card blue-card" style="cursor: pointer;">
-            <div class="icon-box">📅</div>
+          <div routerLink="/student/timetable" class="feature-card blue-card cursor-pointer">
+            <div class="icon-box">
+              <span class="material-symbols-outlined">calendar_month</span>
+            </div>
             <h3>Time Table</h3>
-            <p>View your daily classes.</p>
+            <p>Track your classes and daily schedule.</p>
           </div>
-
-          <div (click)="navigateTo('student/tasks')" class="feature-card teal-card" style="cursor: pointer;">
-            <div class="icon-box">✓</div>
+          <div routerLink="/student/tasks" class="feature-card teal-card cursor-pointer">
+            <div class="icon-box">
+              <span class="material-symbols-outlined">checklist</span>
+            </div>
             <h3>Task Tracker</h3>
-            <p>Manage assignments.</p>
+            <p>Organize assignments and stay productive.</p>
           </div>
-
-          <div (click)="navigateTo('student/announcements')" class="feature-card orange-card" style="cursor: pointer;">
-            <div class="icon-box">!</div>
+          <div routerLink="/student/announcements" class="feature-card orange-card cursor-pointer">
+            <div class="icon-box">
+              <span class="material-symbols-outlined">priority_high</span>
+            </div>
             <h3>Announcements</h3>
-            <p>Check recent news.</p>
+            <p>Never miss important updates.</p>
           </div>
-
-          <div (click)="navigateTo('student/team-creator')" class="feature-card purple-card" style="cursor: pointer;">
-            <div class="icon-box">👥</div>
+          <div routerLink="/student/team-creator" class="feature-card purple-card cursor-pointer">
+            <div class="icon-box">
+              <span class="material-symbols-outlined filled">groups</span>
+            </div>
             <h3>Team Creator</h3>
-            <p>Collaborate on projects.</p>
+            <p>Create groups and collaborate smoothly.</p>
           </div>
-
-          <div (click)="navigateTo('student/materials')" class="feature-card green-card" style="cursor: pointer;">
-            <div class="icon-box">📚</div>
+          <div routerLink="/student/materials" class="feature-card green-card cursor-pointer">
+            <div class="icon-box">
+              <span class="material-symbols-outlined">newsstand</span>
+            </div>
             <h3>Material Sources</h3>
-            <p>Access study files.</p>
+            <p>Access your study materials quickly.</p>
           </div>
-
-          <div (click)="navigateTo('student/faq')" class="feature-card lime-card" style="cursor: pointer;">
-            <div class="icon-box">❓</div>
+          <div routerLink="/student/map" class="feature-card pink-card cursor-pointer">
+            <div class="icon-box">
+              <span class="material-symbols-outlined">map</span>
+            </div>
+            <h3>Campus Map</h3>
+            <p>Navigate the campus effortlessly.</p>
+          </div>
+          <div routerLink="/student/faq" class="feature-card lime-card cursor-pointer">
+            <div class="icon-box">
+              <span class="material-symbols-outlined">help</span>
+            </div>
             <h3>FAQ</h3>
-            <p>Get help instantly.</p>
+            <p>Find instant answers to common questions.</p>
           </div>
         </div>
       </main>
@@ -73,8 +90,8 @@
         <a href="#">Contact</a>
       </nav>
       <div class="auth-buttons">
-        <a (click)="navigateTo('signin')" class="btn-ghost" style="cursor: pointer;">Sign In</a>
-        <a (click)="navigateTo('signup')" class="btn-primary" style="cursor: pointer;">Sign Up</a>
+        <a routerLink="/signin" class="btn-ghost" style="cursor: pointer">Sign In</a>
+        <a routerLink="/signup" class="btn-primary" style="cursor: pointer">Sign Up</a>
       </div>
     </header>
 
@@ -83,9 +100,64 @@
         <span class="pill">WELCOME TO EDUMATE</span>
         <h1>Find Focus.<br />Learn <span class="accent">&</span> Inspire.</h1>
         <p>
-          Your ultimate companion for tracking tasks, managing teams, and acing your academic journey.
+          Your ultimate companion for tracking tasks, managing teams, and acing your academic
+          journey.
         </p>
-        <a (click)="navigateTo('signup')" class="cta-button" style="cursor: pointer;"> GET STARTED → </a>
+        <a routerLink="/signup" class="cta-button" style="cursor: pointer"> GET STARTED → </a>
+      </div>
+    </section>
+    <section id="features" class="landing-features">
+      <h2>Explore Features</h2>
+      <div class="features-grid">
+        <div class="feature-card blue-card">
+          <div class="icon-box">
+            <span class="material-symbols-outlined">calendar_month</span>
+          </div>
+          <h3>Time Table</h3>
+          <p>Track your classes and daily schedule.</p>
+        </div>
+        <div class="feature-card teal-card">
+          <div class="icon-box">
+            <span class="material-symbols-outlined">checklist</span>
+          </div>
+          <h3>Task Tracker</h3>
+          <p>Organize assignments and stay productive.</p>
+        </div>
+        <div class="feature-card orange-card">
+          <div class="icon-box">
+            <span class="material-symbols-outlined">priority_high</span>
+          </div>
+          <h3>Announcements</h3>
+          <p>Never miss important updates.</p>
+        </div>
+        <div class="feature-card purple-card">
+          <div class="icon-box">
+            <span class="material-symbols-outlined filled">groups</span>
+          </div>
+          <h3>Team Creator</h3>
+          <p>Create groups and collaborate smoothly.</p>
+        </div>
+        <div class="feature-card green-card">
+          <div class="icon-box">
+            <span class="material-symbols-outlined">newsstand</span>
+          </div>
+          <h3>Material Sources</h3>
+          <p>Access your study materials quickly.</p>
+        </div>
+        <div class="feature-card pink-card">
+          <div class="icon-box">
+            <span class="material-symbols-outlined">map</span>
+          </div>
+          <h3>Campus Map</h3>
+          <p>Navigate the campus effortlessly.</p>
+        </div>
+        <div class="feature-card lime-card">
+          <div class="icon-box">
+            <span class="material-symbols-outlined">help</span>
+          </div>
+          <h3>FAQ</h3>
+          <p>Find instant answers to common questions.</p>
+        </div>
       </div>
     </section>
   </div>

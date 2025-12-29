@@ -3,17 +3,9 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
 import { Student } from './student.service';
 
-export enum Gender {
-  Male = 'MALE',
-  Female = 'FEMALE',
-}
-
 export interface SignupRequest {
-  studentId: number;
   name: string;
-  gender: Gender;
   email: string;
-  universityEmail: string;
   password: string;
 }
 

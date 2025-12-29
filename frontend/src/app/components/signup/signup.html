@@ -1,8 +1,6 @@
 <div class="signup-container">
-
   <!-- MAIN CARD WRAPPER (Fixes alignment issues) -->
   <div class="signup-card-wrapper">
-
     <!-- LEFT SIDE: BRAND PANEL -->
     <div class="brand-side">
       <div class="brand-content">
@@ -23,56 +21,28 @@
       </div>
 
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
         <!-- Row 1: ID & Name -->
         <div class="form-row">
           <div class="form-group">
-            <label for="studentId">Student ID</label>
-            <input id="studentId" type="text" inputmode="numeric" formControlName="studentId" placeholder="e.g. 2023001" />
-            @if (form.get('studentId')?.invalid && (form.get('studentId')?.dirty || form.get('studentId')?.touched)) {
-              <span class="error">Valid ID required</span>
-            }
-          </div>
-
-          <div class="form-group">
-            <label for="name">Full Name</label>
+            <label for="name">Name</label>
             <input id="name" type="text" formControlName="name" placeholder="John Doe" />
-            @if (form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)) {
+            @if (
+              form.get('name')?.invalid && (form.get('name')?.dirty || form.get('name')?.touched)
+            ) {
               <span class="error">Name required</span>
             }
-          </div>
-        </div>
-
-        <!-- Gender Selection -->
-        <div class="form-group">
-          <label>Gender</label>
-          <div class="radio-group">
-            <label class="radio-label">
-              <input type="radio" value="MALE" formControlName="gender" />
-              <span class="radio-custom"></span> Male
-            </label>
-            <label class="radio-label">
-              <input type="radio" value="FEMALE" formControlName="gender" />
-              <span class="radio-custom"></span> Female
-            </label>
           </div>
         </div>
 
         <!-- Row 2: Emails -->
         <div class="form-row">
           <div class="form-group">
-            <label for="email">Personal Email</label>
+            <label for="email">Email</label>
             <input id="email" type="email" formControlName="email" placeholder="john@example.com" />
-            @if (form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)) {
+            @if (
+              form.get('email')?.invalid && (form.get('email')?.dirty || form.get('email')?.touched)
+            ) {
               <span class="error">Valid email required</span>
-            }
-          </div>
-
-          <div class="form-group">
-            <label for="universityEmail">University Email</label>
-            <input id="universityEmail" type="email" formControlName="universityEmail" placeholder="john@uni.edu.eg" />
-            @if (form.get('universityEmail')?.invalid && (form.get('universityEmail')?.dirty || form.get('universityEmail')?.touched)) {
-              <span class="error">Valid uni email required</span>
             }
           </div>
         </div>
@@ -81,16 +51,32 @@
         <div class="form-row">
           <div class="form-group">
             <label for="password">Password</label>
-            <input id="password" type="password" formControlName="password" placeholder="••••••••" />
-            @if (form.get('password')?.invalid && (form.get('password')?.dirty || form.get('password')?.touched)) {
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="••••••••"
+            />
+            @if (
+              form.get('password')?.invalid &&
+              (form.get('password')?.dirty || form.get('password')?.touched)
+            ) {
               <span class="error">Password required</span>
             }
           </div>
 
           <div class="form-group">
             <label for="confirmPassword">Confirm Password</label>
-            <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="••••••••" />
-            @if (form.hasError('passwordMismatch') && (form.get('confirmPassword')?.dirty || form.get('confirmPassword')?.touched)) {
+            <input
+              id="confirmPassword"
+              type="password"
+              formControlName="confirmPassword"
+              placeholder="••••••••"
+            />
+            @if (
+              form.hasError('passwordMismatch') &&
+              (form.get('confirmPassword')?.dirty || form.get('confirmPassword')?.touched)
+            ) {
               <span class="error">Passwords do not match</span>
             }
           </div>
@@ -99,12 +85,8 @@
         <!-- Submit Button -->
         <button type="submit" [disabled]="form.invalid" class="submit-btn">SIGN UP</button>
 
-        <p class="signin-link">
-          Already have an account? <a routerLink="/signin">Sign in</a>
-        </p>
-
+        <p class="signin-link">Already have an account? <a routerLink="/signin">Sign in</a></p>
       </form>
     </div>
-
   </div>
 </div>

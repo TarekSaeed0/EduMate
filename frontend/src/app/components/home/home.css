@@ -3,8 +3,16 @@
   min-height: 100vh;
 }
 
-.edu { color: var(--primary); font-weight: 800; font-size: 1.5rem; }
-.mate { color: var(--secondary); font-weight: 800; font-size: 1.5rem; }
+.edu {
+  color: var(--primary);
+  font-weight: 800;
+  font-size: 1.5rem;
+}
+.mate {
+  color: var(--secondary);
+  font-weight: 800;
+  font-size: 1.5rem;
+}
 
 .dashboard-container {
   min-height: 100vh;
@@ -47,7 +55,9 @@
   background: var(--primary);
   border-radius: 1px;
 }
-.menu-toggle:hover { opacity: 0.8; }
+.menu-toggle:hover {
+  opacity: 0.8;
+}
 
 .profile-toggle {
   background: var(--bg-main);
@@ -61,7 +71,9 @@
   font-weight: 600;
   color: var(--text-dark);
 }
-.profile-toggle:hover { background: var(--primary-light); }
+.profile-toggle:hover {
+  background: var(--primary-light);
+}
 
 .avatar-sm {
   color: var(--primary);
@@ -110,7 +122,12 @@
   align-items: center;
   justify-content: center;
   color: var(--primary);
-  font-size: 2rem;
+  overflow: hidden;
+}
+
+.avatar .material-symbols-outlined {
+  font-size: 5.5rem;
+  transform: translateY(0.75rem);
 }
 
 .user-details {
@@ -197,13 +214,13 @@
   padding: 18px;
   text-decoration: none;
   border: 1px solid var(--border-color);
-  transition: box-shadow 0.2s;
+  transition: box-shadow 0.3s;
   position: relative;
   overflow: hidden;
 }
 
 .feature-card:hover {
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .icon-box {
@@ -229,26 +246,61 @@
   font-size: 0.9rem;
 }
 
-.blue-card { border-left: 4px solid var(--primary); }
-.blue-card .icon-box { background: var(--primary-light); color: var(--primary); }
+.blue-card {
+  border-left: 4px solid var(--primary);
+}
+.blue-card .icon-box {
+  background: var(--primary-light);
+  color: var(--primary);
+}
 
-.teal-card { border-left: 4px solid var(--secondary); }
-.teal-card .icon-box { background: var(--secondary-light); color: var(--secondary); }
+.teal-card {
+  border-left: 4px solid var(--secondary);
+}
+.teal-card .icon-box {
+  background: var(--secondary-light);
+  color: var(--secondary);
+}
 
-.orange-card { border-left: 4px solid var(--accent); }
-.orange-card .icon-box { background: var(--accent-light); color: var(--accent); }
+.orange-card {
+  border-left: 4px solid var(--accent);
+}
+.orange-card .icon-box {
+  background: var(--accent-light);
+  color: var(--accent);
+}
 
-.purple-card { border-left: 4px solid var(--feat-purple-text); }
-.purple-card .icon-box { background: var(--feat-purple-bg); color: var(--feat-purple-text); }
+.purple-card {
+  border-left: 4px solid var(--feat-purple-text);
+}
+.purple-card .icon-box {
+  background: var(--feat-purple-bg);
+  color: var(--feat-purple-text);
+}
 
-.green-card { border-left: 4px solid var(--feat-green-text); }
-.green-card .icon-box { background: var(--feat-green-bg); color: var(--feat-green-text); }
+.green-card {
+  border-left: 4px solid var(--feat-green-text);
+}
+.green-card .icon-box {
+  background: var(--feat-green-bg);
+  color: var(--feat-green-text);
+}
 
-.pink-card { border-left: 4px solid var(--feat-pink-text); }
-.pink-card .icon-box { background: var(--feat-pink-bg); color: var(--feat-pink-text); }
+.pink-card {
+  border-left: 4px solid var(--feat-pink-text);
+}
+.pink-card .icon-box {
+  background: var(--feat-pink-bg);
+  color: var(--feat-pink-text);
+}
 
-.lime-card { border-left: 4px solid var(--feat-lime-text); }
-.lime-card .icon-box { background: var(--feat-lime-bg); color: var(--feat-lime-text); }
+.lime-card {
+  border-left: 4px solid var(--feat-lime-text);
+}
+.lime-card .icon-box {
+  background: var(--feat-lime-bg);
+  color: var(--feat-lime-text);
+}
 
 .landing-container {
   background: var(--bg-white);
@@ -270,7 +322,9 @@
   font-weight: 500;
   transition: color 0.2s;
 }
-.landing-nav a:hover { color: var(--primary); }
+.landing-nav a:hover {
+  color: var(--primary);
+}
 
 .auth-buttons {
   display: flex;
@@ -327,7 +381,9 @@
   margin: 10px 0 20px 0;
 }
 
-.hero-content-centered .accent { color: var(--secondary); }
+.hero-content-centered .accent {
+  color: var(--secondary);
+}
 
 .hero-content-centered p {
   font-size: 1.2rem;
@@ -347,7 +403,9 @@
   text-decoration: none;
   font-weight: 700;
 }
-.cta-button:hover { opacity: 0.9; }
+.cta-button:hover {
+  opacity: 0.9;
+}
 
 .landing-features {
   padding: 60px 30px;

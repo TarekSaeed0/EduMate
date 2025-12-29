@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { Gender } from './authentication.service';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { Task, TaskService } from './task.service';
@@ -10,8 +9,6 @@ import { WeekDay } from './time-slot.service';
 export interface Student {
   id: number;
   name: string;
-  gender: Gender;
-  email: string;
   userId: number;
 }
 
@@ -21,6 +18,7 @@ export interface StudentTask {
   studentId: number;
   task: Task;
   submittedAt: Date | null;
+  status: StudentTaskStatus;
 }
 
 export interface StudentTaskFilter {
@@ -102,17 +100,5 @@ export class StudentService {
     return this.http.get<Timetable>(`${this.baseUrl}/${studentId}/timetable`, {
       withCredentials: true,
     });
-  }
-  enrollStudent(studentId: number, offeringId: number) {
-    const enrollmentData = { studentId, offeringId, status: 'REGISTERED' };
-
-    this.http
-      .post('http://localhost:8080/api/registrations', enrollmentData, {
-        withCredentials: true, // Tells the backend an Admin is doing this
-      })
-      .subscribe({
-        next: () => alert('Student Enrolled!'),
-        error: (err) => console.error('Enrollment error:', err),
-      });
   }
 }

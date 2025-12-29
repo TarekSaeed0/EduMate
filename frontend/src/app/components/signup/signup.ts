@@ -7,7 +7,7 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { AuthenticationService, Gender } from '../../services/authentication.service';
+import { AuthenticationService } from '../../services/authentication.service';
 import { Router, RouterLink } from '@angular/router';
 
 export const passwordMatchingValidatior: ValidatorFn = (
@@ -31,11 +31,8 @@ export class Signup {
   private formBuilder = inject(FormBuilder);
   form = this.formBuilder.nonNullable.group(
     {
-      studentId: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       name: ['', Validators.required],
-      gender: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      universityEmail: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required],
     },
@@ -51,11 +48,8 @@ export class Signup {
       const value = this.form.getRawValue();
       this.authenticationService
         .signup({
-          studentId: parseInt(value.studentId, 10),
           name: value.name,
-          gender: value.gender as Gender,
           email: value.email,
-          universityEmail: value.universityEmail,
           password: value.password,
         })
         .subscribe(() => this.router.navigateByUrl('/signin'));

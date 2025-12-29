@@ -45,7 +45,9 @@ export class CourseRegistrationService {
     });
   }
 
-  createRegistration(registration: Omit<CourseRegistration, 'id'>): Observable<CourseRegistration> {
+  createRegistration(
+    registration: Omit<CourseRegistration, 'id' | 'status'>,
+  ): Observable<CourseRegistration> {
     return this.http.post<CourseRegistration>(`${this.baseUrl}`, registration, {
       withCredentials: true,
     });

@@ -9,6 +9,7 @@ export interface Team {
   group: TeamGroup;
   leader: Student;
   members: Student[];
+  status: TeamStatus;
 }
 
 export type TeamStatus = 'INCOMPLETE' | 'SUFFICIENT' | 'COMPLETE';
@@ -46,7 +47,7 @@ export class TeamService {
   }
 
   // Used for "Create Team as Leader" button
-  createTeam(team: Omit<Team, 'id' | 'members'>): Observable<Team> {
+  createTeam(team: Omit<Team, 'id' | 'members' | 'status'>): Observable<Team> {
     return this.http.post<Team>(this.baseUrl, team, { withCredentials: true });
   }
 
