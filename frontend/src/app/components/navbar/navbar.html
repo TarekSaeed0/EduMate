@@ -1,22 +1,34 @@
 <span #overlay class="overlay"></span>
 
-<nav class="navbar">
-  <div class="nav-left">
-    <button id="main-menu" class="main-menu" (click)="toggleSidebar($event)">
-      <span></span><span></span><span></span>
+<nav
+  class="sticky top-0 flex justify-between items-center px-4 py-2 shadow-md bg-white w-full z-1000"
+>
+  <div class="flex items-center gap-1">
+    <button
+      id="main-menu"
+      class="flex items-center rounded-full p-1 hover:bg-(--primary-light) transistion-colors duration-200 cursor-pointer"
+      (click)="toggleSidebar($event)"
+    >
+      <span class="material-symbols-outlined thick text-4xl! text-(--primary)">dehaze</span>
     </button>
-    <h1 class="web-title">
-      <a (click)="navigateTo('home')" style="cursor: pointer;">
-        <span id="Edu">Edu</span><span id="Mate">Mate</span>
+    <h1 class="font-[Open_Sans,sans-serif] text-3xl font-bold select-none">
+      <a routerLink="/home" class="cursor-pointer">
+        <span class="text-(--primary)">Edu</span><span class="text-(--secondary)">Mate</span>
       </a>
     </h1>
   </div>
 
-  <div class="nav-right">
-    <div class="profile-photo"></div>
+  <div class="relative">
     <div class="dropdown" [class.open]="dropdownOpen">
-      <div class="dropdown-btn" (click)="toggleDropdown()">Profile <span class="arrow"></span></div>
-      <div class="dropdown-menu">
+      <div
+        class="size-12 flex justify-center items-center rounded-full bg-white border-3 border-(--primary-light) text-(--primary) overflow-hidden cursor-pointer"
+        (click)="toggleDropdown()"
+      >
+        <span class="material-symbols-outlined filled select-none text-[3.1rem]! translate-y-1.75"
+          >person</span
+        >
+      </div>
+      <div class="absolute top-full right-0 dropdown-menu">
         <div class="dropdown-item" (click)="onProfileSelect('main')">Your Account</div>
         <div class="dropdown-item" (click)="onProfileSelect('logout')">Sign Out</div>
       </div>
@@ -26,19 +38,38 @@
 
 <div #sidebar class="sidebar">
   <ul>
-    <li><a (click)="navigateTo('home')" style="cursor: pointer;"><span>Home Page</span></a></li>
-    <li><a (click)="navigateTo('student/timetable')" style="cursor: pointer;"><span>Time Table</span></a></li>
-    <li><a (click)="navigateTo('student/tasks')" style="cursor: pointer;"><span>Task Tracker</span></a></li>
-    <li><a (click)="navigateTo('student/team-creator')" style="cursor: pointer;"><span>Team Creator</span></a></li>
-    <li><a (click)="navigateTo('student/announcements')" style="cursor: pointer;"><span>Announcement</span></a></li>
-    <li><a (click)="navigateTo('student/materials')" style="cursor: pointer;"><span>Material Sources</span></a></li>
-    <li><a (click)="navigateTo('map')" style="cursor: pointer;"><span>Map</span></a></li>
-    <li><a (click)="navigateTo('student/faq')" style="cursor: pointer;"><span>FAQ</span></a></li>
+    <li>
+      <a routerLink="/home" class="cursor-pointer"><span>Home Page</span></a>
+    </li>
+    <li>
+      <a routerLink="/student/timetable" class="cursor-pointer"><span>Time Table</span></a>
+    </li>
+    <li>
+      <a routerLink="/student/tasks" class="cursor-pointer"><span>Task Tracker</span></a>
+    </li>
+    <li>
+      <a routerLink="/student/team-creator" class="cursor-pointer"><span>Team Creator</span></a>
+    </li>
+    <li>
+      <a routerLink="/student/announcements" class="cursor-pointer"><span>Announcement</span></a>
+    </li>
+    <li>
+      <a routerLink="/student/materials" class="cursor-pointer"><span>Material Sources</span></a>
+    </li>
+    <li>
+      <a routerLink="/map" class="cursor-pointer"><span>Map</span></a>
+    </li>
+    <li>
+      <a routerLink="/student/faq" class="cursor-pointer"><span>FAQ</span></a>
+    </li>
 
     @if (isAdmin()) {
       <li class="admin-link">
-        <a (click)="navigateTo('admin/dashboard')" style="cursor: pointer; border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px;">
-          <span style="color: #e11d48; font-weight: bold;">🛠 Admin Panel</span>
+        <a
+          routerLink="/admin/dashboard"
+          style="cursor: pointer; border-top: 1px solid #eee; margin-top: 10px; padding-top: 10px"
+        >
+          <span style="color: #e11d48; font-weight: bold">🛠 Admin Panel</span>
         </a>
       </li>
     }

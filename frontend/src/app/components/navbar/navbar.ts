@@ -1,11 +1,18 @@
-import { Component, ChangeDetectorRef, HostListener, viewChild, ElementRef, inject } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+  HostListener,
+  viewChild,
+  ElementRef,
+  inject,
+} from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './navbar.html',
   styleUrls: ['./navbar.css', './sidebar.css', './profile.css'],
 })
@@ -43,12 +50,15 @@ export class Navbar {
   }
 
   dropdownOpen = false;
-  toggleDropdown() { this.dropdownOpen = !this.dropdownOpen; }
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
 
   onProfileSelect(option: string) {
     this.dropdownOpen = false;
-    if (option === "main") { this.navigateTo('main'); }
-    else if (option === "logout") {
+    if (option === 'main') {
+      this.navigateTo('main');
+    } else if (option === 'logout') {
       this.authenticationService.signout().subscribe(() => this.navigateTo('home'));
     }
   }

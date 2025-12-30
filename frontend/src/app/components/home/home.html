@@ -2,7 +2,7 @@
   <div class="dashboard-container">
     <app-navbar></app-navbar>
 
-    <div class="dashboard-content">
+    <div class="dashboard-content sm:flex-row flex-col">
       <aside class="profile-card">
         <div class="card-header"></div>
         <div class="avatar-container">
@@ -20,62 +20,25 @@
         </div>
       </aside>
 
-      <main class="features-area">
+      <main class="features-area h-fit bg-white p-6 rounded-2xl shadow-lg overflow-y-auto">
         <div class="features-header">
           <h1>Overview</h1>
           <p>Everything you need, right here.</p>
         </div>
 
         <div class="features-grid">
-          <div routerLink="/student/timetable" class="feature-card blue-card cursor-pointer">
-            <div class="icon-box">
-              <span class="material-symbols-outlined">calendar_month</span>
+          @for (feature of features; track feature) {
+            <div
+              [routerLink]="feature.link"
+              class="feature-card {{ feature.color }}-card cursor-pointer"
+            >
+              <div class="icon-box">
+                <span class="material-symbols-outlined">{{ feature.icon }}</span>
+              </div>
+              <h3>{{ feature.title }}</h3>
+              <p>{{ feature.description }}</p>
             </div>
-            <h3>Time Table</h3>
-            <p>Track your classes and daily schedule.</p>
-          </div>
-          <div routerLink="/student/tasks" class="feature-card teal-card cursor-pointer">
-            <div class="icon-box">
-              <span class="material-symbols-outlined">checklist</span>
-            </div>
-            <h3>Task Tracker</h3>
-            <p>Organize assignments and stay productive.</p>
-          </div>
-          <div routerLink="/student/announcements" class="feature-card orange-card cursor-pointer">
-            <div class="icon-box">
-              <span class="material-symbols-outlined">priority_high</span>
-            </div>
-            <h3>Announcements</h3>
-            <p>Never miss important updates.</p>
-          </div>
-          <div routerLink="/student/team-creator" class="feature-card purple-card cursor-pointer">
-            <div class="icon-box">
-              <span class="material-symbols-outlined filled">groups</span>
-            </div>
-            <h3>Team Creator</h3>
-            <p>Create groups and collaborate smoothly.</p>
-          </div>
-          <div routerLink="/student/materials" class="feature-card green-card cursor-pointer">
-            <div class="icon-box">
-              <span class="material-symbols-outlined">newsstand</span>
-            </div>
-            <h3>Material Sources</h3>
-            <p>Access your study materials quickly.</p>
-          </div>
-          <div routerLink="/student/map" class="feature-card pink-card cursor-pointer">
-            <div class="icon-box">
-              <span class="material-symbols-outlined">map</span>
-            </div>
-            <h3>Campus Map</h3>
-            <p>Navigate the campus effortlessly.</p>
-          </div>
-          <div routerLink="/student/faq" class="feature-card lime-card cursor-pointer">
-            <div class="icon-box">
-              <span class="material-symbols-outlined">help</span>
-            </div>
-            <h3>FAQ</h3>
-            <p>Find instant answers to common questions.</p>
-          </div>
+          }
         </div>
       </main>
     </div>
@@ -109,55 +72,15 @@
     <section id="features" class="landing-features">
       <h2>Explore Features</h2>
       <div class="features-grid">
-        <div class="feature-card blue-card">
-          <div class="icon-box">
-            <span class="material-symbols-outlined">calendar_month</span>
+        @for (feature of features; track feature) {
+          <div class="feature-card {{ feature.color }}-card">
+            <div class="icon-box">
+              <span class="material-symbols-outlined">{{ feature.icon }}</span>
+            </div>
+            <h3>{{ feature.title }}</h3>
+            <p>{{ feature.description }}</p>
           </div>
-          <h3>Time Table</h3>
-          <p>Track your classes and daily schedule.</p>
-        </div>
-        <div class="feature-card teal-card">
-          <div class="icon-box">
-            <span class="material-symbols-outlined">checklist</span>
-          </div>
-          <h3>Task Tracker</h3>
-          <p>Organize assignments and stay productive.</p>
-        </div>
-        <div class="feature-card orange-card">
-          <div class="icon-box">
-            <span class="material-symbols-outlined">priority_high</span>
-          </div>
-          <h3>Announcements</h3>
-          <p>Never miss important updates.</p>
-        </div>
-        <div class="feature-card purple-card">
-          <div class="icon-box">
-            <span class="material-symbols-outlined filled">groups</span>
-          </div>
-          <h3>Team Creator</h3>
-          <p>Create groups and collaborate smoothly.</p>
-        </div>
-        <div class="feature-card green-card">
-          <div class="icon-box">
-            <span class="material-symbols-outlined">newsstand</span>
-          </div>
-          <h3>Material Sources</h3>
-          <p>Access your study materials quickly.</p>
-        </div>
-        <div class="feature-card pink-card">
-          <div class="icon-box">
-            <span class="material-symbols-outlined">map</span>
-          </div>
-          <h3>Campus Map</h3>
-          <p>Navigate the campus effortlessly.</p>
-        </div>
-        <div class="feature-card lime-card">
-          <div class="icon-box">
-            <span class="material-symbols-outlined">help</span>
-          </div>
-          <h3>FAQ</h3>
-          <p>Find instant answers to common questions.</p>
-        </div>
+        }
       </div>
     </section>
   </div>

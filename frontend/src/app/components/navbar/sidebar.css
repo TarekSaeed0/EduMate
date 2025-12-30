@@ -1,81 +1,78 @@
 .sidebar {
-    box-sizing: border-box;
-    height: 100%;
+  box-sizing: border-box;
+  height: 100%;
 
-    position: fixed;
-    top: 80px;
-    left: -300px;
-    transition: left 0.5s ease;
+  position: fixed;
+  top: 80px;
+  left: -300px;
+  transition: left 0.5s ease;
 
-    background-color: #FFFFFF;
+  background-color: #ffffff;
 
-    padding: 0px 15px;
+  padding: 0px 15px;
 
-    box-shadow:
-        2.5px 0px 15px rgb(0, 0, 0, 0.3),
-        1px 0px 5px rgb(0, 0, 0, 0.5);
+  box-shadow:
+    2.5px 0px 15px rgb(0, 0, 0, 0.3),
+    1px 0px 5px rgb(0, 0, 0, 0.5);
 
-    display: block;
+  display: block;
 
-    z-index: 1100;
+  z-index: 1100;
 }
 
 .sidebar.active {
-    left: 0;
+  left: 0;
 }
 
 .sidebar ul {
-    list-style: none;
-    padding-left: 0;
+  list-style: none;
+  padding-left: 0;
 
-    list-style-type: disc;
-    margin-left: 20px;
+  list-style-type: disc;
+  margin-left: 20px;
 
-    gap: 20px;
+  gap: 20px;
 }
 
-.sidebar li::marker{
-    color: #626262;
+.sidebar li::marker {
+  color: #626262;
 }
 
 .sidebar li {
-    margin-bottom: 5px;
-    margin-top: 5px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 
-    border-radius: 12px;
-    padding: 8px 15px;
-
+  border-radius: 12px;
+  padding: 8px 15px;
 }
 
 .sidebar li:hover {
-    
-    background-color: gainsboro;
+  background-color: gainsboro;
 }
 
 .sidebar li a {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    text-decoration: none;
+  text-decoration: none;
 
-    color: #626262;
-    font-family: 'Open Sans', sans-serif;
-    font-size: large;
+  color: #626262;
+  font-family: 'Open Sans', sans-serif;
+  font-size: large;
 }
 
 .sidebar .separator {
-    width: auto;
-    height: 1px;
+  width: auto;
+  height: 1px;
 
-    border-radius: 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+  border-radius: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 
-    background-color: #7b7b7b;
+  background-color: #7b7b7b;
 
-    display: block;
+  display: block;
 }
-
 
 .overlay {
   width: 100vw;
@@ -86,7 +83,7 @@
   background-color: transparent;
 
   position: fixed;
-  z-index: 900;
+  z-index: 100;
   display: block;
   transition: background-color 0.7s ease;
   pointer-events: none;
@@ -96,4 +93,3 @@
   background-color: rgba(0, 0, 0, 0.404);
   pointer-events: auto;
 }
-

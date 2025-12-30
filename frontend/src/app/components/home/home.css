@@ -1,6 +1,6 @@
 :host {
   display: block;
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .edu {
@@ -15,7 +15,7 @@
 }
 
 .dashboard-container {
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -73,11 +73,6 @@
 }
 .profile-toggle:hover {
   background: var(--primary-light);
-}
-
-.avatar-sm {
-  color: var(--primary);
-  font-size: 1rem;
 }
 
 .dashboard-content {
