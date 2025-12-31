@@ -22,7 +22,7 @@
 
 .dash-navbar {
   height: 60px;
-  background: var(--bg-white);
+  background: var(--color-white);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -88,7 +88,7 @@
 
 .profile-card {
   width: 250px;
-  background: var(--bg-white);
+  background: var(--color-white);
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -110,7 +110,7 @@
 .avatar {
   width: 80px;
   height: 80px;
-  background: var(--bg-white);
+  background: var(--color-white);
   border-radius: 50%;
   border: 3px solid var(--bg-main);
   display: flex;
@@ -204,7 +204,7 @@
 }
 
 .feature-card {
-  background: var(--bg-white);
+  background: var(--color-white);
   border-radius: 10px;
   padding: 18px;
   text-decoration: none;
@@ -250,55 +250,55 @@
 }
 
 .teal-card {
-  border-left: 4px solid var(--secondary);
+  border-left: 4px solid var(--color-teal);
 }
 .teal-card .icon-box {
-  background: var(--secondary-light);
-  color: var(--secondary);
+  background: var(--color-teal-light);
+  color: var(--color-teal);
 }
 
 .orange-card {
-  border-left: 4px solid var(--accent);
+  border-left: 4px solid var(--color-orange);
 }
 .orange-card .icon-box {
-  background: var(--accent-light);
-  color: var(--accent);
+  background: var(--color-orange-light);
+  color: var(--color-orange);
 }
 
 .purple-card {
-  border-left: 4px solid var(--feat-purple-text);
+  border-left: 4px solid var(--color-purple);
 }
 .purple-card .icon-box {
-  background: var(--feat-purple-bg);
-  color: var(--feat-purple-text);
+  background: var(--color-purple-light);
+  color: var(--color-purple);
 }
 
 .green-card {
-  border-left: 4px solid var(--feat-green-text);
+  border-left: 4px solid var(--color-green);
 }
 .green-card .icon-box {
-  background: var(--feat-green-bg);
-  color: var(--feat-green-text);
+  background: var(--color-green-light);
+  color: var(--color-green);
 }
 
 .pink-card {
-  border-left: 4px solid var(--feat-pink-text);
+  border-left: 4px solid var(--color-pink);
 }
 .pink-card .icon-box {
-  background: var(--feat-pink-bg);
-  color: var(--feat-pink-text);
+  background: var(--color-pink-light);
+  color: var(--color-pink);
 }
 
 .lime-card {
-  border-left: 4px solid var(--feat-lime-text);
+  border-left: 4px solid var(--color-lime);
 }
 .lime-card .icon-box {
-  background: var(--feat-lime-bg);
-  color: var(--feat-lime-text);
+  background: var(--color-lime-light);
+  color: var(--color-lime);
 }
 
 .landing-container {
-  background: var(--bg-white);
+  background: var(--color-white);
 }
 
 .landing-header {

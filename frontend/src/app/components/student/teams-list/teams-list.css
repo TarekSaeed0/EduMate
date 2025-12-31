@@ -21,7 +21,7 @@
 /* Sidebar Styles: Fixed width to prevent collapsing */
 .sidebar {
   flex: 0 0 300px;
-  background-color: var(--bg-white);
+  background-color: var(--color-white);
   border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
@@ -31,10 +31,10 @@
 .sidebar-header {
   padding: 30px 0;
   text-align: center;
-  color: var(--bg-white);
+  color: var(--color-white);
   font-size: 20px;
   font-weight: 700;
-  background-color: var(--feat-purple-text);
+  background-color: var(--color-purple);
 }
 
 .sidebar-section {
@@ -114,7 +114,7 @@
   display: flex;
   gap: 50px;
   padding: 20px 30px;
-  background-color: var(--bg-white);
+  background-color: var(--color-white);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   margin-bottom: 40px;
@@ -142,7 +142,7 @@
 .team-row {
   display: flex;
   height: 90px;
-  background-color: var(--bg-white);
+  background-color: var(--color-white);
   border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
@@ -153,10 +153,19 @@
   transform: translateX(5px);
 }
 
-.color-strip { width: 8px; height: 100%; }
-.strip-green { background-color: var(--secondary); }
-.strip-orange { background-color: var(--accent); }
-.strip-red { background-color: var(--text-light); }
+.color-strip {
+  width: 8px;
+  height: 100%;
+}
+.strip-green {
+  background-color: var(--secondary);
+}
+.strip-orange {
+  background-color: var(--accent);
+}
+.strip-red {
+  background-color: var(--text-light);
+}
 
 .row-content {
   flex: 1;
@@ -166,23 +175,51 @@
   justify-content: space-between;
 }
 
-.row-team-name { font-size: 18px; margin: 0; }
-.row-spots { font-size: 14px; font-weight: 700; }
-
-.text-green { color: var(--secondary); }
-.text-orange { color: var(--accent); }
-.text-red { color: var(--danger); }
-
-/* Avatar Grouping */
-.avatar-group { display: flex; align-items: center; gap: 8px; }
-.avatar-circle {
-  width: 32px; height: 32px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; border: 2px solid white;
+.row-team-name {
+  font-size: 18px;
+  margin: 0;
+}
+.row-spots {
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.bg-blue-light { background-color: var(--primary-light); color: var(--primary); }
-.bg-purple-light { background-color: var(--feat-purple-bg); color: var(--feat-purple-text); }
+.text-green {
+  color: var(--secondary);
+}
+.text-orange {
+  color: var(--accent);
+}
+.text-red {
+  color: var(--danger);
+}
+
+/* Avatar Grouping */
+.avatar-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  border: 2px solid white;
+}
+
+.bg-blue-light {
+  background-color: var(--color-blue-light);
+  color: var(--color-blue);
+}
+.bg-purple-light {
+  background-color: var(--color-purple-light);
+  color: var(--color-purple);
+}
 
 /* Action Buttons */
 .join-btn {

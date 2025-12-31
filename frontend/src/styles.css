@@ -1,19 +1,38 @@
 @import 'tailwindcss';
 
 :root {
+  /* Color Palette */
+  --color-blue: #0066cc;
+  --color-blue-light: #eaf4fc;
+  --color-teal: #00b894;
+  --color-teal-light: #e0f2f1;
+  --color-green: #4caf50;
+  --color-green-light: #e8f5e9;
+  --color-orange: #ffa726;
+  --color-orange-light: #fff3e0;
+  --color-purple: #9c27b0;
+  --color-purple-light: #f3e5f5;
+  --color-pink: #e91e63;
+  --color-pink-light: #ffebee;
+  --color-lime: #cddc39;
+  --color-lime-light: #f9fbe7;
+  --color-red: #d32f2f;
+  --color-red-light: #ffebee;
+  --color-white: #ffffff;
+
   /* Brand Colors */
-  --primary: #0066cc;
-  --primary-light: #eaf4fc; /* also Used for light backgrounds */
+  --primary: var(--color-blue);
+  --primary-light: var(--color-blue-light); /* also Used for light backgrounds */
 
-  --secondary: #00b894;
-  --secondary-light: #e0f2f1;
+  --secondary: var(--color-teal);
+  --secondary-light: var(--color-teal-light);
 
-  --accent: #ffa726;
-  --accent-light: #fff3e0;
+  --accent: var(--color-orange);
+  --accent-light: var(--color-orange-light);
 
   /* App Structure */
   --bg-main: #f0f6fc; /* Main page background */
-  --bg-white: #ffffff; /* Card backgrounds */
+  --bg-card: #ffffff; /* Card backgrounds */
   --border-color: #e0e0e0;
 
   /* Typography */
@@ -22,18 +41,8 @@
   --text-light: #9e9e9e; /* Meta text */
 
   /* Utility Colors */
-  --danger: #d32f2f;
-  --danger-bg: #fff3e0;
-
-  /* Feature Card Colors (Backgrounds & Text) */
-  --feat-purple-bg: #f3e5f5;
-  --feat-purple-text: #9c27b0;
-  --feat-green-bg: #e8f5e9;
-  --feat-green-text: #4caf50;
-  --feat-pink-bg: #ffebee;
-  --feat-pink-text: #e91e63;
-  --feat-lime-bg: #f9fbe7;
-  --feat-lime-text: #cddc39;
+  --danger: var(--color-red);
+  --danger-bg: var(--color-red-light);
 }
 
 /* Global Resets */
@@ -70,6 +79,10 @@ a {
 
 button {
   font-family: inherit;
+}
+
+input::placeholder {
+  color: var(--text-light);
 }
 
 .filled {

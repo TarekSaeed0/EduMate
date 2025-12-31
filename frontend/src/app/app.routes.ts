@@ -8,7 +8,7 @@ import { TeamCreator } from './components/student/team-creator/team-creator';
 import { AnnouncementsComponent } from './components/student/announcements/announcements';
 import { MaterialsComponent } from './components/student/materials/materials';
 import { TimetableComponent } from './components/student/timetable/timetable';
-import {AdminDashboard} from './components/admin-dashboard/admin-dashboard';
+import { AdminDashboard } from './components/admin-dashboard/admin-dashboard';
 import { Map } from './components/map/map';
 import { TeamsListComponent } from './components/student/teams-list/teams-list';
 import { TeamDetailsComponent } from './components/student/team-details/team-details';
@@ -28,6 +28,7 @@ export const routes: Routes = [
   { path: 'student/announcements', component: AnnouncementsComponent, title: 'Announcements' },
   { path: 'student/materials', component: MaterialsComponent, title: 'Materials' },
   { path: 'student/timetable', component: TimetableComponent, title: 'Time Table' },
+  { path: 'student/map', component: Map, title: 'Map' },
+
   { path: 'admin/dashboard', component: AdminDashboard },
-  { path: 'map', component: Map, title: 'map' },
 ];

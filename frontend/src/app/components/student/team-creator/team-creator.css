@@ -18,7 +18,7 @@
 .sidebar {
   width: 300px;
   min-height: 700px;
-  background-color: var(--bg-white);
+  background-color: var(--color-white);
   border: 1px solid var(--border-color);
   border-radius: 16px;
   overflow: hidden;
@@ -28,10 +28,10 @@
 .sidebar-header {
   padding: 30px 0;
   text-align: center;
-  color: var(--bg-white);
+  color: var(--color-white);
   font-size: 20px;
   font-weight: 700;
-  background-color: var(--feat-purple-text);
+  background-color: var(--color-purple);
 }
 
 .sidebar-section {
@@ -55,8 +55,8 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: var(--feat-purple-bg);
-  color: var(--feat-purple-text);
+  background-color: var(--color-purple-light);
+  color: var(--color-purple);
   font-size: 12px;
   font-weight: 700;
 
@@ -81,7 +81,7 @@
 .team-card {
   display: flex;
   align-items: center;
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   border-radius: 8px;
   padding: 10px 15px;
   margin-top: 10px;
@@ -115,7 +115,6 @@
   margin: 0;
 }
 
-
 /* RIGHT CONTENT */
 .course-list-content {
   flex-grow: 1;
@@ -144,7 +143,7 @@
 
 .add-course-btn {
   background-color: var(--primary);
-  color: var(--bg-white);
+  color: var(--color-white);
   border: none;
   border-radius: 12px;
   padding: 10px 20px;
@@ -171,7 +170,7 @@
   height: auto;
 
   border-radius: 16px;
-  background-color: var(--bg-white);
+  background-color: var(--color-white);
   border: 1px solid var(--border-color);
   overflow: hidden;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
@@ -247,22 +246,36 @@
   min-height: 20px;
 }
 
-
 /* --- STATE-SPECIFIC STYLES --- */
 
 /* CARD COLOR VARIANTS */
-.bg-card-blue { background-color: var(--primary-light); }
-.bg-card-blue .course-code { color: var(--primary); }
+.bg-card-blue {
+  background-color: var(--primary-light);
+}
+.bg-card-blue .course-code {
+  color: var(--primary);
+}
 
-.bg-card-green { background-color: var(--secondary-light); }
-.bg-card-green .course-code { color: var(--secondary); }
+.bg-card-green {
+  background-color: var(--secondary-light);
+}
+.bg-card-green .course-code {
+  color: var(--secondary);
+}
 
-.bg-card-red { background-color: var(--border-color); }
-.bg-card-red .course-code { color: var(--text-light); }
+.bg-card-red {
+  background-color: var(--border-color);
+}
+.bg-card-red .course-code {
+  color: var(--text-light);
+}
 
-.bg-card-orange { background-color: var(--accent-light); }
-.bg-card-orange .course-code { color: var(--accent); }
-
+.bg-card-orange {
+  background-color: var(--accent-light);
+}
+.bg-card-orange .course-code {
+  color: var(--accent);
+}
 
 /* 1. Default/No Team State */
 .tag-default {
@@ -271,9 +284,8 @@
 }
 .primary-btn {
   background-color: var(--primary);
-  color: var(--bg-white);
+  color: var(--color-white);
 }
-
 
 /* 2. Joined/Success State */
 .status-joined {
@@ -291,15 +303,14 @@
   margin-right: 5px;
 }
 .secondary-btn {
-  background-color: var(--bg-white);
+  background-color: var(--color-white);
   color: var(--secondary);
   border: 1px solid var(--secondary);
 }
 
-
 /* 3. Closed/Error State */
 .status-closed {
-  background-color: #F9F9F9;
+  background-color: #f9f9f9;
   border-color: var(--border-color);
   opacity: 0.7;
 }
@@ -307,7 +318,7 @@
   color: var(--text-light);
 }
 .tag-closed {
-  background-color: var(--feat-pink-bg);
+  background-color: var(--color-pink-light);
   color: var(--danger);
 }
 .disabled-btn {
@@ -315,7 +326,6 @@
   color: var(--text-light);
   cursor: not-allowed;
 }
-
 
 /* !++++++++++++++++====== */
 .container {
@@ -365,7 +375,7 @@
 
 .divider {
   height: 1px;
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
 }
 
 .form-content {
@@ -395,7 +405,7 @@
 .select-input {
   width: 100%;
   padding: 12px 40px 12px 14px;
-  border: 1.5px solid #E0E0E0;
+  border: 1.5px solid #e0e0e0;
   border-radius: 4px;
   background-color: white;
   color: #131313;
@@ -421,7 +431,7 @@
 .number-input {
   width: 100%;
   padding: 12px 40px 12px 14px;
-  border: 1.5px solid #E0E0E0;
+  border: 1.5px solid #e0e0e0;
   border-radius: 4px;
   background-color: white;
   color: #131313;
@@ -457,7 +467,7 @@
 .date-input {
   width: 100%;
   padding: 12px 40px 12px 14px;
-  border: 1.5px solid #E0E0E0;
+  border: 1.5px solid #e0e0e0;
   border-radius: 4px;
   background-color: white;
   color: #131313;
@@ -482,12 +492,11 @@
 }
 
 .button-cancel {
-  background-color: #CDD9E5;
+  background-color: #cdd9e5;
   color: black;
 }
 
 .button-create {
-  background-color: #0066CC;
+  background-color: #0066cc;
   color: white;
 }
-
