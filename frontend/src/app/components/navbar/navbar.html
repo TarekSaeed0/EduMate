@@ -1,77 +1,78 @@
-<span #overlay class="overlay"></span>
+<span
+  #overlay
+  class="block fixed top-0 z-100 size-full bg-transparent [&.active]:bg-black/40 [&.active]:pointer-events-auto transition-colors duration-700 pointer-events-none"
+></span>
 
-<nav
-  class="sticky top-0 flex justify-between items-center px-4 py-2 shadow-md bg-white w-full z-1000"
->
-  <div class="flex items-center gap-1">
-    <button
-      id="main-menu"
-      class="flex items-center rounded-full p-1 hover:bg-(--primary-light) transistion-colors duration-200 cursor-pointer"
-      (click)="toggleSidebar($event)"
-    >
-      <span class="material-symbols-outlined thick text-4xl! text-(--primary)">dehaze</span>
-    </button>
-    <h1 class="font-[Open_Sans,sans-serif] text-3xl font-bold select-none">
-      <a routerLink="/home" class="cursor-pointer">
-        <span class="text-(--primary)">Edu</span><span class="text-(--secondary)">Mate</span>
-      </a>
-    </h1>
-  </div>
-
-  <div class="relative">
-    <div class="dropdown" [class.open]="dropdownOpen">
-      <div
-        class="size-12 flex justify-center items-center rounded-full bg-white border-3 border-(--primary-light) text-(--primary) overflow-hidden cursor-pointer"
-        (click)="toggleDropdown()"
+<div class="sticky top-0 z-1200">
+  <nav
+    class="relative top-0 z-1200 flex justify-between items-center w-full px-4 py-2 bg-white shadow-md"
+  >
+    <div class="flex items-center gap-1">
+      <button
+        id="main-menu"
+        class="flex items-center rounded-full p-1 hover:bg-(--primary-light) transistion-colors duration-200 cursor-pointer"
+        (click)="toggleSidebar($event)"
       >
-        <span class="material-symbols-outlined filled select-none text-[3.1rem]! translate-y-1.75"
-          >person</span
+        <span class="material-symbols-outlined thick text-4xl! text-(--primary)">dehaze</span>
+      </button>
+      <h1 class="font-[Open_Sans,sans-serif] text-3xl font-bold select-none">
+        <a routerLink="/home" class="cursor-pointer">
+          <span class="text-(--primary)">Edu</span><span class="text-(--secondary)">Mate</span>
+        </a>
+      </h1>
+    </div>
+
+    <div class="relative">
+      <div class="dropdown" [class.open]="dropdownOpen">
+        <div
+          class="size-12 flex justify-center items-center rounded-full bg-white border-3 border-(--primary-light) text-(--primary) overflow-hidden cursor-pointer"
+          (click)="toggleDropdown()"
         >
-      </div>
-      <div class="absolute top-full right-0 dropdown-menu">
-        <div class="dropdown-item" (click)="onProfileSelect('main')">Your Account</div>
-        <div class="dropdown-item" (click)="onProfileSelect('logout')">Sign Out</div>
+          <span class="material-symbols-outlined filled select-none text-[3.1rem]! translate-y-1.75"
+            >person</span
+          >
+        </div>
+        <div class="absolute top-full right-0 dropdown-menu">
+          <div class="dropdown-item" (click)="onProfileSelect('main')">Your Account</div>
+          <div class="dropdown-item" (click)="onProfileSelect('logout')">Sign Out</div>
+        </div>
       </div>
     </div>
+  </nav>
+
+  <div class="relative z-1000">
+    <div
+      #sidebar
+      class="fixed -left-full [&.active]:left-0 block h-full p-3 pt-5 bg-white shadow-md transition-all duration-400"
+    >
+      <ul class="gap-4 text-(--color-grey)">
+        @for (page of pages; track page) {
+          <li
+            routerLinkActive="active"
+            class="p-2 pl-4 pr-8 rounded-full hover:bg-gray-100 [&.active]:bg-(--color-light) [&.active]:text-(--color) transition-colors duration-200"
+            [style]="{
+              '--color': 'var(--color-' + page.color + ')',
+              '--color-light': 'var(--color-' + page.color + '-light)',
+            }"
+          >
+            <a [routerLink]="page.link" class="flex items-center gap-4 cursor-pointer">
+              <span class="material-symbols-outlined">{{ page.icon }}</span>
+              <span>{{ page.title }}</span></a
+            >
+          </li>
+        }
+
+        @if (isAdmin()) {
+          <li class="admin-link">
+            <a
+              routerLink="/admin/dashboard"
+              class="pt-10 mt-10 border-t border-[#eee] cursor-pointer"
+            >
+              <span class="text-(--color-red) font-bold">🛠 Admin Panel</span>
+            </a>
+          </li>
+        }
+      </ul>
+    </div>
   </div>
-</nav>
-
-<div #sidebar class="sidebar">
-  <ul>
-    <li>
-      <a routerLink="/home" class="cursor-pointer"><span>Home Page</span></a>
-    </li>
-    <li>
-      <a routerLink="/student/timetable" class="cursor-pointer"><span>Time Table</span></a>
-    </li>
-    <li>
-      <a routerLink="/student/tasks" class="cursor-pointer"><span>Task Tracker</span></a>
-    </li>
-    <li>
-      <a routerLink="/student/team-creator" class="cursor-pointer"><span>Team Creator</span></a>
-    </li>
-    <li>
-      <a routerLink="/student/announcements" class="cursor-pointer"><span>Announcement</span></a>
-    </li>
-    <li>
-      <a routerLink="/student/materials" class="cursor-pointer"><span>Material Sources</span></a>
-    </li>
-    <li>
-      <a routerLink="/student/map" class="cursor-pointer"><span>Map</span></a>
-    </li>
-    <li>
-      <a routerLink="/student/faq" class="cursor-pointer"><span>FAQ</span></a>
-    </li>
-
-    @if (isAdmin()) {
-      <li class="admin-link">
-        <a
-          routerLink="/admin/dashboard"
-          class="pt-10 mt-10 border-t-1 border-[#eee] cursor-pointer"
-        >
-          <span class="text-(--color-red) font-bold">🛠 Admin Panel</span>
-        </a>
-      </li>
-    }
-  </ul>
 </div>

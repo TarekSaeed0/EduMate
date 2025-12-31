@@ -38,7 +38,7 @@ export class Home {
       link: '/student/tasks',
     },
     {
-      icon: 'priority_high',
+      icon: 'campaign',
       color: 'orange',
       title: 'Announcements',
       description: 'Never miss important updates.',
@@ -52,7 +52,7 @@ export class Home {
       link: '/student/team-creator',
     },
     {
-      icon: 'newsstand',
+      icon: 'menu_book',
       color: 'green',
       title: 'Material Sources',
       description: 'Access your study materials quickly.',

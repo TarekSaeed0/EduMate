@@ -19,6 +19,10 @@
   --color-red: #d32f2f;
   --color-red-light: #ffebee;
   --color-white: #ffffff;
+  --color-black: #000000;
+  --color-grey: #626262;
+  --color-grey-light: #9e9e9e;
+  --color-grey-dark: #131313;
 
   /* Brand Colors */
   --primary: var(--color-blue);

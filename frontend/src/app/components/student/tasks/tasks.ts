@@ -1,4 +1,11 @@
-import { Component, signal, ChangeDetectionStrategy, HostListener, inject } from '@angular/core';
+import {
+  Component,
+  signal,
+  ChangeDetectionStrategy,
+  HostListener,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { StudentService, StudentTask, StudentTaskStatus } from '../../../services/student.service';
 import { Navbar } from '../../navbar/navbar';
 import { AuthenticationService } from '../../../services/authentication.service';
@@ -12,7 +19,7 @@ import { TaskService, Task } from '../../../services/task.service';
   styleUrls: ['./tasks.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StudentTasks {
+export class StudentTasks implements OnInit {
   private authenticationService = inject(AuthenticationService);
   private studentService = inject(StudentService);
   private taskService = inject(TaskService);
@@ -25,7 +32,7 @@ export class StudentTasks {
   showCreateForm = signal<boolean>(false);
   isCreating = signal<boolean>(false);
 
-  constructor() {
+  ngOnInit() {
     this.filterTasks();
   }
 
@@ -64,11 +71,11 @@ export class StudentTasks {
       .subscribe({
         next: (updatedTask) => {
           // Update the task in the list
-          this.studentTasks.update(tasks =>
-            tasks.map(t => t.task.id === updatedTask.task.id ? updatedTask : t)
+          this.studentTasks.update((tasks) =>
+            tasks.map((t) => (t.task.id === updatedTask.task.id ? updatedTask : t)),
           );
         },
-        error: (err) => console.error('Failed to submit task:', err)
+        error: (err) => console.error('Failed to submit task:', err),
       });
   }
 
@@ -79,11 +86,11 @@ export class StudentTasks {
       .subscribe({
         next: (updatedTask) => {
           // Update the task in the list
-          this.studentTasks.update(tasks =>
-            tasks.map(t => t.task.id === updatedTask.task.id ? updatedTask : t)
+          this.studentTasks.update((tasks) =>
+            tasks.map((t) => (t.task.id === updatedTask.task.id ? updatedTask : t)),
           );
         },
-        error: (err) => console.error('Failed to unsubmit task:', err)
+        error: (err) => console.error('Failed to unsubmit task:', err),
       });
   }
 
@@ -144,7 +151,7 @@ export class StudentTasks {
         console.error('Failed to create task:', err);
         alert('Failed to create task. Please check the console for details.');
         this.isCreating.set(false);
-      }
+      },
     });
   }
 

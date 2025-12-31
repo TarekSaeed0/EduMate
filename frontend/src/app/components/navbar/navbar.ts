@@ -7,14 +7,21 @@ import {
   inject,
 } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+
+interface Page {
+  icon: string;
+  color: string;
+  title: string;
+  link: string;
+}
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css', './sidebar.css', './profile.css'],
+  styleUrls: ['./navbar.css', './profile.css'],
 })
 export class Navbar {
   sidebar = viewChild.required<ElementRef<HTMLDivElement>>('sidebar');
@@ -22,6 +29,57 @@ export class Navbar {
 
   private authenticationService = inject(AuthenticationService);
   private router = inject(Router);
+
+  protected pages: Page[] = [
+    {
+      icon: 'home',
+      color: 'blue',
+      title: 'Home Page',
+      link: '/home',
+    },
+    {
+      icon: 'calendar_month',
+      color: 'blue',
+      title: 'Time Table',
+      link: '/student/timetable',
+    },
+    {
+      icon: 'checklist',
+      color: 'teal',
+      title: 'Task Tracker',
+      link: '/student/tasks',
+    },
+    {
+      icon: 'groups',
+      color: 'purple',
+      title: 'Team Creator',
+      link: '/student/team-creator',
+    },
+    {
+      icon: 'campaign',
+      color: 'orange',
+      title: 'Announcements',
+      link: '/student/announcements',
+    },
+    {
+      icon: 'menu_book',
+      color: 'green',
+      title: 'Material Sources',
+      link: '/student/materials',
+    },
+    {
+      icon: 'map',
+      color: 'pink',
+      title: 'Campus Map',
+      link: '/student/map',
+    },
+    {
+      icon: 'help',
+      color: 'lime',
+      title: 'FAQ',
+      link: '/student/faq',
+    },
+  ];
 
   constructor(private cdr: ChangeDetectorRef) {}
 
