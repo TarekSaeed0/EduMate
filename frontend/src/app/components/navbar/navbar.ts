@@ -1,15 +1,8 @@
-import {
-  Component,
-  ChangeDetectorRef,
-  HostListener,
-  viewChild,
-  ElementRef,
-  inject,
-} from '@angular/core';
+import { Component, ChangeDetectorRef, HostListener, inject, signal } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
-interface Page {
+interface DrawerOption {
   icon: string;
   color: string;
   title: string;
@@ -21,16 +14,13 @@ interface Page {
   standalone: true,
   imports: [RouterLink, RouterLinkActive],
   templateUrl: './navbar.html',
-  styleUrls: ['./navbar.css', './profile.css'],
+  styleUrl: './navbar.css',
 })
 export class Navbar {
-  sidebar = viewChild.required<ElementRef<HTMLDivElement>>('sidebar');
-  overlay = viewChild.required<ElementRef<HTMLSpanElement>>('overlay');
-
   private authenticationService = inject(AuthenticationService);
   private router = inject(Router);
 
-  protected pages: Page[] = [
+  protected options: DrawerOption[] = [
     {
       icon: 'home',
       color: 'blue',
@@ -81,45 +71,38 @@ export class Navbar {
     },
   ];
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  isDrawerOpen = signal(false);
 
-  toggleSidebar(event: Event) {
-    event?.stopPropagation();
-    this.sidebar()?.nativeElement.classList.toggle('active');
-    this.overlay()?.nativeElement.classList.toggle('active');
-    this.cdr.detectChanges();
-  }
-
-  // Closes sidebar and navigates
-  navigateTo(path: string) {
-    this.router.navigate([path]);
-    this.sidebar()?.nativeElement.classList.remove('active');
-    this.overlay()?.nativeElement.classList.remove('active');
+  toggleDrawer() {
+    this.isDrawerOpen.set(!this.isDrawerOpen());
   }
 
   @HostListener('document:click', ['$event'])
-  hideSidebar(event: Event) {
+  hideDrawer(event: Event) {
     const target = event.target as HTMLElement;
-    if (!this.sidebar()?.nativeElement.contains(target) && !target.closest('.main-menu')) {
-      this.sidebar()?.nativeElement.classList.remove('active');
-      this.overlay()?.nativeElement.classList.remove('active');
-      this.cdr.detectChanges();
+    if (!target.closest('#drawer, #drawer-button')) {
+      this.isUserMenuOpen.set(false);
     }
   }
 
-  dropdownOpen = false;
-  toggleDropdown() {
-    this.dropdownOpen = !this.dropdownOpen;
+  isUserMenuOpen = signal(false);
+
+  toggleUserMenu() {
+    this.isUserMenuOpen.set(!this.isUserMenuOpen());
   }
 
-  onProfileSelect(option: string) {
-    this.dropdownOpen = false;
-    if (option === 'main') {
-      this.navigateTo('main');
-    } else if (option === 'logout') {
-      this.authenticationService.signout().subscribe(() => this.navigateTo('home'));
+  @HostListener('document:click', ['$event'])
+  hideUserMenu(event: Event) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('#user-menu, #user-menu-button')) {
+      this.isUserMenuOpen.set(false);
     }
   }
+
+  signOut() {
+    this.authenticationService.signout().subscribe(() => this.router.navigateByUrl('/home'));
+  }
+
   isAdmin(): boolean {
     return this.authenticationService.hasRole('ADMINISTRATOR');
   }

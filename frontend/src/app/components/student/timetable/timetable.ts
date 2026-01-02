@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Navbar } from '../../navbar/navbar';
 import { StudentService, Timetable } from '../../../services/student.service';
@@ -23,6 +23,19 @@ export class TimetableComponent {
       .getStudentTimetable(this.authenticationService.user()!.student!.id)
       .subscribe((timetable) => this.timetable.set(timetable));
   }
+
+  semester = computed(() => {
+    const semester = this.authenticationService.user()?.student?.university.currentSemester;
+    if (!semester) {
+      return null;
+    }
+
+    const term = semester.term.charAt(0).toUpperCase() + semester.term.slice(1).toLowerCase();
+
+    const year = semester.year;
+
+    return `${term} ${year}-${year + 1}`;
+  });
 
   courseColors = ['#0ea5e9', '#00B894', '#FFA726', '#9C27B0', '#E91E63'];
 

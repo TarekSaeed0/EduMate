@@ -1,16 +1,3 @@
-.dashboard-wrapper {
-  background-color: #f8fafc; /* Standard EduMate BG */
-  min-height: 100vh;
-  padding: 40px 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.timetable-container {
-  width: 100%;
-  max-width: 1250px; /* Slightly wider for 6 days */
-}
-
 .timetable-header {
   display: flex;
   justify-content: space-between;

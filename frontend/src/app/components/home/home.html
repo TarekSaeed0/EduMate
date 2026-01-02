@@ -1,9 +1,9 @@
 @if (authenticationService.isAuthenticated()) {
-  <div class="dashboard-container">
+  <div class="h-screen flex flex-col overflow-y-auto">
     <app-navbar></app-navbar>
 
     <div class="dashboard-content sm:flex-row flex-col">
-      <aside class="profile-card">
+      <aside class="profile-card w-[250px] self-center sm:self-start">
         <div class="card-header"></div>
         <div class="avatar-container">
           <div class="avatar">

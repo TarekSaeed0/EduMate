@@ -10,12 +10,6 @@
   }
 }
 
-.dashboard-container {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
 .dashboard-content {
   display: flex;
   flex: 1;
@@ -28,7 +22,6 @@
 }
 
 .profile-card {
-  width: 250px;
   background: var(--color-white);
   border-radius: 12px;
   overflow: hidden;

@@ -1,52 +1,56 @@
-<app-navbar></app-navbar>
+<div class="h-screen flex flex-col overflow-x-hidden overflow-y-auto">
+  <app-navbar></app-navbar>
 
-<div class="dashboard-wrapper">
-  <div class="timetable-container">
-    <header class="timetable-header">
-      <div class="header-info">
-        <h1>Weekly Schedule</h1>
-        <p>Spring Semester 2024/2025</p>
-      </div>
-    </header>
+  <div class="flex-1">
+    <div class="w-screen px-5 py-10 bg-[#f8fafc] overflow-y-hidden">
+      <div class="min-w-[900px] max-w-[1200px] h-fit">
+        <header class="timetable-header">
+          <div class="header-info">
+            <h1>Weekly Schedule</h1>
+            <p>{{ semester() }}</p>
+          </div>
+        </header>
 
-    <div class="timetable-card">
-      <div
-        class="grid-row header-row"
-        [style.gridTemplateColumns]="'80px repeat(' + timetable()!.weekDays.length + ', 1fr)'"
-      >
-        <div class="cell-time">TIME</div>
-        @for (day of timetable()!.weekDays; track day) {
-          <div class="cell-day">{{ day }}</div>
-        }
-      </div>
+        <div class="timetable-card">
+          <div
+            class="grid-row header-row"
+            [style.gridTemplateColumns]="'80px repeat(' + timetable()!.weekDays.length + ', 1fr)'"
+          >
+            <div class="cell-time">TIME</div>
+            @for (day of timetable()!.weekDays; track day) {
+              <div class="cell-day">{{ day }}</div>
+            }
+          </div>
 
-      @for (period of timetable()!.periods; track period; let j = $index) {
-        <div
-          class="grid-row"
-          [style.gridTemplateColumns]="'80px repeat(' + timetable()!.weekDays.length + ', 1fr)'"
-        >
-          <div class="cell-time-stamp">{{ period.startTime }} : {{ period.endTime }}</div>
+          @for (period of timetable()!.periods; track period; let j = $index) {
+            <div
+              class="grid-row"
+              [style.gridTemplateColumns]="'80px repeat(' + timetable()!.weekDays.length + ', 1fr)'"
+            >
+              <div class="cell-time-stamp">{{ period.startTime }} : {{ period.endTime }}</div>
 
-          @for (day of timetable()!.weekDays; track day; let i = $index) {
-            <div class="cell-day-slot">
-              <div class="conflict-layer">
-                @for (session of getSessions(i, j); track session) {
-                  <div
-                    class="mini-session"
-                    [style.border-left]="'4px solid ' + getSessionColor(session)"
-                  >
-                    <span
-                      >{{ session.offering.course.name }}
-                      {{ session.type.charAt(0) + session.type.slice(1).toLowerCase() }}</span
-                    >
-                    <span>{{ session.location }}</span>
+              @for (day of timetable()!.weekDays; track day; let i = $index) {
+                <div class="cell-day-slot">
+                  <div class="conflict-layer">
+                    @for (session of getSessions(i, j); track session) {
+                      <div
+                        class="mini-session"
+                        [style.border-left]="'4px solid ' + getSessionColor(session)"
+                      >
+                        <span
+                          >{{ session.offering.course.name }}
+                          {{ session.type.charAt(0) + session.type.slice(1).toLowerCase() }}</span
+                        >
+                        <span>{{ session.location }}</span>
+                      </div>
+                    }
                   </div>
-                }
-              </div>
+                </div>
+              }
             </div>
           }
         </div>
-      }
+      </div>
     </div>
   </div>
 </div>

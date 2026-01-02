@@ -1,17 +1,18 @@
 <span
-  #overlay
-  class="block fixed top-0 z-100 size-full bg-transparent [&.active]:bg-black/40 [&.active]:pointer-events-auto transition-colors duration-700 pointer-events-none"
+  class="block fixed top-0 z-100 size-full bg-transparent transition-colors duration-700 pointer-events-none"
+  [class.bg-black/40!]="isDrawerOpen()"
+  [class.pointer-events-auto!]="isDrawerOpen()"
 ></span>
 
 <div class="sticky top-0 z-1200">
   <header
-    class="relative top-0 z-1200 flex justify-between items-center w-full px-4 py-2 bg-white shadow-md"
+    class="relative top-0 z-1200 flex justify-between items-center w-full h-16 px-4 py-2 bg-white shadow-md"
   >
     <div class="flex items-center gap-1">
       <button
-        id="main-menu"
+        id="drawe-button"
         class="flex items-center rounded-full p-1 hover:bg-(--primary-light) transistion-colors duration-200 cursor-pointer"
-        (click)="toggleSidebar($event)"
+        (click)="toggleDrawer()"
       >
         <span class="material-symbols-outlined thick text-4xl! text-(--primary)">dehaze</span>
       </button>
@@ -23,56 +24,60 @@
     </div>
 
     <div class="relative">
-      <div class="dropdown" [class.open]="dropdownOpen">
+      <div>
         <div
+          id="user-menu-button"
           class="size-12 flex justify-center items-center rounded-full bg-white border-3 border-(--primary-light) text-(--primary) overflow-hidden cursor-pointer"
-          (click)="toggleDropdown()"
+          (click)="toggleUserMenu()"
         >
           <span class="material-symbols-outlined filled select-none text-[3.1rem]! translate-y-1.75"
             >person</span
           >
         </div>
-        <div class="absolute top-full right-0 dropdown-menu">
-          <div class="dropdown-item" (click)="onProfileSelect('main')">Your Account</div>
-          <div class="dropdown-item" (click)="onProfileSelect('logout')">Sign Out</div>
+        <div
+          id="user-menu"
+          class="hidden absolute top-full right-0 w-[150px] text-(--color-grey) border border-(--border-color) bg-white shadow-md rounded-lg"
+          [class.block!]="isUserMenuOpen()"
+        >
+          <div class="user-menu-item">Your Account</div>
+          <div class="user-menu-item" (click)="signOut()">Sign Out</div>
         </div>
       </div>
     </div>
   </header>
 
-  <div class="relative z-1000">
-    <nav
-      #sidebar
-      class="fixed -left-full [&.active]:left-0 block h-full p-3 pt-5 bg-white shadow-md transition-all duration-400"
-    >
-      <ul class="gap-4 text-(--color-grey)">
-        @for (page of pages; track page) {
-          <li
-            routerLinkActive="active"
-            class="p-2 pl-4 pr-8 rounded-full hover:bg-gray-100 [&.active]:bg-(--color-light) [&.active]:text-(--color) transition-colors duration-200"
-            [style]="{
-              '--color': 'var(--color-' + page.color + ')',
-              '--color-light': 'var(--color-' + page.color + '-light)',
-            }"
+  <nav
+    id="drawer"
+    class="absolute top-16 -left-full block h-[calc(100vh-64px)] p-3 pt-5 bg-white shadow-md transition-all duration-400"
+    [class.left-0!]="isDrawerOpen()"
+  >
+    <ul class="gap-4 text-(--color-grey)">
+      @for (option of options; track option) {
+        <li
+          routerLinkActive="active"
+          class="p-2 pl-4 pr-8 rounded-full hover:bg-gray-100 [&.active]:bg-(--color-light) [&.active]:text-(--color) transition-colors duration-200"
+          [style]="{
+            '--color': 'var(--color-' + option.color + ')',
+            '--color-light': 'var(--color-' + option.color + '-light)',
+          }"
+        >
+          <a [routerLink]="option.link" class="flex items-center gap-4 cursor-pointer">
+            <span class="material-symbols-outlined">{{ option.icon }}</span>
+            <span>{{ option.title }}</span></a
           >
-            <a [routerLink]="page.link" class="flex items-center gap-4 cursor-pointer">
-              <span class="material-symbols-outlined">{{ page.icon }}</span>
-              <span>{{ page.title }}</span></a
-            >
-          </li>
-        }
+        </li>
+      }
 
-        @if (isAdmin()) {
-          <li class="admin-link">
-            <a
-              routerLink="/admin/dashboard"
-              class="pt-10 mt-10 border-t border-[#eee] cursor-pointer"
-            >
-              <span class="text-(--color-red) font-bold">🛠 Admin Panel</span>
-            </a>
-          </li>
-        }
-      </ul>
-    </nav>
-  </div>
+      @if (isAdmin()) {
+        <li class="admin-link">
+          <a
+            routerLink="/admin/dashboard"
+            class="pt-10 mt-10 border-t border-[#eee] cursor-pointer"
+          >
+            <span class="text-(--color-red) font-bold">🛠 Admin Panel</span>
+          </a>
+        </li>
+      }
+    </ul>
+  </nav>
 </div>
