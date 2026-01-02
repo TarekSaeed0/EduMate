@@ -79,4 +79,19 @@ export class Home {
       ? `Hello, ${this.authenticationService.user()?.student!.name.split(' ')[0]}!`
       : 'Hello!',
   );
+
+  universityName = computed(() => this.authenticationService.user()?.student?.university.name);
+
+  semester = computed(() => {
+    const semester = this.authenticationService.user()?.student?.university.currentSemester;
+    if (!semester) {
+      return null;
+    }
+
+    const term = semester.term.charAt(0).toUpperCase() + semester.term.slice(1).toLowerCase();
+
+    const year = semester.year;
+
+    return `${term} ${year}-${year + 1}`;
+  });
 }

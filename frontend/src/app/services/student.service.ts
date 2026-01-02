@@ -5,9 +5,11 @@ import { Task, TaskService } from './task.service';
 import { CourseSession } from './course-session.service';
 import { TimePeriod } from './time-period.service';
 import { WeekDay } from './time-slot.service';
+import { University, UniversityService } from './university.service';
 
 export interface Student {
   id: number;
+  university: University;
   name: string;
   userId: number;
 }
@@ -41,6 +43,11 @@ export class StudentService {
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/api/students';
 
+  static studentMapper = (student: Student): Student => ({
+    ...student,
+    university: UniversityService.universityMapper(student.university),
+  });
+
   static studentTaskMapper = (studentTask: StudentTask): StudentTask => ({
     ...studentTask,
     task: TaskService.taskMapper(studentTask.task),
@@ -48,7 +55,15 @@ export class StudentService {
   });
 
   getStudents(): Observable<Student[]> {
-    return this.http.get<Student[]>(this.baseUrl, { withCredentials: true });
+    return this.http
+      .get<Student[]>(this.baseUrl, { withCredentials: true })
+      .pipe(map((students) => students.map(StudentService.studentMapper)));
+  }
+
+  getStudent(studentId: number): Observable<Student> {
+    return this.http
+      .get<Student>(`${this.baseUrl}/${studentId}`, { withCredentials: true })
+      .pipe(map(StudentService.studentMapper));
   }
 
   getStudentTasks(studentId: number, filter?: StudentTaskFilter): Observable<StudentTask[]> {

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { catchError, Observable, of, tap } from 'rxjs';
-import { Student } from './student.service';
+import { Student, StudentService } from './student.service';
 
 export interface SignupRequest {
   name: string;
@@ -18,7 +18,7 @@ export interface User {
   id: number;
   email: string;
   roles: string[];
-  student: Student;
+  student?: Student;
 }
 
 @Injectable({
@@ -29,6 +29,11 @@ export class AuthenticationService {
   private baseUrl = 'http://localhost:8080/api/auth';
 
   user = signal<User | null>(null);
+
+  static userMapper = (user: User): User => ({
+    ...user,
+    student: user.student ? StudentService.studentMapper(user.student) : undefined,
+  });
 
   loadUser(): Observable<User | null> {
     return this.http.get<User>(`${this.baseUrl}/me`, { withCredentials: true }).pipe(

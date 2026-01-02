@@ -50,6 +50,8 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/api/auth/signup", "/api/auth/signin").permitAll()
 						.requestMatchers("/h2-console/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/universities/**").permitAll()
+						.requestMatchers("/api/universities/**").hasRole("ADMINISTRATOR")
 						.requestMatchers(HttpMethod.GET, "/api/semesters/**").permitAll()
 						.requestMatchers("/api/semesters/**").hasRole("ADMINISTRATOR")
 						.requestMatchers(HttpMethod.GET, "/api/courses/**").permitAll()

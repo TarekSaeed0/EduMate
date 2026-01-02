@@ -15,8 +15,16 @@
           <span class="status-badge">Active Student</span>
         </div>
         <div class="stats-list">
-          <div class="stat-item"><label>ACADEMIC YEAR</label><span>2024 / 2025</span></div>
-          <div class="stat-item"><label>SEMESTER</label><span>Spring Term</span></div>
+          @if (universityName()) {
+            <div class="stat-item">
+              <label class="select-none">UNIVERSITY</label><span>{{ universityName() }}</span>
+            </div>
+          }
+          @if (semester()) {
+            <div class="stat-item">
+              <label class="select-none">SEMESTER</label><span>{{ semester() }}</span>
+            </div>
+          }
         </div>
       </aside>
 
@@ -30,13 +38,19 @@
           @for (feature of features; track feature) {
             <div
               [routerLink]="feature.link"
-              class="feature-card {{ feature.color }}-card cursor-pointer"
+              class="p-4.5 border border-(--border-color) rounded-[10px] border-l-4 border-l-(--color) hover:shadow-[0_2px_8px_rgba(0,0,0,0.05)] transition-shadow duration-300 cursor-pointer"
+              [style]="{
+                '--color': 'var(--color-' + feature.color + ')',
+                '--color-light': 'var(--color-' + feature.color + '-light)',
+              }"
             >
-              <div class="icon-box">
+              <div
+                class="flex items-center justify-center mb-2.5 size-10 rounded-lg bg-(--color-light) text-(--color) select-none"
+              >
                 <span class="material-symbols-outlined">{{ feature.icon }}</span>
               </div>
-              <h3>{{ feature.title }}</h3>
-              <p>{{ feature.description }}</p>
+              <h3 class="mb-1.5 text-(--color-grey-dark) text-[1.1rem]">{{ feature.title }}</h3>
+              <p class="text-(--color-grey) text-[0.9rem]">{{ feature.description }}</p>
             </div>
           }
         </div>
@@ -45,20 +59,22 @@
   </div>
 } @else {
   <div class="landing-container">
-    <header class="landing-header">
+    <header
+      class="sticky top-0 z-1200 flex justify-between items-center w-full px-4 py-2 bg-white shadow-md"
+    >
       <h1 class="font-[Open_Sans,sans-serif] text-3xl font-bold select-none">
         <a routerLink="/home" class="cursor-pointer">
           <span class="text-(--primary)">Edu</span><span class="text-(--secondary)">Mate</span>
         </a>
       </h1>
-      <nav class="landing-nav md:block hidden">
-        <a href="#">Home</a>
-        <a href="#features">Features</a>
-        <a href="#">Contact</a>
+      <nav class="sm:flex hidden gap-3">
+        <a href="#" class="header-link">Home</a>
+        <a href="#features" class="header-link">Features</a>
+        <a href="#" class="header-link">Contact</a>
       </nav>
-      <div class="auth-buttons">
-        <a routerLink="/signin" class="btn-ghost" style="cursor: pointer">Sign In</a>
-        <a routerLink="/signup" class="btn-primary" style="cursor: pointer">Sign Up</a>
+      <div class="flex gap-2.5 font-bold">
+        <a routerLink="/signin" class="header-button bg-white text-(--primary)">Sign In</a>
+        <a routerLink="/signup" class="header-button bg-(--primary) text-white">Sign Up</a>
       </div>
     </header>
 
@@ -70,19 +86,29 @@
           Your ultimate companion for tracking tasks, managing teams, and acing your academic
           journey.
         </p>
-        <a routerLink="/signup" class="cta-button" style="cursor: pointer"> GET STARTED → </a>
+        <a routerLink="/signup" class="cta-button cursor-pointer">
+          GET STARTED <span class="material-symbols-outlined">arrow_right_alt</span>
+        </a>
       </div>
     </section>
     <section id="features" class="landing-features">
       <h2>Explore Features</h2>
       <div class="features-grid">
         @for (feature of features; track feature) {
-          <div class="feature-card {{ feature.color }}-card">
-            <div class="icon-box">
+          <div
+            class="p-4.5 border border-(--border-color) rounded-[10px] border-l-4 border-l-(--color) hover:shadow-[0_2px_8px_rgba(0,0,0,0.05)] transition-shadow duration-300"
+            [style]="{
+              '--color': 'var(--color-' + feature.color + ')',
+              '--color-light': 'var(--color-' + feature.color + '-light)',
+            }"
+          >
+            <div
+              class="flex items-center justify-center mb-2.5 size-10 rounded-lg bg-(--color-light) text-(--color) select-none"
+            >
               <span class="material-symbols-outlined">{{ feature.icon }}</span>
             </div>
-            <h3>{{ feature.title }}</h3>
-            <p>{{ feature.description }}</p>
+            <h3 class="mb-1.5 text-(--color-grey-dark) text-[1.1rem]">{{ feature.title }}</h3>
+            <p class="text-(--color-grey) text-[0.9rem]">{{ feature.description }}</p>
           </div>
         }
       </div>

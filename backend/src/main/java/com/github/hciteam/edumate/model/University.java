@@ -42,8 +42,9 @@ public class University implements AnnouncementScope {
 			orphanRemoval = true)
 	private Set<Student> students;
 
-	public University(String name) {
+	public University(String name, Semester currentSemester) {
 		this.name = name;
+		this.currentSemester = currentSemester;
 	}
 
 	@Override

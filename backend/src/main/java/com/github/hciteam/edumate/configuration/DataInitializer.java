@@ -89,8 +89,15 @@ public class DataInitializer implements CommandLineRunner {
 	@Override
 	@Transactional
 	public void run(String... args) throws Exception {
-		University university =
-				new University("Faculty of Engineering, Alexandria University");
+		Semester semester = new Semester(Term.FALL, 2025, LocalDate.of(2025, 9, 20),
+				LocalDate.of(2026, 1, 3));
+
+		Semester persistedSemester = semesterRepository
+				.findByTermAndYear(semester.getTerm(), semester.getYear())
+				.orElseGet(() -> semesterRepository.save(semester));
+
+		University university = new University(
+				"Faculty of Engineering, Alexandria University", persistedSemester);
 
 		University persistedUniversity =
 				universityRepository.findByName(university.getName())
@@ -148,13 +155,6 @@ public class DataInitializer implements CommandLineRunner {
 					courseRepository.findByCode(course.getCode())
 							.orElseGet(() -> courseRepository.save(course)));
 		}
-
-		Semester semester = new Semester(Term.FALL, 2025, LocalDate.of(2025, 9, 20),
-				LocalDate.of(2026, 1, 3));
-
-		Semester persistedSemester = semesterRepository
-				.findByTermAndYear(semester.getTerm(), semester.getYear())
-				.orElseGet(() -> semesterRepository.save(semester));
 
 		Map<String, CourseOffering> persistedOfferings = new HashMap<>();
 

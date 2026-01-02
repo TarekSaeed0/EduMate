@@ -2,6 +2,7 @@ package com.github.hciteam.edumate.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.github.hciteam.edumate.model.University;
@@ -22,6 +23,14 @@ public abstract class UniversityMapper {
 	@Mapping(target = "courses", ignore = true)
 	@Mapping(target = "students", ignore = true)
 	public abstract University toEntity(UniversityDTO universityDTO);
+
+	@Mapping(target = "id", ignore = true)
+	@Mapping(source = "currentSemester", target = "currentSemester",
+			qualifiedByName = "mapSemester")
+	@Mapping(target = "courses", ignore = true)
+	@Mapping(target = "students", ignore = true)
+	public abstract void updateEntityFromDTO(UniversityDTO universityDTO,
+			@MappingTarget University university);
 
 	@Named("mapUniversity")
 	protected University mapUniversity(UniversityDTO universityDTO) {

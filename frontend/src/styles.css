@@ -49,58 +49,60 @@
   --danger-bg: var(--color-red-light);
 }
 
-/* Global Resets */
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--bg-main);
-  color: var(--text-dark);
-}
+@layer base {
+  /* Global Resets */
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+  }
 
-/* Typography Defaults */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-  font-weight: 700;
-}
+  /* Typography Defaults */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    font-weight: 700;
+  }
 
-p {
-  margin: 0;
-  line-height: 1.5;
-}
+  p {
+    margin: 0;
+    line-height: 1.5;
+  }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 
-button {
-  font-family: inherit;
-}
+  button {
+    font-family: inherit;
+  }
 
-input::placeholder {
-  color: var(--text-light);
-}
+  input::placeholder {
+    color: var(--text-light);
+  }
 
-.filled {
-  font-variation-settings:
-    'FILL' 1,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 24;
-}
+  .filled {
+    font-variation-settings:
+      'FILL' 1,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+  }
 
-.thick {
-  font-variation-settings:
-    'FILL' 1,
-    'wght' 500,
-    'GRAD' 0,
-    'opsz' 24;
+  .thick {
+    font-variation-settings:
+      'FILL' 1,
+      'wght' 500,
+      'GRAD' 0,
+      'opsz' 24;
+  }
 }

@@ -55,7 +55,7 @@ export class StudentTasks implements OnInit {
 
   filterTasks() {
     this.studentService
-      .getStudentTasks(this.authenticationService.user()!.student.id, {
+      .getStudentTasks(this.authenticationService.user()!.student!.id, {
         status: this.selectedStatus() ?? undefined,
       })
       .subscribe({
@@ -67,7 +67,7 @@ export class StudentTasks implements OnInit {
   submitTask(studentTask: StudentTask, event: Event) {
     event.stopPropagation();
     this.studentService
-      .submitStudentTask(this.authenticationService.user()!.student.id, studentTask.task.id)
+      .submitStudentTask(this.authenticationService.user()!.student!.id, studentTask.task.id)
       .subscribe({
         next: (updatedTask) => {
           // Update the task in the list
@@ -82,7 +82,7 @@ export class StudentTasks implements OnInit {
   unsubmitTask(studentTask: StudentTask, event: Event) {
     event.stopPropagation();
     this.studentService
-      .unsubmitStudentTask(this.authenticationService.user()!.student.id, studentTask.task.id)
+      .unsubmitStudentTask(this.authenticationService.user()!.student!.id, studentTask.task.id)
       .subscribe({
         next: (updatedTask) => {
           // Update the task in the list
