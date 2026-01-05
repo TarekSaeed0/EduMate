@@ -10,7 +10,7 @@
   >
     <div class="flex items-center gap-1">
       <button
-        id="drawe-button"
+        id="drawer-button"
         class="flex items-center rounded-full p-1 hover:bg-(--primary-light) transistion-colors duration-200 cursor-pointer"
         (click)="toggleDrawer()"
       >
@@ -23,27 +23,45 @@
       </h1>
     </div>
 
-    <div class="relative">
-      <div>
-        <div
-          id="user-menu-button"
-          class="size-12 flex justify-center items-center rounded-full bg-white border-3 border-(--primary-light) text-(--primary) overflow-hidden cursor-pointer"
-          (click)="toggleUserMenu()"
-        >
-          <span class="material-symbols-outlined filled select-none text-[3.1rem]! translate-y-1.75"
-            >person</span
+    <ng-content />
+
+    @if (authenticationService.isAuthenticated()) {
+      <div class="relative">
+        <div>
+          <div
+            id="user-menu-button"
+            class="size-12 flex justify-center items-center rounded-full bg-white border-3 border-(--primary-light) text-(--primary) overflow-hidden cursor-pointer"
+            (click)="toggleUserMenu()"
           >
-        </div>
-        <div
-          id="user-menu"
-          class="hidden absolute top-full right-0 w-[150px] text-(--color-grey) border border-(--border-color) bg-white shadow-md rounded-lg"
-          [class.block!]="isUserMenuOpen()"
-        >
-          <div class="user-menu-item">Your Account</div>
-          <div class="user-menu-item" (click)="signOut()">Sign Out</div>
+            <span
+              class="material-symbols-outlined filled select-none text-[3.1rem]! translate-y-1.75"
+              >person</span
+            >
+          </div>
+          <div
+            id="user-menu"
+            class="hidden absolute top-full right-0 w-[150px] text-(--color-grey) border border-(--border-color) bg-white shadow-md rounded-lg"
+            [class.block!]="isUserMenuOpen()"
+          >
+            <div class="user-menu-item">Your Account</div>
+            <div class="user-menu-item" (click)="signOut()">Sign Out</div>
+          </div>
         </div>
       </div>
-    </div>
+    } @else {
+      <div class="flex gap-2.5 font-bold">
+        <a
+          routerLink="/signin"
+          class="header-button bg-white text-(--primary) hover:text-(--primary-dark)"
+          >Sign In</a
+        >
+        <a
+          routerLink="/signup"
+          class="header-button bg-(--primary) text-white hover:bg-(--primary-dark)"
+          >Sign Up</a
+        >
+      </div>
+    }
   </header>
 
   <nav
@@ -53,30 +71,21 @@
   >
     <ul class="gap-4 text-(--color-grey)">
       @for (option of options; track option) {
-        <li
-          routerLinkActive="active"
-          class="p-2 pl-4 pr-8 rounded-full hover:bg-gray-100 [&.active]:bg-(--color-light) [&.active]:text-(--color) transition-colors duration-200"
-          [style]="{
-            '--color': 'var(--color-' + option.color + ')',
-            '--color-light': 'var(--color-' + option.color + '-light)',
-          }"
-        >
-          <a [routerLink]="option.link" class="flex items-center gap-4 cursor-pointer">
-            <span class="material-symbols-outlined">{{ option.icon }}</span>
-            <span>{{ option.title }}</span></a
+        @if (option.condition == null || option.condition()) {
+          <li
+            routerLinkActive="active"
+            class="p-2 pl-4 pr-8 rounded-full hover:bg-gray-100 [&.active]:bg-(--color-light) [&.active]:text-(--color) transition-colors duration-200"
+            [style]="{
+              '--color': 'var(--color-' + option.color + ')',
+              '--color-light': 'var(--color-' + option.color + '-light)',
+            }"
           >
-        </li>
-      }
-
-      @if (isAdmin()) {
-        <li class="admin-link">
-          <a
-            routerLink="/admin/dashboard"
-            class="pt-10 mt-10 border-t border-[#eee] cursor-pointer"
-          >
-            <span class="text-(--color-red) font-bold">🛠 Admin Panel</span>
-          </a>
-        </li>
+            <a [routerLink]="option.link" class="flex items-center gap-4 cursor-pointer">
+              <span class="material-symbols-outlined">{{ option.icon }}</span>
+              <span>{{ option.title }}</span></a
+            >
+          </li>
+        }
       }
     </ul>
   </nav>

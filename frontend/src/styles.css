@@ -2,22 +2,46 @@
 
 :root {
   /* Color Palette */
+  /* Blue */
   --color-blue: #0066cc;
   --color-blue-light: #eaf4fc;
+  --color-blue-dark: #004a99;
+
+  /* Teal */
   --color-teal: #00b894;
   --color-teal-light: #e0f2f1;
+  --color-teal-dark: #00806a;
+
+  /* Green */
   --color-green: #4caf50;
   --color-green-light: #e8f5e9;
+  --color-green-dark: #357a38;
+
+  /* Orange */
   --color-orange: #ffa726;
   --color-orange-light: #fff3e0;
+  --color-orange-dark: #ef6c00;
+
+  /* Purple */
   --color-purple: #9c27b0;
   --color-purple-light: #f3e5f5;
+  --color-purple-dark: #6a0080;
+
+  /* Pink */
   --color-pink: #e91e63;
   --color-pink-light: #ffebee;
+  --color-pink-dark: #ad1457;
+
+  /* Lime */
   --color-lime: #cddc39;
   --color-lime-light: #f9fbe7;
+  --color-lime-dark: #99aa00;
+
+  /* Red */
   --color-red: #d32f2f;
   --color-red-light: #ffebee;
+  --color-red-dark: #9a0007;
+
   --color-white: #ffffff;
   --color-black: #000000;
   --color-grey: #626262;
@@ -26,13 +50,16 @@
 
   /* Brand Colors */
   --primary: var(--color-blue);
-  --primary-light: var(--color-blue-light); /* also Used for light backgrounds */
+  --primary-light: var(--color-blue-light);
+  --primary-dark: var(--color-blue-dark);
 
   --secondary: var(--color-teal);
   --secondary-light: var(--color-teal-light);
+  --secondary-dark: var(--color-teal-dark);
 
   --accent: var(--color-orange);
   --accent-light: var(--color-orange-light);
+  --accent-dark: var(--color-orange-dark);
 
   /* App Structure */
   --bg-main: #f0f6fc; /* Main page background */

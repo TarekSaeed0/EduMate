@@ -12,6 +12,7 @@ import { AdminDashboard } from './components/admin-dashboard/admin-dashboard';
 import { Map } from './components/map/map';
 import { TeamsListComponent } from './components/student/teams-list/teams-list';
 import { TeamDetailsComponent } from './components/student/team-details/team-details';
+import { PageNotFound } from './components/page-not-found/page-not-found';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -31,4 +32,6 @@ export const routes: Routes = [
   { path: 'student/map', component: Map, title: 'Map' },
 
   { path: 'admin/dashboard', component: AdminDashboard },
+
+  { path: '**', component: PageNotFound },
 ];

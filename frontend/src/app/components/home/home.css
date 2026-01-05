@@ -130,10 +130,6 @@
   gap: 15px;
 }
 
-.landing-container {
-  background: var(--color-white);
-}
-
 .landing-header {
   height: 60px;
   display: flex;
@@ -175,30 +171,11 @@
   margin: 10px 0 20px 0;
 }
 
-.hero-content-centered .accent {
-  color: var(--secondary);
-}
-
 .hero-content-centered p {
   font-size: 1.2rem;
   color: var(--text-grey);
   max-width: 700px;
   margin: 0 auto 30px auto;
-}
-
-.cta-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--accent);
-  color: var(--text-dark);
-  padding: 15px 30px;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 700;
-}
-.cta-button:hover {
-  opacity: 0.9;
 }
 
 .landing-features {

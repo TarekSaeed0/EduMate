@@ -58,40 +58,32 @@
     </div>
   </div>
 } @else {
-  <div class="landing-container">
-    <header
-      class="sticky top-0 z-1200 flex justify-between items-center w-full px-4 py-2 bg-white shadow-md"
-    >
-      <h1 class="font-[Open_Sans,sans-serif] text-3xl font-bold select-none">
-        <a routerLink="/home" class="cursor-pointer">
-          <span class="text-(--primary)">Edu</span><span class="text-(--secondary)">Mate</span>
-        </a>
-      </h1>
+  <div class="h-screen overflow-y-auto">
+    <app-navbar>
       <nav class="sm:flex hidden gap-3">
         <a href="#" class="header-link">Home</a>
         <a href="#features" class="header-link">Features</a>
         <a href="#" class="header-link">Contact</a>
       </nav>
-      <div class="flex gap-2.5 font-bold">
-        <a routerLink="/signin" class="header-button bg-white text-(--primary)">Sign In</a>
-        <a routerLink="/signup" class="header-button bg-(--primary) text-white">Sign Up</a>
-      </div>
-    </header>
+    </app-navbar>
 
     <section class="hero-section">
       <div class="hero-content-centered">
         <span class="pill">WELCOME TO EDUMATE</span>
-        <h1>Find Focus.<br />Learn <span class="accent">&</span> Inspire.</h1>
+        <h1>Find Focus.<br />Learn <span class="text-(--secondary)">&</span> Inspire.</h1>
         <p>
           Your ultimate companion for tracking tasks, managing teams, and acing your academic
           journey.
         </p>
-        <a routerLink="/signup" class="cta-button cursor-pointer">
+        <a
+          routerLink="/signup"
+          class="inline-flex items-center gap-2.5 px-7.5 py-3.75 bg-(--accent) text-(--text-dark) font-bold rounded-full hover:bg-(--accent-dark) transistion-colors duration-200 cursor-pointer"
+        >
           GET STARTED <span class="material-symbols-outlined">arrow_right_alt</span>
         </a>
       </div>
     </section>
-    <section id="features" class="landing-features">
+    <section id="features" class="landing-features bg-white">
       <h2>Explore Features</h2>
       <div class="features-grid">
         @for (feature of features; track feature) {

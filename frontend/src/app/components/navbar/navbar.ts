@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, HostListener, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -7,6 +7,7 @@ interface DrawerOption {
   color: string;
   title: string;
   link: string;
+  condition?: () => boolean;
 }
 
 @Component({
@@ -17,7 +18,7 @@ interface DrawerOption {
   styleUrl: './navbar.css',
 })
 export class Navbar {
-  private authenticationService = inject(AuthenticationService);
+  protected authenticationService = inject(AuthenticationService);
   private router = inject(Router);
 
   protected options: DrawerOption[] = [
@@ -32,30 +33,35 @@ export class Navbar {
       color: 'blue',
       title: 'Time Table',
       link: '/student/timetable',
+      condition: this.hasRole('STUDENT'),
     },
     {
       icon: 'checklist',
       color: 'teal',
       title: 'Task Tracker',
       link: '/student/tasks',
+      condition: this.hasRole('STUDENT'),
     },
     {
       icon: 'groups',
       color: 'purple',
       title: 'Team Creator',
       link: '/student/team-creator',
+      condition: this.hasRole('STUDENT'),
     },
     {
       icon: 'campaign',
       color: 'orange',
       title: 'Announcements',
       link: '/student/announcements',
+      condition: this.hasRole('STUDENT'),
     },
     {
       icon: 'menu_book',
       color: 'green',
       title: 'Material Sources',
       link: '/student/materials',
+      condition: this.hasRole('STUDENT'),
     },
     {
       icon: 'map',
@@ -69,20 +75,19 @@ export class Navbar {
       title: 'FAQ',
       link: '/student/faq',
     },
+    {
+      icon: 'construction',
+      color: 'red',
+      title: 'Admin Panel',
+      link: '/admin/dashboard',
+      condition: this.hasRole('ADMINISTRATOR'),
+    },
   ];
 
   isDrawerOpen = signal(false);
 
   toggleDrawer() {
     this.isDrawerOpen.set(!this.isDrawerOpen());
-  }
-
-  @HostListener('document:click', ['$event'])
-  hideDrawer(event: Event) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('#drawer, #drawer-button')) {
-      this.isUserMenuOpen.set(false);
-    }
   }
 
   isUserMenuOpen = signal(false);
@@ -92,8 +97,13 @@ export class Navbar {
   }
 
   @HostListener('document:click', ['$event'])
-  hideUserMenu(event: Event) {
+  hideDrawerOrUserMenu(event: Event) {
     const target = event.target as HTMLElement;
+
+    if (!target.closest('#drawer, #drawer-button')) {
+      this.isDrawerOpen.set(false);
+    }
+
     if (!target.closest('#user-menu, #user-menu-button')) {
       this.isUserMenuOpen.set(false);
     }
@@ -103,7 +113,7 @@ export class Navbar {
     this.authenticationService.signout().subscribe(() => this.router.navigateByUrl('/home'));
   }
 
-  isAdmin(): boolean {
-    return this.authenticationService.hasRole('ADMINISTRATOR');
+  hasRole(role: string) {
+    return () => this.authenticationService.hasRole(role);
   }
 }
