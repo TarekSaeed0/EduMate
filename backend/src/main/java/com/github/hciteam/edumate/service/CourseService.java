@@ -1,6 +1,7 @@
 package com.github.hciteam.edumate.service;
 
 import java.util.List;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import com.github.hciteam.edumate.model.Course;
 import com.github.hciteam.edumate.exception.CourseNotFoundException;
@@ -8,6 +9,7 @@ import com.github.hciteam.edumate.exception.CourseAlreadyExistsException;
 import com.github.hciteam.edumate.mapper.CourseMapper;
 import com.github.hciteam.edumate.dto.CourseDTO;
 import com.github.hciteam.edumate.repository.CourseRepository;
+import com.github.hciteam.edumate.specification.CourseSpecifications;
 
 @Service
 public class CourseService {
@@ -20,9 +22,19 @@ public class CourseService {
 		this.courseMapper = courseMapper;
 	}
 
-	public List<CourseDTO> getCourses() {
-		return courseRepository.findAll().stream().map(courseMapper::toDTO)
-				.toList();
+	public List<CourseDTO> getCourses(String code, String name) {
+		Specification<Course> specification = Specification.unrestricted();
+
+		if (code != null && !code.isEmpty()) {
+			specification = specification.and(CourseSpecifications.ofCode(code));
+		}
+
+		if (name != null && !name.isEmpty()) {
+			specification = specification.and(CourseSpecifications.ofName(name));
+		}
+
+		return courseRepository.findAll(specification).stream()
+				.map(courseMapper::toDTO).toList();
 	}
 
 	public CourseDTO createCourse(CourseDTO courseDTO) {

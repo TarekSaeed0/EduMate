@@ -29,17 +29,17 @@ public class FAQService {
 			List<String> categories) {
 		Specification<FAQ> specification = Specification.unrestricted();
 
-		if (question != null) {
+		if (question != null && !question.isEmpty()) {
 			specification =
 					specification.and(FAQSpecifications.questionContains(question));
 		}
 
-		if (answer != null) {
+		if (answer != null && !answer.isEmpty()) {
 			specification =
-					specification.and(FAQSpecifications.answerContains(question));
+					specification.and(FAQSpecifications.answerContains(answer));
 		}
 
-		if (categories != null) {
+		if (categories != null && !categories.isEmpty()) {
 			specification = specification
 					.and(FAQSpecifications.hasAllCategoriesNames(categories));
 		}

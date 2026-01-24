@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.github.hciteam.edumate.dto.CourseDTO;
@@ -27,8 +28,10 @@ public class CourseController {
 	}
 
 	@GetMapping
-	public ResponseEntity<List<CourseDTO>> getCourses() {
-		return ResponseEntity.ok(courseService.getCourses());
+	public ResponseEntity<List<CourseDTO>> getCourses(
+			@RequestParam(required = false) String code,
+			@RequestParam(required = false) String name) {
+		return ResponseEntity.ok(courseService.getCourses(code, name));
 	}
 
 	@PostMapping
