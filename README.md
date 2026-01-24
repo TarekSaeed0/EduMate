@@ -48,27 +48,27 @@ An educational website designed to support university students in their academic
 
 ### Team Creator
 
-description of team creator feature
+Create groups and collaborate smoothly.
 
 ### Timetable
 
-description of timetable feature
+Track your classes and daily schedule.
 
 ### Announcements
 
-description of announcements feature
+Never miss important updates.
 
 ### Task Tracker
 
-description of task tracker feature
+Organize assignments and stay productive.
 
 ### Material Sources
 
-description of material sources feature
+Access your study materials quickly.
 
 ### Frequently Asked Questions
 
-description of faq feature
+Find instant answers to common questions.
 
 ### Map
 
